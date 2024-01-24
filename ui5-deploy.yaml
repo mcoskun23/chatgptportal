@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "2.6"
+metadata:
+  name: com.ntt.chatgptportal
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: http://bfes13052.solco.global.nttdata.com:8000
+          client: "200"
+        app:
+          name: ZFI_CEK_PRTL
+          package: ZFI_F_001
+          transport: DS4K914491
+        exclude:
+          - /test/

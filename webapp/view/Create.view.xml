@@ -1,0 +1,23 @@
+<mvc:View
+    controllerName="com.ntt.chatgptportal.controller.Create"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page>
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <Label text="{i18n>ProjectName}" />
+                <Input showValueHelp="true" />
+                <Label text="{i18n>DevelopmentNo}" />
+                <Input showValueHelp="true" />
+            </VBox>
+
+            <core:Fragment
+                fragmentName="com.ntt.chatgptportal.view.fragment.Wizard"
+                type="XML"
+            />
+        </content>
+    </Page>
+</mvc:View>

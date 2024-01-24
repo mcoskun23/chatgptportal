@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+>
+    <WizardStep
+        title="{i18n>List}"
+        validated="true"
+    >
+      <Table>
+            <columns>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Header}" />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Type}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text text="Başlık" />
+                        <Select>
+                            <core:Item
+                                key="01"
+                                text="Sorgu"
+                            />
+                        </Select>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </WizardStep>
+</core:FragmentDefinition>

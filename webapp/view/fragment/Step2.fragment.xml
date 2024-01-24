@@ -1,0 +1,45 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+>
+    <WizardStep
+        title="{i18n>SelectionScreen}"
+        validated="true"
+    >
+        <Table>
+            <columns>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Parameter}" />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Required}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text text="123" />
+                        <Select>
+                            <core:Item
+                                key="01"
+                                text="Opsiyonel"
+                            />
+                            <core:Item
+                                key="01"
+                                text="Zorunluluk"
+                            />
+                        </Select>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </WizardStep>
+</core:FragmentDefinition>

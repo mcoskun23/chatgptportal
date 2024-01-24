@@ -1,0 +1,48 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+>
+    <WizardStep
+        title="{i18n>Development}"
+        validated="true"
+    >
+        <form:SimpleForm
+            editable="true"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false"
+        >
+            <form:content>
+                <Label text="{i18n>DevelopmentReason}" />
+                <TextArea value="{model>/Reason}" />
+                <Label text="{i18n>ReportTitle}" />
+                <Input value="{model>/ReportTitle}" />
+                <Label text="{i18n>ReportTitle}" />
+                <Input value="{model>/ReportMethod}" />
+                <Label text="{i18n>Module}" />
+                <Input value="{model>/Module}" />
+                <Label text="{i18n>DevelopmentGoal}" />
+                <TextArea value="{model>/DevelopmentGoal}" />
+                <Label text="{i18n>DevelopmentGoal}" />
+                <TextArea value="{model>/DevelopmentGoal}" />
+                <Label text="{i18n>AuthObj}" />
+                <TextArea value="{model>/AuthObj}" />
+                <Label text="{i18n>Procedure}" />
+                <TextArea value="{model>/Procedure}" />
+            </form:content>
+        </form:SimpleForm>
+    </WizardStep>
+</core:FragmentDefinition>

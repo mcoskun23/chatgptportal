@@ -11,8 +11,6 @@ export default class Main extends BaseController {
     }
 
     private onPressCreate() {
-        const router = this.getRouter();
-
-        router.navTo("create");
+        this.getRouter().navTo("create");
     }
 }

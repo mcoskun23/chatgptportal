@@ -5,6 +5,7 @@
     xmlns:u="sap.ui.unified"
 >
     <WizardStep
+        id="step1"
         title="{i18n>Development}"
         icon="sap-icon://hint"
     >
@@ -26,20 +27,20 @@
             singleContainerFullSize="false"
         >
             <form:content>
-                <Label text="{i18n>DevelopmentReason}" />
-                <TextArea value="{model>/Reason}" />
-                <Label text="{i18n>ReportTitle}" />
-                <Input value="{model>/ReportTitle}" />
-                <Label text="{i18n>ReportMethod}" />
-                <Input value="{model>/ReportMethod}" />
-                <Label text="{i18n>Module}" />
-                <Input value="{model>/Module}" />
-                <Label text="{i18n>DevelopmentGoal}" />
-                <TextArea value="{model>/DevelopmentGoal}" />
-                <Label text="{i18n>AuthObj}" />
-                <TextArea value="{model>/AuthObj}" />
-                <Label text="{i18n>Procedure}" />
-                <TextArea value="{model>/Procedure}" />
+                <Label text="{i18n>Devreason}" />
+                <TextArea value="{model>/Devreason}" />
+                <Label text="{i18n>Reportheader}" />
+                <Input value="{model>/Reportheader}" />
+                <Label text="{i18n>Devtype}" />
+                <Input value="{model>/Devtype}" />
+                <Label text="{i18n>Devmodule}" />
+                <Input value="{model>/Devmodule}" />
+                <Label text="{i18n>Devpurpose}" />
+                <TextArea value="{model>/Devpurpose}" />
+                <Label text="{i18n>Authobj}" />
+                <TextArea value="{model>/Authobj}" />
+                <Label text="{i18n>Devprocedure}" />
+                <TextArea value="{model>/Devprocedure}" />
             </form:content>
         </form:SimpleForm>
     </WizardStep>

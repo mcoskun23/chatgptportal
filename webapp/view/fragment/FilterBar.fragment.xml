@@ -20,7 +20,13 @@
                 visibleInFilterBar="true"
             >
                 <fb:control>
-                    <Input showValueHelp="true" />
+                    <Input
+                        required="true"
+                        value="{model>/Projecttxt}"
+                        showValueHelp="true"
+                        valueHelpOnly="true"
+                        valueHelpRequest="onPressProject"
+                    />
                 </fb:control>
             </fb:FilterGroupItem>
             <fb:FilterGroupItem
@@ -30,7 +36,13 @@
                 visibleInFilterBar="true"
             >
                 <fb:control>
-                    <Input showValueHelp="true" />
+                    <Input
+                        required="true"
+                        value="{model>/Developmenttxt}"
+                        showValueHelp="true"
+                        valueHelpOnly="true"
+                        valueHelpRequest="onPressDevelopment"
+                    />
                 </fb:control>
             </fb:FilterGroupItem>
         </fb:filterGroupItems>

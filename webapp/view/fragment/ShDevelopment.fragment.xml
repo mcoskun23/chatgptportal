@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <SelectDialog
+        contentWidth="auto"
+        contentHeight="auto"
+        title="{i18n>DevelopmentID}"
+        search=".onSearchDevelopment"
+        confirm=".onDevelopmentConfirm"
+        cancel=".onDevelopmentClose"
+        items="{path: ''}"
+    >
+        <StandardListItem
+            title="{Developmenttxt}"
+            description="{Developmentid}"
+            iconDensityAware="false"
+            iconInset="false"
+            type="Active"
+        />
+    </SelectDialog>
+</core:FragmentDefinition>

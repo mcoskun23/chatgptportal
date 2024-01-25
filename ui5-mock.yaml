@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
-
 specVersion: "2.6"
 metadata:
   name: com.ntt.chatgptportal
@@ -9,7 +7,7 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: false
         ui5:
           path:
             - /resources
@@ -17,8 +15,8 @@ server:
           url: https://ui5.sap.com
         backend:
           - path: /sap
-            url: http://bfes13052.solco.global.nttdata.com:8000
-            client: '200'
+            url: https://bfes13052.solco.global.nttdata.com:44300
+            client: "200"
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -41,6 +39,15 @@ server:
             mockdataPath: ./webapp/localService/data
             generateMockData: true
         annotations: []
+        service:
+          - urlPath: /sap/opu/odata/sap/ZGPT_SRV
+            generateMockData: true
+            metadataXmlPath: ./webapp/localService/metadata.xml
+            mockdataRootPath: ./webapp/localService/data
+          - urlPath: /sap/opu/odata/sap/ZGPT_SRV/
+            metadataXmlPath: ./webapp/localService/metadata.xml
+            mockdataRootPath: ./webapp/localService/mockdata
+            generateMockData: true
 builder:
   customTasks:
     - name: ui5-tooling-transpile-task

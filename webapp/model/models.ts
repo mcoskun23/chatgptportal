@@ -9,14 +9,17 @@ export function createDeviceModel() {
 
 export function createModel() {
     const data = {
-        Reason: "",
-        ReportTitle: "",
-        ReportMethod: "",
-        Module: "",
-        DevelopmentGoal: "",
-        Procedure: "",
-        AuthObj: "",
-        Params: [],
+        Projectid: "",
+        Developmentid: "",
+        ProcessType: "",
+        Reportheader: "",
+        Devmodule: "",
+        Devtype: "",
+        Devreason: "",
+        Devpurpose: "",
+        Devprocedure: "",
+        Authobj: "",
+        Parameters: [],
         List: []
     }
 

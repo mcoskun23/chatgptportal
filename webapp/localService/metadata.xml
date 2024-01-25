@@ -3,9 +3,111 @@
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="ZGPT_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
-            <EntityContainer Name="ZGPT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"/>
-            <atom:link rel="self" href="http://BFES13052.SOLCO.GLOBAL.NTTDATA.COM:8000/sap/opu/odata/sap/ZGPT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-            <atom:link rel="latest-version" href="http://BFES13052.SOLCO.GLOBAL.NTTDATA.COM:8000/sap/opu/odata/sap/ZGPT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <EntityType Name="ShProject" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Projectid"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projecttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ShDevelopment" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Developmentid"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmenttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Header" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Projectid"/>
+                    <PropertyRef Name="Developmentid"/>
+                    <PropertyRef Name="ProcessType"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Reportheader" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devmodule" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devtype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devreason" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devpurpose" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devprocedure" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Authobj" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="Parameters" Relationship="ZGPT_SRV.HeaderToParameter" FromRole="FromRole_HeaderToParameter" ToRole="ToRole_HeaderToParameter"/>
+                <NavigationProperty Name="List" Relationship="ZGPT_SRV.HeaderToList" FromRole="FromRole_HeaderToList" ToRole="ToRole_HeaderToList"/>
+            </EntityType>
+            <EntityType Name="Parameter" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Fieldname"/>
+                    <PropertyRef Name="Fieldattribute"/>
+                </Key>
+                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fieldattribute" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="List" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Fieldname"/>
+                </Key>
+                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RetrievalType" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Function" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <Association Name="HeaderToList" sap:content-version="1">
+                <End Type="ZGPT_SRV.Header" Multiplicity="1" Role="FromRole_HeaderToList"/>
+                <End Type="ZGPT_SRV.List" Multiplicity="*" Role="ToRole_HeaderToList"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_HeaderToList">
+                        <PropertyRef Name="Projectid"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="ProcessType"/>
+                    </Principal>
+                    <Dependent Role="ToRole_HeaderToList">
+                        <PropertyRef Name="Projectid"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="ProcessType"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="HeaderToParameter" sap:content-version="1">
+                <End Type="ZGPT_SRV.Header" Multiplicity="1" Role="FromRole_HeaderToParameter"/>
+                <End Type="ZGPT_SRV.Parameter" Multiplicity="*" Role="ToRole_HeaderToParameter"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_HeaderToParameter">
+                        <PropertyRef Name="Projectid"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="ProcessType"/>
+                    </Principal>
+                    <Dependent Role="ToRole_HeaderToParameter">
+                        <PropertyRef Name="Projectid"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="ProcessType"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZGPT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="ShProjectSet" EntityType="ZGPT_SRV.ShProject" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ShDevelopmentSet" EntityType="ZGPT_SRV.ShDevelopment" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="HeaderSet" EntityType="ZGPT_SRV.Header" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ParameterSet" EntityType="ZGPT_SRV.Parameter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ListSet" EntityType="ZGPT_SRV.List" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="HeaderToListSet" Association="ZGPT_SRV.HeaderToList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="HeaderSet" Role="FromRole_HeaderToList"/>
+                    <End EntitySet="ListSet" Role="ToRole_HeaderToList"/>
+                </AssociationSet>
+                <AssociationSet Name="HeaderToParameterSet" Association="ZGPT_SRV.HeaderToParameter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="HeaderSet" Role="FromRole_HeaderToParameter"/>
+                    <End EntitySet="ParameterSet" Role="ToRole_HeaderToParameter"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link rel="self" href="https://bfes13052.solco.global.nttdata.com:44300/sap/opu/odata/sap/ZGPT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="https://bfes13052.solco.global.nttdata.com:44300/sap/opu/odata/sap/ZGPT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

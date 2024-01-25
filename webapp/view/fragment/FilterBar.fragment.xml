@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:core="sap.ui.core"
+>
+    <fb:FilterBar
+        id="filterbar"
+        persistencyKey="myPersKey"
+        useToolbar="false"
+        search=".onSearch"
+        filterChange=".onFilterChange"
+        afterVariantLoad=".onAfterVariantLoad"
+    >
+        <fb:filterGroupItems>
+            <fb:FilterGroupItem
+                name="ProjectName"
+                label="{i18n>ProjectName}"
+                groupName="Group1"
+                visibleInFilterBar="true"
+            >
+                <fb:control>
+                    <Input showValueHelp="true" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem
+                name="DevelopmentID"
+                label="{i18n>DevelopmentID}"
+                groupName="Group1"
+                visibleInFilterBar="true"
+            >
+                <fb:control>
+                    <Input showValueHelp="true" />
+                </fb:control>
+            </fb:FilterGroupItem>
+        </fb:filterGroupItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

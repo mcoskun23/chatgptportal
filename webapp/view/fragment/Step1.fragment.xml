@@ -6,7 +6,7 @@
 >
     <WizardStep
         title="{i18n>Development}"
-        validated="true"
+        icon="sap-icon://hint"
     >
         <form:SimpleForm
             editable="true"
@@ -30,12 +30,10 @@
                 <TextArea value="{model>/Reason}" />
                 <Label text="{i18n>ReportTitle}" />
                 <Input value="{model>/ReportTitle}" />
-                <Label text="{i18n>ReportTitle}" />
+                <Label text="{i18n>ReportMethod}" />
                 <Input value="{model>/ReportMethod}" />
                 <Label text="{i18n>Module}" />
                 <Input value="{model>/Module}" />
-                <Label text="{i18n>DevelopmentGoal}" />
-                <TextArea value="{model>/DevelopmentGoal}" />
                 <Label text="{i18n>DevelopmentGoal}" />
                 <TextArea value="{model>/DevelopmentGoal}" />
                 <Label text="{i18n>AuthObj}" />

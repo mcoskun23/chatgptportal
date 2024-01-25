@@ -6,9 +6,19 @@
 >
     <WizardStep
         title="{i18n>SelectionScreen}"
-        validated="true"
+        icon="sap-icon://activity-items"
     >
-        <Table>
+        <Table items="{model>/Params}">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <ToolbarSpacer />
+                    <Button
+                        text="{i18n>AddRow}"
+                        icon="sap-icon://sys-add"
+                        press="onPressAddParam"
+                    />
+                </OverflowToolbar>
+            </headerToolbar>
             <columns>
                 <Column
                     minScreenWidth="Tablet"
@@ -22,12 +32,13 @@
                 >
                     <Text text="{i18n>Required}" />
                 </Column>
+                <Column hAlign="End" />
             </columns>
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Text text="123" />
-                        <Select>
+                        <Input value="{model>Param}" />
+                        <Select selectedKey="{model>Type}">
                             <core:Item
                                 key="01"
                                 text="Opsiyonel"
@@ -37,6 +48,11 @@
                                 text="Zorunluluk"
                             />
                         </Select>
+                        <Button
+                            icon="sap-icon://delete"
+                            press="onPressDeleteParam"
+                            type="Reject"
+                        />
                     </cells>
                 </ColumnListItem>
             </items>

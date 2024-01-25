@@ -6,9 +6,19 @@
 >
     <WizardStep
         title="{i18n>List}"
-        validated="true"
+        icon="sap-icon://multi-select"
     >
-      <Table>
+        <Table items="{model>/List}">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <ToolbarSpacer />
+                    <Button
+                        text="{i18n>AddRow}"
+                        icon="sap-icon://sys-add"
+                        press="onPressAddParam"
+                    />
+                </OverflowToolbar>
+            </headerToolbar>
             <columns>
                 <Column
                     minScreenWidth="Tablet"
@@ -22,17 +32,30 @@
                 >
                     <Text text="{i18n>Type}" />
                 </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Formule}" />
+                </Column>
+                <Column hAlign="End" />
             </columns>
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Text text="Başlık" />
-                        <Select>
+                        <Input value="{model>Header}" />
+                        <Select selectedKey="{model>Type}">
                             <core:Item
                                 key="01"
                                 text="Sorgu"
                             />
                         </Select>
+                        <Input value="{model>Formule}" />
+                        <Button
+                            icon="sap-icon://delete"
+                            press="onPressDeleteParam"
+                            type="Reject"
+                        />
                     </cells>
                 </ColumnListItem>
             </items>

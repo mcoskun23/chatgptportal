@@ -4,20 +4,51 @@
     displayBlock="true"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
 >
-    <Page>
-        <content>
-            <VBox class="sapUiMediumMargin">
-                <Label text="{i18n>ProjectName}" />
-                <Input showValueHelp="true" />
-                <Label text="{i18n>DevelopmentNo}" />
-                <Input showValueHelp="true" />
-            </VBox>
-
+    <f:DynamicPage
+        title="{i18n>title}"
+        showFooter="true"
+        fitContent="true"
+    >
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <core:Fragment
+                        fragmentName="com.ntt.chatgptportal.view.fragment.FilterBar"
+                        type="XML"
+                    />
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
             <core:Fragment
                 fragmentName="com.ntt.chatgptportal.view.fragment.Wizard"
                 type="XML"
             />
-        </content>
-    </Page>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>Save}"
+                    type="Accept"
+                    icon="sap-icon://save"
+                />
+                <Button
+                    text="{i18n>TS}"
+                    icon="sap-icon://vds-file"
+                />
+                <Button
+                    text="{i18n>Abap}"
+                    icon="sap-icon://source-code"
+                />
+                <Button
+                    text="{i18n>Feedback}"
+                    type="Emphasized"
+                    icon="sap-icon://feedback"
+                />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
 </mvc:View>

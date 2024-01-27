@@ -5,6 +5,7 @@
     xmlns:u="sap.ui.unified"
 >
     <WizardStep
+        id="step3"
         title="{i18n>List}"
         icon="sap-icon://multi-select"
     >
@@ -15,7 +16,7 @@
                     <Button
                         text="{i18n>AddRow}"
                         icon="sap-icon://sys-add"
-                        press="onPressAddParam"
+                        press="onPressAddList"
                     />
                 </OverflowToolbar>
             </headerToolbar>
@@ -43,17 +44,24 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input value="{model>Header}" />
-                        <Select selectedKey="{model>Type}">
+                        <Input value="{model>Fieldname}" />
+                        <Select selectedKey="{model>RetrievalType}" change="onChangeRType">
                             <core:Item
                                 key="01"
-                                text="Sorgu"
+                                text="{i18n>Query}"
+                            />
+                            <core:Item
+                                key="02"
+                                text="{i18n>Function}"
                             />
                         </Select>
-                        <Input value="{model>Formule}" />
+                        <Input
+                            editable="{= ${model>RetrievalType} === '01' ? false : true}"
+                            value="{model>Function}"
+                        />
                         <Button
                             icon="sap-icon://delete"
-                            press="onPressDeleteParam"
+                            press="onPressDeleteList"
                             type="Reject"
                         />
                     </cells>

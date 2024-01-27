@@ -7,7 +7,6 @@
     xmlns:f="sap.f"
 >
     <f:DynamicPage
-        title="{i18n>title}"
         showFooter="true"
         fitContent="true"
     >
@@ -34,19 +33,23 @@
                     text="{i18n>Save}"
                     type="Accept"
                     icon="sap-icon://save"
+                    press="onSave"
                 />
                 <Button
                     text="{i18n>TS}"
                     icon="sap-icon://vds-file"
+                    press="onPressTS"
                 />
                 <Button
                     text="{i18n>Abap}"
                     icon="sap-icon://source-code"
+                    press="onPressAbap"
                 />
                 <Button
                     text="{i18n>Feedback}"
                     type="Emphasized"
                     icon="sap-icon://feedback"
+                    press="onPressFeedback"
                 />
             </OverflowToolbar>
         </f:footer>

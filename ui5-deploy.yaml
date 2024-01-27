@@ -13,12 +13,14 @@ builder:
     - name: deploy-to-abap
       afterTask: generateCachebusterInfo
       configuration:
+        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepte
         target:
-          url: http://bfes13052.solco.global.nttdata.com:8000
+          url: https://bfes13052.solco.global.nttdata.com:44300/
           client: "200"
+        log: 0  
         app:
-          name: ZFI_CEK_PRTL
-          package: ZFI_F_001
-          transport: DS4K914491
+          name: ZGPT_PRTL
+          package: ZGPT_004
+          transport: S22K908575
         exclude:
           - /test/

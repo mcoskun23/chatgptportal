@@ -6,8 +6,11 @@
 >
     <WizardStep
         id="step1"
+        nextStep="step2"
         title="{i18n>Development}"
         icon="sap-icon://hint"
+        complete="onPressStep2"
+        validated="false"   
     >
         <form:SimpleForm
             editable="true"
@@ -28,7 +31,10 @@
         >
             <form:content>
                 <Label text="{i18n>Devreason}" />
-                <TextArea value="{model>/Devreason}" />
+                <TextArea
+                    growing="true"
+                    value="{model>/Devreason}"
+                />
                 <Label text="{i18n>Reportheader}" />
                 <Input value="{model>/Reportheader}" />
                 <Label text="{i18n>Devtype}" />
@@ -36,11 +42,17 @@
                 <Label text="{i18n>Devmodule}" />
                 <Input value="{model>/Devmodule}" />
                 <Label text="{i18n>Devpurpose}" />
-                <TextArea value="{model>/Devpurpose}" />
+                <TextArea
+                    growing="true"
+                    value="{model>/Devpurpose}"
+                />
                 <Label text="{i18n>Authobj}" />
                 <TextArea value="{model>/Authobj}" />
                 <Label text="{i18n>Devprocedure}" />
-                <TextArea value="{model>/Devprocedure}" />
+                <TextArea
+                    growing="true"
+                    value="{model>/Devprocedure}"
+                />
             </form:content>
         </form:SimpleForm>
     </WizardStep>

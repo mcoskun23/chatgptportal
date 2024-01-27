@@ -11,7 +11,7 @@ export function createModel() {
     const data = {
         Projectid: "",
         Developmentid: "",
-        ProcessType: "",
+        ProcessType: "C",
         Reportheader: "",
         Devmodule: "",
         Devtype: "",

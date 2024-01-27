@@ -56,10 +56,6 @@
                                     <MultiComboBox
                                         name="Category"
                                         selectionChange=".onSelectionChange"
-                                        items="{
-												path: '/ProductCategories',
-												templateShareable: true
-											}"
                                     >
                                         <core:Item
                                             key="{key}"
@@ -78,10 +74,6 @@
                                     <MultiComboBox
                                         name="SupplierName"
                                         selectionChange=".onSelectionChange"
-                                        items="{
-												path: '/ProductSuppliers',
-												templateShareable: true
-											}"
                                     >
                                         <core:Item
                                             key="{key}"

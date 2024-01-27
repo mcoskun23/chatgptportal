@@ -5,10 +5,13 @@
     xmlns:u="sap.ui.unified"
 >
     <WizardStep
+        id="step2"
         title="{i18n>SelectionScreen}"
         icon="sap-icon://activity-items"
+        complete="onPressStep3"
+        nextStep="step3"
     >
-        <Table items="{model>/Params}">
+        <Table items="{model>/Parameters}">
             <headerToolbar>
                 <OverflowToolbar>
                     <ToolbarSpacer />
@@ -37,15 +40,15 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input value="{model>Param}" />
-                        <Select selectedKey="{model>Type}">
+                        <Input class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner" value="{model>Fieldname}" />
+                        <Select selectedKey="{model>Fieldattribute}" >
                             <core:Item
                                 key="01"
-                                text="Opsiyonel"
+                                text="{i18n>Optional}"
                             />
                             <core:Item
-                                key="01"
-                                text="Zorunluluk"
+                                key="02"
+                                text="{i18n>Required}"
                             />
                         </Select>
                         <Button

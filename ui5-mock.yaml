@@ -15,7 +15,7 @@ server:
           url: https://ui5.sap.com
         backend:
           - path: /sap
-            url: https://bfes13052.solco.global.nttdata.com:44300
+            url: https://bfes13052.solco.global.nttdata.com:44300/
             client: "200"
     - name: fiori-tools-appreload
       afterMiddleware: compression

@@ -1,49 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZGPT_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <Schema Namespace="ZGPT_SRV" xml:lang="tr" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
-            <EntityType Name="ShProject" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Projectid"/>
-                </Key>
-                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Projecttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-            </EntityType>
-            <EntityType Name="ShDevelopment" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Developmentid"/>
-                </Key>
-                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Developmenttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-            </EntityType>
             <EntityType Name="Header" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Projectid"/>
                     <PropertyRef Name="Developmentid"/>
                     <PropertyRef Name="ProcessType"/>
                 </Key>
-                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Reportheader" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Devmodule" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Devtype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Devreason" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Devpurpose" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Devprocedure" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Authobj" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Proje Id" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SapVer" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Geliştirme Id" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EstTime" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="İşlem tipi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Reportheader" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Rapor Başlığı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devmodule" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Geliştirme Modülü" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devtype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Geliştirme Tipi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devreason" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Geliştirme sebebi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devpurpose" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Geliştirme Amacı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Devprocedure" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Geliştirme prosedürü" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Authobj" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Yetki nesnesi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Parameters" Relationship="ZGPT_SRV.HeaderToParameter" FromRole="FromRole_HeaderToParameter" ToRole="ToRole_HeaderToParameter"/>
                 <NavigationProperty Name="List" Relationship="ZGPT_SRV.HeaderToList" FromRole="FromRole_HeaderToList" ToRole="ToRole_HeaderToList"/>
+                <NavigationProperty Name="Return" Relationship="ZGPT_SRV.HeaderToReturn" FromRole="FromRole_HeaderToReturn" ToRole="ToRole_HeaderToReturn"/>
             </EntityType>
             <EntityType Name="Parameter" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Fieldname"/>
                     <PropertyRef Name="Fieldattribute"/>
                 </Key>
-                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Fieldattribute" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Alan adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fieldattribute" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Alan Özelliği" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -52,26 +40,108 @@
                 <Key>
                     <PropertyRef Name="Fieldname"/>
                 </Key>
-                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="RetrievalType" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Function" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fieldname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Alan adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RetrievalType" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Veri çekme türü" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Function" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Fonksiyon" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ShProject" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Projectid"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Proje Id" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projecttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:label="Proje Açıklaması" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ShDevelopment" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Developmentid"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Proje Id" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Geliştirme Id" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmenttxt" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:label="Geliştirme Açıklamas" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Return" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="İleti tipi" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="İleti sınıfı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Number" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="İleti numarası" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" MaxLength="220" sap:unicode="false" sap:label="İleti metni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LogNo" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Günlük no." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LogMsgNo" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="İleti numarası" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MessageV1" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="İleti değişkeni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MessageV2" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="İleti değişkeni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MessageV3" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="İleti değişkeni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MessageV4" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="İleti değişkeni" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Parameter" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Parametre adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Row" Type="Edm.Int32" Nullable="false" sap:unicode="false" sap:label="Parametre st." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Field" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Alan adı" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="System" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Mantıksal sistem" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Query" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IvDocno"/>
+                    <PropertyRef Name="Projectid"/>
+                    <PropertyRef Name="Developmentid"/>
+                    <PropertyRef Name="ProcessType"/>
+                    <PropertyRef Name="IvDoctype"/>
+                </Key>
+                <Property Name="IvDocno" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IvDoctype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EvQuery" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Documents" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Docno"/>
+                    <PropertyRef Name="Doctype"/>
+                    <PropertyRef Name="Docprocess"/>
+                </Key>
+                <Property Name="Projectid" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developmentid" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IvDoctype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Docno" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Doctype" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Docprocess" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Erdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Erzeit" Type="Edm.Time" Nullable="false" Precision="0" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <Association Name="HeaderToList" sap:content-version="1">
                 <End Type="ZGPT_SRV.Header" Multiplicity="1" Role="FromRole_HeaderToList"/>
                 <End Type="ZGPT_SRV.List" Multiplicity="*" Role="ToRole_HeaderToList"/>
                 <ReferentialConstraint>
                     <Principal Role="FromRole_HeaderToList">
+                        <PropertyRef Name="ProcessType"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="Projectid"/>
+                    </Principal>
+                    <Dependent Role="ToRole_HeaderToList">
+                        <PropertyRef Name="ProcessType"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="Projectid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="HeaderToReturn" sap:content-version="1">
+                <End Type="ZGPT_SRV.Header" Multiplicity="1" Role="FromRole_HeaderToReturn"/>
+                <End Type="ZGPT_SRV.Return" Multiplicity="*" Role="ToRole_HeaderToReturn"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_HeaderToReturn">
                         <PropertyRef Name="Projectid"/>
                         <PropertyRef Name="Developmentid"/>
                         <PropertyRef Name="ProcessType"/>
                     </Principal>
-                    <Dependent Role="ToRole_HeaderToList">
-                        <PropertyRef Name="Projectid"/>
-                        <PropertyRef Name="Developmentid"/>
-                        <PropertyRef Name="ProcessType"/>
+                    <Dependent Role="ToRole_HeaderToReturn">
+                        <PropertyRef Name="Id"/>
+                        <PropertyRef Name="Field"/>
+                        <PropertyRef Name="Type"/>
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
@@ -80,26 +150,33 @@
                 <End Type="ZGPT_SRV.Parameter" Multiplicity="*" Role="ToRole_HeaderToParameter"/>
                 <ReferentialConstraint>
                     <Principal Role="FromRole_HeaderToParameter">
-                        <PropertyRef Name="Projectid"/>
-                        <PropertyRef Name="Developmentid"/>
                         <PropertyRef Name="ProcessType"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="Projectid"/>
                     </Principal>
                     <Dependent Role="ToRole_HeaderToParameter">
-                        <PropertyRef Name="Projectid"/>
-                        <PropertyRef Name="Developmentid"/>
                         <PropertyRef Name="ProcessType"/>
+                        <PropertyRef Name="Developmentid"/>
+                        <PropertyRef Name="Projectid"/>
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
             <EntityContainer Name="ZGPT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="ShProjectSet" EntityType="ZGPT_SRV.ShProject" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="ShDevelopmentSet" EntityType="ZGPT_SRV.ShDevelopment" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="HeaderSet" EntityType="ZGPT_SRV.Header" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ParameterSet" EntityType="ZGPT_SRV.Parameter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ListSet" EntityType="ZGPT_SRV.List" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ShProjectSet" EntityType="ZGPT_SRV.ShProject" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ShDevelopmentSet" EntityType="ZGPT_SRV.ShDevelopment" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ReturnSet" EntityType="ZGPT_SRV.Return" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="QuerySet" EntityType="ZGPT_SRV.Query" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentsSet" EntityType="ZGPT_SRV.Documents" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <AssociationSet Name="HeaderToListSet" Association="ZGPT_SRV.HeaderToList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="HeaderSet" Role="FromRole_HeaderToList"/>
                     <End EntitySet="ListSet" Role="ToRole_HeaderToList"/>
+                </AssociationSet>
+                <AssociationSet Name="HeaderToReturnSet" Association="ZGPT_SRV.HeaderToReturn" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="HeaderSet" Role="FromRole_HeaderToReturn"/>
+                    <End EntitySet="ReturnSet" Role="ToRole_HeaderToReturn"/>
                 </AssociationSet>
                 <AssociationSet Name="HeaderToParameterSet" Association="ZGPT_SRV.HeaderToParameter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="HeaderSet" Role="FromRole_HeaderToParameter"/>

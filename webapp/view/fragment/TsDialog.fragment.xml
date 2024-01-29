@@ -2,27 +2,33 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
 >
-    <Dialog stretch="true">
+    <Dialog
+        stretch="true"
+        title="{i18n>TS}"
+        icon="sap-icon://vds-file"
+    >
         <content>
-            <VBox
-                fitContainer="true"
-                class="sapUiMediumMargin"
-            >
-                <Title text="{i18n>Report}" />
-                <TextArea
-                    rows="50"
-                    width="100%"
-                />
-            </VBox>
+            <core:Fragment
+                fragmentName="com.ntt.chatgptportal.view.fragment.DialogContent"
+                type="XML"
+            />
         </content>
-        <beginButton>
-            <Button text="{i18n>Save}" />
-        </beginButton>
-        <endButton>
+        <buttons>
+            <Button
+                text="{i18n>GenerateTS}"
+                press="onPressCreate('01')"
+                type="Emphasized"
+            />
+            <Button
+                text="{i18n>Save}"
+                type="Accept"
+                press="onPressUpdate('02')"
+            />
             <Button
                 text="{i18n>Close}"
                 press="onPressClose"
+                type="Reject"
             />
-        </endButton>
+        </buttons>
     </Dialog>
 </core:FragmentDefinition>

@@ -14,12 +14,38 @@ import Wizard from "sap/m/Wizard";
 import WizardStep from "sap/m/WizardStep";
 import Dialog from "sap/m/Dialog";
 import MessageBox from "sap/m/MessageBox";
+import DynamicPage from "sap/f/DynamicPage";
+import Table from "sap/m/Table";
+import { formatDate, formatTime } from "../model/formatter";
+import Button from "sap/m/Button";
+import TextArea from "sap/m/TextArea";
+import IllustratedMessage from "sap/m/IllustratedMessage";
+
 
 declare global {
     /**
      * Now declare things that go in the global namespace,
      * or augment existing declarations in the global namespace.
      */
+    type Header = {
+        Projectid: string,
+        Projecttxt: string,
+        Developmentid: string,
+        Developmenttxt: string,
+        ProcessType: string,
+        Reportheader: string,
+        Devmodule: string,
+        Devtype: string,
+        Devreason: string,
+        Devpurpose: string,
+        Devprocedure: string,
+        Authobj: string,
+        EstTime: boolean,
+        SapVer: string,
+        Parameters: Array<ParamItem>,
+        List: Array<ListItem>,
+        Return: []
+    }
 
     type ParamItem = {
         Fieldname: string;
@@ -37,12 +63,17 @@ declare global {
  * @namespace com.ntt.chatgptportal.controller
  */
 export default class Create extends BaseController {
+    public readonly formatter = {
+        formatDate, formatTime
+    };
 
     _projectDialog: Promise<SelectDialog>;
     _developmentDialog: Promise<SelectDialog>;
     _tsDialog: Promise<Dialog>;
     _abapDialog: Promise<Dialog>;
     _feedbackDialog: Promise<Dialog>;
+    _documentDialog: Promise<Dialog>;
+    _successDialog: Dialog
 
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
@@ -126,7 +157,7 @@ export default class Create extends BaseController {
             devId = model.getProperty("/Developmentid"),
             proType = model.getProperty("/ProcessType");
 
-        if (projId !== "" && devId !== ""){
+        if (projId !== "" && devId !== "") {
             this._readHeader(projId, devId, proType);
             this._clearModel();
         }
@@ -147,9 +178,39 @@ export default class Create extends BaseController {
         }
 
         this._tsDialog.then((dialog) => {
+            this.getView()?.addDependent(dialog as Dialog);
+            this._readDocuments("01");
             dialog.open();
         });
 
+    }
+
+    private onPressDoc(event: Event) {
+        const _q = (event.getSource() as Button).getBindingContext()?.getObject();
+
+        // @ts-ignore
+        this._readQuery(_q.Doctype, _q.Docno)
+    }
+
+    private onPressCreate(type: string) {
+
+        if (type === "02")
+            this.createDocumentDialog();
+        else
+            this._createQuery(type);
+    }
+
+    private onPressUpdate(type: string) {
+        MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
+            actions: [this.getResourceBundle().getText("Save") as string,
+            this.getResourceBundle().getText("Close") as string],
+            onClose: (action: string) => {
+                if (this.getResourceBundle().getText("Save") as string === action) {
+                    const query = (sap.ui.getCore().byId("report") as TextArea).getValue();
+                    this._updateQuery(type, query);
+                }
+            }
+        });
     }
 
     private onPressAbap() {
@@ -165,7 +226,15 @@ export default class Create extends BaseController {
 
         this._abapDialog.then((dialog) => {
             dialog.open();
+            this._readDocuments("02");
         });
+    }
+
+    private onConfirmCreAbap(event: Event) {
+        const docno = event.getParameter("selectedItem").getTitle();
+
+        this._createQuery("02", docno);
+
     }
 
     private onPressFeedback() {
@@ -190,7 +259,14 @@ export default class Create extends BaseController {
     }
 
     private onPressClose(event: Event) {
-        ((event.getSource() as ManagedObject).getParent() as Dialog).close();
+        const dialog = ((event.getSource() as ManagedObject).getParent() as Dialog);
+        dialog.close();
+        dialog.destroy();
+
+        // @ts-ignore
+        this._tsDialog = undefined; // @ts-ignore
+        this._abapDialog = undefined;
+
     }
 
     private onSave() {
@@ -199,7 +275,8 @@ export default class Create extends BaseController {
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    console.log(action);
+                    const data = this.getModel<JSONModel>("model").getData() as Header;
+                    this._saveHeader(data);
                 }
             }
         });
@@ -288,6 +365,48 @@ export default class Create extends BaseController {
 
         (this.byId("wizard") as Wizard).setCurrentStep(this.byId("step1") as WizardStep);
         (this.byId("step1") as WizardStep).setValidated(false);
+        (this.byId("createPage") as DynamicPage).setShowFooter(false);
+        (this.byId("btnSave") as Button).setVisible(false);
+    }
+
+    private createSuccessDialog() {
+
+        if (!this._successDialog) {
+            this._successDialog = new Dialog({
+                type: "Message",
+                title: this.getResourceBundle().getText("Success"),
+                content: [
+                    new IllustratedMessage({ illustrationType: "sapIllus-SuccessHighFive" }),
+                ],
+                buttons: [
+                    new Button({
+                        text: this.getResourceBundle().getText("Close"),
+                        press: (event: Event) => {
+                            ((event.getSource() as ManagedObject).getParent() as Dialog).close()
+                        }
+                    })
+                ]
+            });
+        }
+
+        this._successDialog.open();
+    }
+
+    private createDocumentDialog() {
+        if (!this._documentDialog) {
+            this._documentDialog = Fragment.load({
+                name: "com.ntt.chatgptportal.view.fragment.DocumentDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
+
+        this._documentDialog.then((dialog) => {
+            this._readDocuments("01", dialog);
+            dialog.open();
+        });
     }
 
     private _readDevelopment(dialog: SelectDialog, projId: string) {
@@ -338,6 +457,8 @@ export default class Create extends BaseController {
                 model.setProperty("/Authobj", response.Authobj);
 
                 (this.byId("step1") as WizardStep).setValidated(true);
+                (this.byId("createPage") as DynamicPage).setShowFooter(true);
+
                 BusyIndicator.hide();
             }
         });
@@ -374,6 +495,116 @@ export default class Create extends BaseController {
                 const model = this.getModel<JSONModel>("model");
 
                 model.setProperty("/List", response.results);
+                (this.byId("btnSave") as Button).setVisible(true);
+                BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _readDocuments(type: string, dialog?: Dialog) {
+        const data = this.getModel<JSONModel>("model").getData(),
+            filters: Array<Filter> = [new Filter("Projectid", FilterOperator.EQ, data.Projectid),
+            new Filter("Developmentid", FilterOperator.EQ, data.Developmentid),
+            new Filter("ProcessType", FilterOperator.EQ, data.ProcessType),
+            new Filter("Doctype", FilterOperator.EQ, type)
+            ];
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().read("/DocumentsSet", {
+            filters: filters,
+            success: (response: any) => {
+                const table = (dialog) ? dialog : sap.ui.getCore().byId("docTable") as Table,
+                    // @ts-ignore
+                    template = table.getBindingInfo("items").template;    // @ts-ignore
+                table.unbindAggregation("items");
+
+                table?.setModel(new JSONModel(response.results));
+                table?.bindAggregation("items", {
+                    path: "/",
+                    template: template,
+                    templateShareable: true
+                });
+
+                BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _readQuery(type: string, docNo: string) {
+        const model = this.getModel<JSONModel>("model"),
+            path = this.getModel<ODataModel>().createKey("QuerySet", {
+                Projectid: model.getProperty("/Projectid"),
+                Developmentid: model.getProperty("/Developmentid"),
+                ProcessType: model.getProperty("/ProcessType"),
+                IvDoctype: type,
+                IvDocno: docNo
+            });
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().read(`/${path}`, {
+            success: (response: any) => {
+                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _createQuery(type: string, docNo?: string) {
+        const model = this.getModel<JSONModel>("model"),
+            _q = {
+                Projectid: model.getProperty("/Projectid"),
+                Developmentid: model.getProperty("/Developmentid"),
+                ProcessType: model.getProperty("/ProcessType"),
+                IvDoctype: type,
+                IvDocno: docNo
+            };
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().create(`/QuerySet`, _q, {
+            success: (response: any) => {
+                this._readDocuments(type);
+                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _updateQuery(type: string, query: string) {
+        const model = this.getModel<JSONModel>("model"),
+            _q = {
+                Projectid: model.getProperty("/Projectid"),
+                Developmentid: model.getProperty("/Developmentid"),
+                ProcessType: model.getProperty("/ProcessType"),
+                IvDoctype: type,
+                IvDocno: ""
+            },
+            path = this.getModel<ODataModel>().createKey("QuerySet", _q);
+
+        // @ts-ignore
+        _q.EvQuery = query;
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().update(`/${path}`, _q, {
+            success: (response: any) => {
+                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _saveHeader(data: Header) {
+
+        // @ts-ignore
+        delete data.Developmenttxt;
+        // @ts-ignore
+        delete data.Projecttxt;
+
+        data.Return = [];
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().create("/HeaderSet", data, {
+            success: (oData: any) => {
+                this.createSuccessDialog();
                 BusyIndicator.hide();
             }
         });

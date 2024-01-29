@@ -10,7 +10,7 @@
         title="{i18n>Development}"
         icon="sap-icon://hint"
         complete="onPressStep2"
-        validated="false"   
+        validated="false"
     >
         <form:SimpleForm
             editable="true"
@@ -52,6 +52,21 @@
                 <TextArea
                     growing="true"
                     value="{model>/Devprocedure}"
+                />
+                <Label text="{i18n>SapVer}" />
+                <Select selectedKey="{model>/SapVer}">
+                    <core:Item
+                        key="01"
+                        text="{i18n>Ecc}"
+                    />
+                    <core:Item
+                        key="02"
+                        text="{i18n>Hana}"
+                    />
+                </Select>
+                <Label text="{i18n>EstTime}" />
+                <CheckBox
+                    selected="{model>/EstTime}"
                 />
             </form:content>
         </form:SimpleForm>

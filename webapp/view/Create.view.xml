@@ -7,7 +7,8 @@
     xmlns:f="sap.f"
 >
     <f:DynamicPage
-        showFooter="true"
+        id="createPage"
+        showFooter="false"
         fitContent="true"
     >
         <f:header>
@@ -30,9 +31,11 @@
             <OverflowToolbar>
                 <ToolbarSpacer />
                 <Button
+                    id="btnSave"
                     text="{i18n>Save}"
                     type="Accept"
                     icon="sap-icon://save"
+                    visible="false"
                     press="onSave"
                 />
                 <Button

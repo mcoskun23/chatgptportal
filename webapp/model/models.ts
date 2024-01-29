@@ -19,6 +19,8 @@ export function createModel() {
         Devpurpose: "",
         Devprocedure: "",
         Authobj: "",
+        EstTime: false,
+        SapVer: "01",
         Parameters: [],
         List: []
     }

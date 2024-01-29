@@ -1,0 +1,56 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <!-- <Dialog
+        title="{i18n>Documents}"
+    >
+        <content>
+            <VBox
+                fitContainer="true"
+                class="sapUiMediumMargin"
+            >
+                <Text text="{i18n>SelectDocument}" />
+                <Label text="{i18n>Documents}" />
+                <Select
+                    id="selectDoc"
+                    items="{ path:''}"
+                >
+                    <core:Item
+                        key="{Docno}"
+                        text="{Docno}"
+                    />
+                </Select>
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                text="{i18n>Save}"
+                type="Accept"
+                press="onPressUpdate('02')"
+            />
+            <Button
+                text="{i18n>Close}"
+                press="onPressClose"
+                type="Reject"
+            />
+        </buttons>
+    </Dialog> -->
+
+    <SelectDialog
+        contentWidth="50%"
+        contentHeight="auto"
+        title="{i18n>SelectDocument}"
+        confirm=".onConfirmCreAbap"
+        items="{path: ''}"
+    >
+        <StandardListItem
+            title="{Docno}"
+            description="{Ernam}"
+            iconDensityAware="false"
+            icon="sap-icon://excel-attachment"
+            iconInset="false"
+            type="Active"
+        />
+    </SelectDialog>
+</core:FragmentDefinition>

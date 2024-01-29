@@ -48,7 +48,7 @@
                             />
                             <core:Item
                                 key="02"
-                                text="{i18n>Required}"
+                                text="{i18n>Mandatory}"
                             />
                         </Select>
                         <Button

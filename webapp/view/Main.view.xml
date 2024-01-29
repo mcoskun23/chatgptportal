@@ -148,8 +148,7 @@
 
                 <GenericTile
                     class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                    header="FS To Development"
-                    subheader="Subtitle"
+                    header="FS-TS-ABAP"
                     press="onPressCreate"
                 >
                     <TileContent>

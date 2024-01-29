@@ -45,7 +45,10 @@
                 <ColumnListItem vAlign="Middle">
                     <cells>
                         <Input value="{model>Fieldname}" />
-                        <Select selectedKey="{model>RetrievalType}" change="onChangeRType">
+                        <Select
+                            selectedKey="{model>RetrievalType}"
+                            change="onChangeRType"
+                        >
                             <core:Item
                                 key="01"
                                 text="{i18n>Query}"
@@ -54,9 +57,13 @@
                                 key="02"
                                 text="{i18n>Function}"
                             />
+                            <core:Item
+                                key="03"
+                                text="{i18n>Formule}"
+                            />
                         </Select>
                         <Input
-                            editable="{= ${model>RetrievalType} === '01' ? false : true}"
+                            editable="{= ${model>RetrievalType} === '03' ? true : false}"
                             value="{model>Function}"
                         />
                         <Button

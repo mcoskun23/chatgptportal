@@ -346,7 +346,7 @@ export default class Create extends BaseController {
     private onChangeRType(event: Event) {
         let _q = (event.getSource() as ManagedObject).getBindingContext("model")?.getObject() as ListItem;
 
-        if (_q.RetrievalType === "01")
+        if (_q.RetrievalType !== "03")
             _q.Function = "";
     }
 

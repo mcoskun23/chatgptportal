@@ -1,0 +1,19 @@
+<mvc:View
+    controllerName="com.ntt.chatgptportal.controller.AbapToFs"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+>
+    <f:DynamicPage fitContent="true">
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <Title text="{i18n>AbapToFs}" />
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content />
+    </f:DynamicPage>
+</mvc:View>

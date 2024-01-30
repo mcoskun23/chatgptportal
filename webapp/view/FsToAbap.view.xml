@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="com.ntt.chatgptportal.controller.Create"
+    controllerName="com.ntt.chatgptportal.controller.FsToAbap"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
@@ -7,13 +7,14 @@
     xmlns:f="sap.f"
 >
     <f:DynamicPage
-        id="createPage"
+        id="fsToAbapPage"
         showFooter="false"
         fitContent="true"
     >
         <f:header>
             <f:DynamicPageHeader>
                 <f:content>
+                    <Title text="{i18n>FsToAbap}" />
                     <core:Fragment
                         fragmentName="com.ntt.chatgptportal.view.fragment.FilterBar"
                         type="XML"

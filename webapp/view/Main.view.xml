@@ -85,71 +85,24 @@
         </f:header>
         <f:content>
             <HBox>
-                <f:Card width="300px">
-                    <f:header>
-                        <card:Header
-                            title="Buy bus ticket on-line"
-                            subtitle="Buy a single-ride ticket for a date"
-                            iconSrc="sap-icon://bus-public-transport"
-                        />
-                    </f:header>
-                    <f:content>
-                        <VBox
-                            height="110px"
-                            class="sapUiSmallMargin"
-                            justifyContent="SpaceBetween"
-                        >
-                            <HBox justifyContent="SpaceBetween">
-                                <ComboBox
-                                    width="120px"
-                                    placeholder="From City"
-                                    items="{
-							path: 'cities>/cities',
-							sorter: { path: 'text' }
-						}"
-                                >
-                                    <core:Item
-                                        key="{cities>key}"
-                                        text="{cities>text}"
-                                    />
-                                </ComboBox>
-                                <ComboBox
-                                    width="120px"
-                                    placeholder="To City"
-                                    items="{
-							path: 'cities>/cities',
-							sorter: { path: 'text' }
-						}"
-                                >
-                                    <core:Item
-                                        key="{cities>key}"
-                                        text="{cities>text}"
-                                    />
-                                </ComboBox>
-                            </HBox>
-                            <HBox
-                                renderType="Bare"
-                                justifyContent="SpaceBetween"
-                            >
-                                <DatePicker
-                                    width="200px"
-                                    placeholder="Choose Date ..."
-                                />
-                                <Button
-                                    text="Book"
-                                    press=".onBookPress"
-                                    type="Emphasized"
-                                    class="sapUiTinyMarginBegin"
-                                />
-                            </HBox>
-                        </VBox>
-                    </f:content>
-                </f:Card>
+       
 
                 <GenericTile
                     class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                    header="FS-TS-ABAP"
-                    press="onPressCreate"
+                    header="{i18n>FsToAbap}"
+                    press="onPressFsToAbap"
+                >
+                    <TileContent>
+                        <ImageContent
+                            src="https://avatars.githubusercontent.com/u/4390751?s=200v=4"
+                        />
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile
+                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                      header="{i18n>AbapToFs}"
+                    press="onPressAbapToFs"
                 >
                     <TileContent>
                         <ImageContent

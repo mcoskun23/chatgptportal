@@ -74,17 +74,16 @@ export default class Create extends BaseController {
     _feedbackDialog: Promise<Dialog>;
     _documentDialog: Promise<Dialog>;
     _successDialog: Dialog
+    _docNo:string;
 
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
-        this.getRouter()?.getRoute("create")?.attachPatternMatched(this._onMatched, this);
+        this.getRouter()?.getRoute("fstoabap")?.attachPatternMatched(this._onMatched, this);
     }
 
     private _onMatched() {
         this.setModel(createModel(), "model");
-
-        (this.byId("wizard") as Wizard).setCurrentStep(this.byId("step1") as WizardStep);
-
+        this._clearModel();
     }
 
     private onPressProject() {
@@ -365,7 +364,7 @@ export default class Create extends BaseController {
 
         (this.byId("wizard") as Wizard).setCurrentStep(this.byId("step1") as WizardStep);
         (this.byId("step1") as WizardStep).setValidated(false);
-        (this.byId("createPage") as DynamicPage).setShowFooter(false);
+        (this.byId("fsToAbapPage") as DynamicPage).setShowFooter(false);
         (this.byId("btnSave") as Button).setVisible(false);
     }
 
@@ -445,9 +444,10 @@ export default class Create extends BaseController {
 
         BusyIndicator.show();
         this.getModel<ODataModel>().read(`/${path}`, {
-            success: (response: any) => {
+            success: (response: Header) => {
                 const model = this.getModel<JSONModel>("model");
 
+                model.setProperty("/ProcessType", (response.Devreason !== "") ? "U" : "C");
                 model.setProperty("/Reportheader", response.Reportheader);
                 model.setProperty("/Devmodule", response.Devmodule);
                 model.setProperty("/Devtype", response.Devtype);
@@ -457,7 +457,7 @@ export default class Create extends BaseController {
                 model.setProperty("/Authobj", response.Authobj);
 
                 (this.byId("step1") as WizardStep).setValidated(true);
-                (this.byId("createPage") as DynamicPage).setShowFooter(true);
+                (this.byId("fsToAbapPage") as DynamicPage).setShowFooter(true);
 
                 BusyIndicator.hide();
             }
@@ -543,6 +543,7 @@ export default class Create extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
+                this._docNo = docNo;
                 (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
                 BusyIndicator.hide();
             }
@@ -576,7 +577,7 @@ export default class Create extends BaseController {
                 Developmentid: model.getProperty("/Developmentid"),
                 ProcessType: model.getProperty("/ProcessType"),
                 IvDoctype: type,
-                IvDocno: ""
+                IvDocno: this._docNo
             },
             path = this.getModel<ODataModel>().createKey("QuerySet", _q);
 
@@ -586,7 +587,9 @@ export default class Create extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().update(`/${path}`, _q, {
             success: (response: any) => {
-                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                // (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                this._readDocuments(type);
+                this.createSuccessDialog();
                 BusyIndicator.hide();
             }
         });

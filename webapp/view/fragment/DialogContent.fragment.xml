@@ -55,8 +55,8 @@
         <Title text="{i18n>Report}" />
         <TextArea
             id="report"
-            rows="50"
             width="100%"
+            growing="true"
         />
     </VBox>
 </core:FragmentDefinition>

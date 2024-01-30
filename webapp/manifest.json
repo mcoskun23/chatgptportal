@@ -99,9 +99,14 @@
           "target": ["TargetMain"]
         },
         {
-          "name": "create",
-          "pattern": "create",
-          "target": ["Create"]
+          "name": "fstoabap",
+          "pattern": "fstoabap",
+          "target": ["FsToAbap"]
+        },
+        {
+          "name": "abaptofs",
+          "pattern": "abaptofs",
+          "target": ["AbapToFs"]
         }
       ],
       "targets": {
@@ -112,12 +117,19 @@
           "viewId": "Main",
           "viewName": "Main"
         },
-        "Create": {
+        "FsToAbap": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
-          "viewId": "Create",
-          "viewName": "Create"
+          "viewId": "FsToAbap",
+          "viewName": "FsToAbap"
+        },
+        "AbapToFs": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "AbapToFs",
+          "viewName": "AbapToFs"
         }
       }
     },

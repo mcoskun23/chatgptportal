@@ -10,7 +10,11 @@ export default class Main extends BaseController {
 
     }
 
-    private onPressCreate() {
-        this.getRouter().navTo("create");
+    private onPressFsToAbap() {
+        this.getRouter().navTo("fstoabap");
+    }
+
+    private onPressAbapToFs() {
+        this.getRouter().navTo("abaptofs");
     }
 }

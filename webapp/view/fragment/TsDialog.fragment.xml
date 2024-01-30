@@ -22,7 +22,7 @@
             <Button
                 text="{i18n>Save}"
                 type="Accept"
-                press="onPressUpdate('02')"
+                press="onPressUpdate('01')"
             />
             <Button
                 text="{i18n>Close}"

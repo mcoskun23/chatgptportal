@@ -9,7 +9,7 @@
         title="{i18n>List}"
         icon="sap-icon://multi-select"
     >
-        <Table items="{model>/List}">
+        <Table items="{fsModel>/List}">
             <headerToolbar>
                 <OverflowToolbar>
                     <ToolbarSpacer />
@@ -44,9 +44,9 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input value="{model>Fieldname}" />
+                        <Input value="{fsModel>Fieldname}" />
                         <Select
-                            selectedKey="{model>RetrievalType}"
+                            selectedKey="{fsModel>RetrievalType}"
                             change="onChangeRType"
                         >
                             <core:Item
@@ -63,8 +63,8 @@
                             />
                         </Select>
                         <Input
-                            editable="{= ${model>RetrievalType} === '03' ? true : false}"
-                            value="{model>Function}"
+                            editable="{= ${fsModel>RetrievalType} === '03' ? true : false}"
+                            value="{fsModel>Function}"
                         />
                         <Button
                             icon="sap-icon://delete"

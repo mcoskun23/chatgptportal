@@ -28,6 +28,12 @@
             >
                 <Text text="{i18n>Date}" />
             </Column>
+            <Column
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>Download}" />
+            </Column>
             <Column hAlign="End" />
         </columns>
         <items>
@@ -38,6 +44,10 @@
                     <ObjectIdentifier
                         title="{ path: 'Erdat', formatter: '.formatter.formatDate'}"
                         text="{ path: 'Erzeit', formatter: '.formatter.formatTime'}"
+                    />
+                    <Link
+                        text="{i18n>Download}"
+                        press="onPressDownload"
                     />
                     <Button
                         icon="sap-icon://display"

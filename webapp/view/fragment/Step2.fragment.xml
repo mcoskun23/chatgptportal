@@ -11,7 +11,7 @@
         complete="onPressStep3"
         nextStep="step3"
     >
-        <Table items="{model>/Parameters}">
+        <Table items="{fsModel>/Parameters}">
             <headerToolbar>
                 <OverflowToolbar>
                     <ToolbarSpacer />
@@ -40,8 +40,8 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner" value="{model>Fieldname}" />
-                        <Select selectedKey="{model>Fieldattribute}" >
+                        <Input class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner" value="{fsModel>Fieldname}" />
+                        <Select selectedKey="{fsModel>Fieldattribute}" >
                             <core:Item
                                 key="01"
                                 text="{i18n>Optional}"

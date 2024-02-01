@@ -33,28 +33,28 @@
                 <Label text="{i18n>Devreason}" />
                 <TextArea
                     growing="true"
-                    value="{model>/Devreason}"
+                    value="{fsModel>/Devreason}"
                 />
                 <Label text="{i18n>Reportheader}" />
-                <Input value="{model>/Reportheader}" />
+                <Input value="{fsModel>/Reportheader}" />
                 <Label text="{i18n>Devtype}" />
-                <Input value="{model>/Devtype}" />
+                <Input value="{fsModel>/Devtype}" />
                 <Label text="{i18n>Devmodule}" />
-                <Input value="{model>/Devmodule}" />
+                <Input value="{fsModel>/Devmodule}" />
                 <Label text="{i18n>Devpurpose}" />
                 <TextArea
                     growing="true"
-                    value="{model>/Devpurpose}"
+                    value="{fsModel>/Devpurpose}"
                 />
                 <Label text="{i18n>Authobj}" />
-                <TextArea value="{model>/Authobj}" />
+                <TextArea value="{fsModel>/Authobj}" />
                 <Label text="{i18n>Devprocedure}" />
                 <TextArea
                     growing="true"
-                    value="{model>/Devprocedure}"
+                    value="{fsModel>/Devprocedure}"
                 />
                 <Label text="{i18n>SapVer}" />
-                <Select selectedKey="{model>/SapVer}">
+                <Select selectedKey="{fsModel>/SapVer}">
                     <core:Item
                         key="01"
                         text="{i18n>Ecc}"
@@ -66,7 +66,7 @@
                 </Select>
                 <Label text="{i18n>EstTime}" />
                 <CheckBox
-                    selected="{model>/EstTime}"
+                    selected="{fsModel>/EstTime}"
                 />
             </form:content>
         </form:SimpleForm>

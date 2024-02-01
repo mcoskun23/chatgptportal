@@ -22,7 +22,7 @@
                 <fb:control>
                     <Input
                         required="true"
-                        value="{model>/Projecttxt}"
+                        value="{fsModel>/Projecttxt}"
                         showValueHelp="true"
                         valueHelpOnly="true"
                         valueHelpRequest="onPressProject"
@@ -38,7 +38,7 @@
                 <fb:control>
                     <Input
                         required="true"
-                        value="{model>/Developmenttxt}"
+                        value="{fsModel>/Developmenttxt}"
                         showValueHelp="true"
                         valueHelpOnly="true"
                         valueHelpRequest="onPressDevelopment"

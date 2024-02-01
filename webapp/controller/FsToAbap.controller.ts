@@ -77,7 +77,7 @@ export default class Create extends BaseController {
     }
 
     private _onMatched() {
-        this.setModel(createModel(), "model");
+        this.setModel(createModel(), "fsModel");
         this._clearModel();
     }
 
@@ -100,7 +100,7 @@ export default class Create extends BaseController {
     }
 
     private onProjectConfirm(event: Event) {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             _q = event.getParameter("selectedItem").getBindingContext().getObject();
 
         model.setProperty("/Projectid", _q.Projectid);
@@ -112,7 +112,7 @@ export default class Create extends BaseController {
     }
 
     private onPressDevelopment() {
-        const projId: string = this.getModel<JSONModel>("model").getProperty("/Projectid");
+        const projId: string = this.getModel<JSONModel>("fsModel").getProperty("/Projectid");
 
         if (projId === "") {
             MessageToast.show(this.getResourceBundle().getText("ProjidMsg") as string);
@@ -136,7 +136,7 @@ export default class Create extends BaseController {
     }
 
     private onDevelopmentConfirm(event: Event) {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             _q = event.getParameter("selectedItem").getBindingContext().getObject();
 
         model.setProperty("/Developmentid", _q.Developmentid);
@@ -146,7 +146,7 @@ export default class Create extends BaseController {
     }
 
     private onSearch() {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             projId = model.getProperty("/Projectid"),
             devId = model.getProperty("/Developmentid"),
             proType = model.getProperty("/ProcessType");
@@ -211,7 +211,6 @@ export default class Create extends BaseController {
         const docno = event.getParameter("selectedItem").getTitle();
 
         this._createQuery(false, docno);
-
     }
 
     private onPressFeedback() {
@@ -241,7 +240,7 @@ export default class Create extends BaseController {
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const data = this.getModel<JSONModel>("model").getData() as Header;
+                    const data = this.getModel<JSONModel>("fsModel").getData() as Header;
                     this._saveHeader(data);
                 }
             }
@@ -258,7 +257,7 @@ export default class Create extends BaseController {
     }
 
     private onPressAddParam() {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             parameters = model.getProperty("/Parameters"),
             _q: ParamItem = {
                 Fieldname: "",
@@ -271,8 +270,8 @@ export default class Create extends BaseController {
     }
 
     private onPressDeleteParam(event: Event) {
-        const _q = (event.getSource() as ManagedObject).getBindingContext("model")?.getObject() as ParamItem,
-            model = this.getModel<JSONModel>("model"),
+        const _q = (event.getSource() as ManagedObject).getBindingContext("fsModel")?.getObject() as ParamItem,
+            model = this.getModel<JSONModel>("fsModel"),
             parameters = model.getProperty("/Parameters"),
             filteredParams = parameters.filter((x: ParamItem) => (x.Fieldname !== _q.Fieldname ||
                 x.Fieldattribute !== _q.Fieldattribute));
@@ -285,7 +284,7 @@ export default class Create extends BaseController {
     }
 
     private onPressAddList() {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             list = model.getProperty("/List"),
             _q: ListItem = {
                 Fieldname: "",
@@ -299,8 +298,8 @@ export default class Create extends BaseController {
     }
 
     private onPressDeleteList(event: Event) {
-        const _q = (event.getSource() as ManagedObject).getBindingContext("model")?.getObject() as ListItem,
-            model = this.getModel<JSONModel>("model"),
+        const _q = (event.getSource() as ManagedObject).getBindingContext("fsModel")?.getObject() as ListItem,
+            model = this.getModel<JSONModel>("fsModel"),
             list = model.getProperty("/List"),
             filteredList = list.filter((x: ListItem) => (x.Fieldname !== _q.Fieldname ||
                 x.RetrievalType !== _q.RetrievalType || x.Function !== _q.Function));
@@ -310,14 +309,14 @@ export default class Create extends BaseController {
 
 
     private onChangeRType(event: Event) {
-        let _q = (event.getSource() as ManagedObject).getBindingContext("model")?.getObject() as ListItem;
+        let _q = (event.getSource() as ManagedObject).getBindingContext("fsModel")?.getObject() as ListItem;
 
         if (_q.RetrievalType !== "03")
             _q.Function = "";
     }
 
     private _clearModel() {
-        const model = this.getModel<JSONModel>("model");
+        const model = this.getModel<JSONModel>("fsModel");
         model.setProperty("/Reportheader", "");
         model.setProperty("/Devmodule", "");
         model.setProperty("/Devtype", "");
@@ -389,7 +388,7 @@ export default class Create extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: Header) => {
-                const model = this.getModel<JSONModel>("model");
+                const model = this.getModel<JSONModel>("fsModel");
 
                 model.setProperty("/ProcessType", (response.Devreason !== "") ? ProcessTypeEnum.Update : ProcessTypeEnum.Create);
                 model.setProperty("/Reportheader", response.Reportheader);
@@ -409,7 +408,7 @@ export default class Create extends BaseController {
     }
 
     private _readParameter() {
-        const data = this.getModel<JSONModel>("model").getData(),
+        const data = this.getModel<JSONModel>("fsModel").getData(),
             filters: Array<Filter> = [new Filter("Projectid", FilterOperator.EQ, data.Projectid),
             new Filter("Developmentid", FilterOperator.EQ, data.Developmentid),
             new Filter("ProcessType", FilterOperator.EQ, data.ProcessType)];
@@ -418,7 +417,7 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().read("/ParameterSet", {
             filters: filters,
             success: (response: any) => {
-                const model = this.getModel<JSONModel>("model");
+                const model = this.getModel<JSONModel>("fsModel");
 
                 model.setProperty("/Parameters", response.results);
                 BusyIndicator.hide();
@@ -427,7 +426,7 @@ export default class Create extends BaseController {
     }
 
     private _readList() {
-        const data = this.getModel<JSONModel>("model").getData(),
+        const data = this.getModel<JSONModel>("fsModel").getData(),
             filters: Array<Filter> = [new Filter("Projectid", FilterOperator.EQ, data.Projectid),
             new Filter("Developmentid", FilterOperator.EQ, data.Developmentid),
             new Filter("ProcessType", FilterOperator.EQ, data.ProcessType)];
@@ -436,7 +435,7 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().read("/ListSet", {
             filters: filters,
             success: (response: any) => {
-                const model = this.getModel<JSONModel>("model");
+                const model = this.getModel<JSONModel>("fsModel");
 
                 model.setProperty("/List", response.results);
                 (this.byId("btnSave") as Button).setVisible(true);
@@ -446,9 +445,9 @@ export default class Create extends BaseController {
     }
 
     private _readQuery(fsToTs: boolean, docNo: string) {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
-            path = this.getModel<ODataModel>().createKey("QuerySet", {
+            path = this.getModel<ODataModel>().createKey("FsQuerySet", {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
                 ProcessType: model.getProperty("/ProcessType"),
@@ -467,7 +466,7 @@ export default class Create extends BaseController {
     }
 
     private _createQuery(fsToTs: boolean, docNo?: string) {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),
@@ -478,7 +477,7 @@ export default class Create extends BaseController {
             };
 
         BusyIndicator.show();
-        this.getModel<ODataModel>().create(`/QuerySet`, _q, {
+        this.getModel<ODataModel>().create(`/FsQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
                 (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
@@ -488,7 +487,7 @@ export default class Create extends BaseController {
     }
 
     private _updateQuery(fsToTs: boolean, query: string) {
-        const model = this.getModel<JSONModel>("model"),
+        const model = this.getModel<JSONModel>("fsModel"),
             type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),

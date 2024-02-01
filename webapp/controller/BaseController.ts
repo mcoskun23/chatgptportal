@@ -106,6 +106,18 @@ export default abstract class BaseController extends Controller {
         }
     }
 
+    private onPressDownload(event: Event) {
+        const _q: any = (event.getSource() as ManagedObject).getBindingContext()?.getObject(),
+            path: string = this.getModel<ODataModel>().createKey("FileSet", {
+                Docno: _q.Docno,
+                Doctype:_q.Doctype
+
+            }) + "/$value",
+            service: string = this.getOwnerComponent().getManifestObject().getEntry("/sap.app").dataSources.mainService.uri;
+
+        window.open(service + path)
+    }
+
     public onPressClose(event: Event) {
         const dialog = ((event.getSource() as ManagedObject).getParent() as Dialog);
         dialog.close();
@@ -164,7 +176,7 @@ export default abstract class BaseController extends Controller {
     }
 
     public _readDocuments(type: string, dialog?: Dialog, packageName?: string, programName?: string) {
-        const data = this.getModel<JSONModel>("model")?.getData();
+        const data = this.getModel<JSONModel>("fsModel")?.getData();
 
         let filters: Array<Filter> = [new Filter("Doctype", FilterOperator.EQ, type)];
 
@@ -174,6 +186,12 @@ export default abstract class BaseController extends Controller {
                 new Filter("ProcessType", FilterOperator.EQ, data.ProcessType)
             );
         }
+
+        if (packageName)
+            filters.push(new Filter("Devpackage", FilterOperator.EQ, packageName));
+
+        if (programName)
+            filters.push(new Filter("Devprogram", FilterOperator.EQ, programName));
 
         BusyIndicator.show();
         this.getModel<ODataModel>().read("/DocumentsSet", {

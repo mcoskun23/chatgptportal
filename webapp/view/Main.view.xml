@@ -87,7 +87,7 @@
         </f:header>
         <f:content>
             <l:BlockLayout id="blockLayout">
-                <l:BlockLayoutRow>
+                <l:BlockLayoutRow class="sapUiLargeMarginBegin">
                     <l:BlockLayoutCell class="customCellImageBackground" />
 
                     <l:BlockLayoutCell title="Apps">
@@ -196,7 +196,7 @@
                                             type="Measure"
                                             values="Revenue"
                                         />
-                                         <viz.feeds:FeedItem
+                                        <viz.feeds:FeedItem
                                             uid="valueAxis"
                                             type="Measure"
                                             values="Cost"
@@ -262,6 +262,57 @@
                                 </viz:VizFrame>
                             </f:content>
                         </f:Card>
+                    </l:BlockLayoutCell>
+                    <l:BlockLayoutCell>
+                        <VBox>
+                            <SlideTile>
+                                <tiles>
+                                    <GenericTile
+                                        backgroundImage="https://nttdata-solutions.com/wp-content/usermedia/ere.png"
+                                        frameType="TwoByOne"
+                                        press="window.open('https://nttdata-solutions.com/tr/press-centre/local-press-releases/podcast-pods-of-business/')"
+                                    >
+                                        <TileContent footer="11/01/2024">
+                                            <NewsContent
+                                                contentText="🎙️Pods of Business Podcast Serimiz Yayında!"
+                                            />
+                                        </TileContent>
+                                    </GenericTile>
+                                    <GenericTile
+                                        backgroundImage="https://nttdata-solutions.com/wp-content/usermedia/Bahri-Danis-Altin-Lider-Odulu.jpg"
+                                        frameType="TwoByOne"
+                                        press="window.open('https://nttdata-solutions.com/tr/press-centre/local-press-releases/ceomuz-dr-bahri-danis-bu-sene-de-turkiyenin-en-begenilen-50-ceosundan-biri-oldu/')"
+                                    >
+                                        <TileContent footer="27/12/2023">
+                                            <NewsContent
+                                                contentText="CEO’muz Dr. Bahri Danış, Bu Sene de Türkiye’nin En Beğenilen 50 CEO’sundan Biri Oldu!"
+                                            />
+                                        </TileContent>
+                                    </GenericTile>
+                                </tiles>
+                            </SlideTile>
+                            <GenericTile
+                                class="sapUiTinyMarginTop tileLayout"
+                                size="L"
+                                header="Country-Specific Profit Margin"
+                                subheader="Expenses"
+                                press="press"
+                                mode="ArticleMode"
+                            >
+                                <TileContent
+                                    unit="EUR"
+                                    footer="Current Quarter"
+                                >
+                                    <NumericContent
+                                        scale="M"
+                                        value="1.96"
+                                        valueColor="Error"
+                                        indicator="Up"
+                                        withMargin="false"
+                                    />
+                                </TileContent>
+                            </GenericTile>
+                        </VBox>
                     </l:BlockLayoutCell>
                 </l:BlockLayoutRow>
             </l:BlockLayout>

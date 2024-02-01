@@ -7,13 +7,31 @@ import ResourceBundle from "sap/base/i18n/ResourceBundle";
 import Router from "sap/ui/core/routing/Router";
 import History from "sap/ui/core/routing/History";
 import JSONModel from "sap/ui/model/json/JSONModel";
+import ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import BusyIndicator from "sap/ui/core/BusyIndicator";
 import View from "sap/ui/core/mvc/View";
+import IllustratedMessage from "sap/m/IllustratedMessage";
+import Button from "sap/m/Button";
+import Dialog from "sap/m/Dialog";
+import ManagedObject from "sap/ui/base/ManagedObject";
+import Event from "sap/ui/base/Event";
+import FilterOperator from "sap/ui/model/FilterOperator";
+import Filter from "sap/ui/model/Filter";
+import Table from "sap/m/Table";
+import Fragment from "sap/ui/core/Fragment";
+import { DocumentTypeEnum } from "../model/models";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default abstract class BaseController extends Controller {
+
+    _successDialog: Dialog
+    _fsDialog: Promise<Dialog>;
+    _tsDialog: Promise<Dialog>;
+    _abapDialog: Promise<Dialog>;
+
+
     /**
      * Convenience method for accessing the component of the controller's view.
      * @returns The component of the controller's view
@@ -86,5 +104,95 @@ export default abstract class BaseController extends Controller {
         } else {
             this.getRouter().navTo("main", {}, undefined, true);
         }
+    }
+
+    public onPressClose(event: Event) {
+        const dialog = ((event.getSource() as ManagedObject).getParent() as Dialog);
+        dialog.close();
+        dialog.destroy();
+
+        // @ts-ignore
+        this._tsDialog = undefined; // @ts-ignore
+        this._abapDialog = undefined; // @ts-ignore
+        this._fsDialog = undefined;
+    }
+
+    public openTSDialog(type: string, packageName?: string, programName?: string) {
+
+        if (!this._tsDialog) {
+            this._tsDialog = Fragment.load({
+                name: "com.ntt.chatgptportal.view.fragment.TsDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
+
+        this._tsDialog.then((dialog) => {
+            this.getView()?.addDependent(dialog as Dialog);
+            if (DocumentTypeEnum.AbapToTs)
+                this._readDocuments(type, undefined, packageName, programName);
+            else
+                this._readDocuments(type);
+            dialog.open();
+        });
+
+    }
+
+    public createSuccessDialog() {
+
+        if (!this._successDialog) {
+            this._successDialog = new Dialog({
+                type: "Message",
+                title: this.getResourceBundle().getText("Success"),
+                content: [
+                    new IllustratedMessage({ illustrationType: "sapIllus-SuccessHighFive" }),
+                ],
+                buttons: [
+                    new Button({
+                        text: this.getResourceBundle().getText("Close"),
+                        press: (event: Event) => {
+                            ((event.getSource() as ManagedObject).getParent() as Dialog).close()
+                        }
+                    })
+                ]
+            });
+        }
+
+        this._successDialog.open();
+    }
+
+    public _readDocuments(type: string, dialog?: Dialog, packageName?: string, programName?: string) {
+        const data = this.getModel<JSONModel>("model")?.getData();
+
+        let filters: Array<Filter> = [new Filter("Doctype", FilterOperator.EQ, type)];
+
+        if (data) {
+            filters.push(new Filter("Projectid", FilterOperator.EQ, data.Projectid),
+                new Filter("Developmentid", FilterOperator.EQ, data.Developmentid),
+                new Filter("ProcessType", FilterOperator.EQ, data.ProcessType)
+            );
+        }
+
+        BusyIndicator.show();
+        this.getModel<ODataModel>().read("/DocumentsSet", {
+            filters: filters,
+            success: (response: any) => {
+                const table = (dialog) ? dialog : sap.ui.getCore().byId("docTable") as Table,
+                    // @ts-ignore
+                    template = table.getBindingInfo("items").template;    // @ts-ignore
+                table.unbindAggregation("items");
+
+                table?.setModel(new JSONModel(response.results));
+                table?.bindAggregation("items", {
+                    path: "/",
+                    template: template,
+                    templateShareable: true
+                });
+
+                BusyIndicator.hide();
+            }
+        });
     }
 }

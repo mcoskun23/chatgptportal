@@ -5,15 +5,125 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:smartVariant="sap.ui.comp.smartvariants"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 >
     <f:DynamicPage fitContent="true">
         <f:header>
             <f:DynamicPageHeader>
                 <f:content>
-                    <Title text="{i18n>AbapToFs}" />
+                    <smartVariant:SmartVariantManagement
+                        id="pageVariant"
+                        persistencyKey="SmartVariantPKey"
+                    />
+                    <smartFilterBar:SmartFilterBar
+                        id="smartFilterBar"
+                        entitySet="ProgramsSet"
+                        persistencyKey="SmartFilterPKey"
+                        cd:dateFormatSettings='\{"pattern":"dd.MM.yyyy","UTC": true\}'
+                        smartVariant="pageVariant"
+                        useToolbar="false"
+                    >
+                        <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration
+                                key="Devpackage"
+                                preventInitialDataFetchInValueHelpDialog="false"
+                            />
+                        </smartFilterBar:controlConfiguration>
+                    </smartFilterBar:SmartFilterBar>
                 </f:content>
             </f:DynamicPageHeader>
         </f:header>
-        <f:content />
+        <f:content>
+            <smartTable:SmartTable
+                id="smartTable"
+                header="{i18n>AbapToFs}"
+                entitySet="ProgramsSet"
+                requestAtLeastFields="IsTsCreated,IsFsCreated"
+                showTablePersonalisation="true"
+                useTablePersonalisation="true"
+                smartFilterId="smartFilterBar"
+                showFullScreenButton="true"
+                tableType="ResponsiveTable"
+                useExportToExcel="true"
+                smartVariant="pageVariant"
+                persistencyKey="SmartVariantPKey"
+                beforeExport="onExcel"
+                beforeRebindTable="onBeforeRebindTable"
+                enableAutoBinding="true"
+                cd:dateFormatSettings='\{"pattern":"dd.MM.yyyy","UTC": true\}'
+                showRowCount="true"
+            >
+                <smartTable:customToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <Button
+                            text="{i18n>GenerateFS}"
+                            icon="sap-icon://request"
+                            press="onPressOpenDialog($event, '04')"
+                        />
+                        <Button
+                            text="{i18n>GenerateTS}"
+                            icon="sap-icon://request"
+                            press="onPressOpenDialog($event, '03')"
+                        />
+                        <Button
+                            text="{i18n>Summarize}"
+                            icon="sap-icon://decrease-line-height"
+                        />
+                    </OverflowToolbar>
+                </smartTable:customToolbar>
+                <Table
+                    id="innerTable"
+                    mode="MultiSelect"
+                >
+                    <columns>
+                        <Column>
+                            <Text
+                                text="{i18n>FS}"
+                                wrapping="true"
+                            />
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "IsFsCreated", "leadingProperty": "IsFsCreated", "columnIndex": 3}'
+                                />
+                            </customData>
+                        </Column>
+                        <Column>
+                            <Text
+                                text="{i18n>TS}"
+                                wrapping="true"
+                            />
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "IsTsCreated", "leadingProperty": "IsTsCreated", "columnIndex": 4}'
+                                />
+                            </customData>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <GenericTag
+                                    text="{ path: 'IsFsCreated', formatter: '.formatter.formatStatusText'}"
+                                    status="{ path: 'IsFsCreated', formatter: '.formatter.formatStatus'}"
+                                    press="onPressOpenDialog($event, '04')"
+                                />
+                                <GenericTag
+                                    text="{ path: 'IsTsCreated', formatter: '.formatter.formatStatusText'}"
+                                    status="{ path: 'IsTsCreated', formatter: '.formatter.formatStatus'}"
+                                    press="onPressOpenDialog($event, '03')"
+                                />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </smartTable:SmartTable>
+        </f:content>
     </f:DynamicPage>
 </mvc:View>

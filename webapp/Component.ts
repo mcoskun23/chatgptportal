@@ -7,9 +7,12 @@ import ErrorHandler from "./controller/ErrorHandler";
  */
 export default class Component extends BaseComponent {
 
-	public static metadata = {
-		manifest: "json"
-	};
+    public static metadata = {
+        manifest: "json",
+        "config": {
+            "fullWidth": true
+        },
+    };
 
     private _oErrorHandler: ErrorHandler
     /**
@@ -17,9 +20,9 @@ export default class Component extends BaseComponent {
      * @public
      * @override
      */
-	public init() : void {
-		// call the base component's init function
-		super.init();
+    public init(): void {
+        // call the base component's init function
+        super.init();
 
         // enable routing
         this.getRouter().initialize();
@@ -28,5 +31,5 @@ export default class Component extends BaseComponent {
         this.setModel(createDeviceModel(), "device");
 
         this._oErrorHandler = new ErrorHandler(this);
-	}
+    }
 }

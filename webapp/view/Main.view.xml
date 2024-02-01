@@ -8,10 +8,12 @@
     xmlns:core="sap.ui.core"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:l="sap.ui.layout"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz="sap.viz.ui5.controls"
 >
-    <f:DynamicPage
-        title="{i18n>title}"
-    >
+    <f:DynamicPage title="{i18n>title}">
         <f:header>
             <f:DynamicPageHeader>
                 <f:content>
@@ -84,33 +86,185 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <HBox>
-       
+            <l:BlockLayout id="blockLayout">
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell class="customCellImageBackground" />
 
-                <GenericTile
-                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                    header="{i18n>FsToAbap}"
-                    press="onPressFsToAbap"
-                >
-                    <TileContent>
-                        <ImageContent
-                            src="https://avatars.githubusercontent.com/u/4390751?s=200v=4"
-                        />
-                    </TileContent>
-                </GenericTile>
+                    <l:BlockLayoutCell title="Apps">
+                        <GenericTile
+                            class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                            header="{i18n>FsToAbap}"
+                            press="onPressFsToAbap"
+                        >
+                            <TileContent>
+                                <ImageContent src="sap-icon://source-code" />
+                            </TileContent>
+                        </GenericTile>
 
-                <GenericTile
-                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                      header="{i18n>AbapToFs}"
-                    press="onPressAbapToFs"
-                >
-                    <TileContent>
-                        <ImageContent
-                            src="https://avatars.githubusercontent.com/u/4390751?s=200v=4"
-                        />
-                    </TileContent>
-                </GenericTile>
-            </HBox>
+                        <GenericTile
+                            class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                            header="{i18n>AbapToFs}"
+                            press="onPressAbapToFs"
+                        >
+                            <TileContent>
+                                <ImageContent
+                                    src="sap-icon://excel-attachment"
+                                />
+                            </TileContent>
+                        </GenericTile>
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell>
+                        <f:Card>
+                            <f:content>
+                                <viz:VizFrame
+                                    uiConfig="{applicationSet:'fiori'}"
+                                    vizType='donut'
+                                >
+                                    <viz:dataset>
+                                        <viz.data:FlattenedDataset
+                                            data="{vizModel>/milk}"
+                                        >
+                                            <viz.data:dimensions>
+                                                <viz.data:DimensionDefinition
+                                                    name="StoreName"
+                                                    value="{vizModel>StoreName}"
+                                                />
+                                            </viz.data:dimensions>
+                                            <viz.data:measures>
+                                                <viz.data:MeasureDefinition
+                                                    name="Revenue"
+                                                    value="{vizModel>Revenue}"
+                                                />
+                                            </viz.data:measures>
+                                        </viz.data:FlattenedDataset>
+                                    </viz:dataset>
+
+                                    <viz:feeds>
+                                        <viz.feeds:FeedItem
+                                            uid="size"
+                                            type="Measure"
+                                            values="Revenue"
+                                        />
+                                        <viz.feeds:FeedItem
+                                            uid="color"
+                                            type="Dimension"
+                                            values="StoreName"
+                                        />
+                                    </viz:feeds>
+                                    <viz:dependents>
+                                        <viz:Popover id="idPopOver" />
+                                    </viz:dependents>
+                                </viz:VizFrame>
+                            </f:content>
+                        </f:Card>
+                    </l:BlockLayoutCell>
+                    <l:BlockLayoutCell>
+                        <f:Card>
+                            <f:content>
+                                <viz:VizFrame
+                                    uiConfig="{applicationSet:'fiori'}"
+                                    vizType='column'
+                                >
+                                    <viz:dataset>
+                                        <viz.data:FlattenedDataset
+                                            data="{vizModel>/milk}"
+                                        >
+                                            <viz.data:dimensions>
+                                                <viz.data:DimensionDefinition
+                                                    name="StoreName"
+                                                    value="{vizModel>StoreName}"
+                                                />
+                                            </viz.data:dimensions>
+                                            <viz.data:measures>
+                                                <viz.data:MeasureDefinition
+                                                    name="Revenue"
+                                                    value="{vizModel>Revenue}"
+                                                />
+                                                <viz.data:MeasureDefinition
+                                                    name="Cost"
+                                                    value="{vizModel>Cost}"
+                                                />
+                                            </viz.data:measures>
+                                        </viz.data:FlattenedDataset>
+                                    </viz:dataset>
+
+                                    <viz:feeds>
+                                        <viz.feeds:FeedItem
+                                            uid="valueAxis"
+                                            type="Measure"
+                                            values="Revenue"
+                                        />
+                                         <viz.feeds:FeedItem
+                                            uid="valueAxis"
+                                            type="Measure"
+                                            values="Cost"
+                                        />
+                                        <viz.feeds:FeedItem
+                                            uid="color"
+                                            type="Dimension"
+                                            values="StoreName"
+                                        />
+                                    </viz:feeds>
+                                </viz:VizFrame>
+                            </f:content>
+                        </f:Card>
+                    </l:BlockLayoutCell>
+                    <l:BlockLayoutCell>
+                        <f:Card>
+                            <f:content>
+                                <viz:VizFrame
+                                    uiConfig="{applicationSet:'fiori'}"
+                                    vizType='area'
+                                >
+                                    <viz:dataset>
+                                        <viz.data:FlattenedDataset
+                                            data="{vizModel>/milk}"
+                                        >
+                                            <viz.data:dimensions>
+                                                <viz.data:DimensionDefinition
+                                                    name="StoreName"
+                                                    value="{vizModel>StoreName}"
+                                                />
+                                            </viz.data:dimensions>
+                                            <viz.data:measures>
+                                                <viz.data:MeasureDefinition
+                                                    name="Revenue"
+                                                    value="{vizModel>Revenue}"
+                                                />
+                                                <viz.data:MeasureDefinition
+                                                    name="Cost"
+                                                    value="{vizModel>Cost}"
+                                                />
+                                            </viz.data:measures>
+                                        </viz.data:FlattenedDataset>
+                                    </viz:dataset>
+
+                                    <viz:feeds>
+                                        <viz.feeds:FeedItem
+                                            uid="valueAxis"
+                                            type="Measure"
+                                            values="Revenue"
+                                        />
+                                        <viz.feeds:FeedItem
+                                            uid="valueAxis"
+                                            type="Measure"
+                                            values="Cost"
+                                        />
+                                        <viz.feeds:FeedItem
+                                            id='categoryAxisFeed'
+                                            uid="categoryAxis"
+                                            type="Dimension"
+                                            values="StoreName"
+                                        />
+                                    </viz:feeds>
+                                </viz:VizFrame>
+                            </f:content>
+                        </f:Card>
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+            </l:BlockLayout>
         </f:content>
     </f:DynamicPage>
 </mvc:View>

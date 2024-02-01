@@ -16,13 +16,13 @@
         <buttons>
             <Button
                 text="{i18n>GenerateTS}"
-                press="onPressCreate('01')"
+                press="onPressCreate(true)"
                 type="Emphasized"
             />
             <Button
                 text="{i18n>Save}"
                 type="Accept"
-                press="onPressUpdate('01')"
+                press="onPressUpdate(true)"
             />
             <Button
                 text="{i18n>Close}"

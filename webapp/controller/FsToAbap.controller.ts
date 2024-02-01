@@ -1,5 +1,5 @@
 import BaseController from "./BaseController";
-import { createModel } from "../model/models";
+import { createModel, DocumentTypeEnum, ProcessTypeEnum } from "../model/models";
 import Fragment from "sap/ui/core/Fragment";
 import SelectDialog from "sap/m/SelectDialog";
 import JSONModel from "sap/ui/model/json/JSONModel";
@@ -15,11 +15,9 @@ import WizardStep from "sap/m/WizardStep";
 import Dialog from "sap/m/Dialog";
 import MessageBox from "sap/m/MessageBox";
 import DynamicPage from "sap/f/DynamicPage";
-import Table from "sap/m/Table";
 import { formatDate, formatTime } from "../model/formatter";
 import Button from "sap/m/Button";
 import TextArea from "sap/m/TextArea";
-import IllustratedMessage from "sap/m/IllustratedMessage";
 
 
 declare global {
@@ -69,12 +67,9 @@ export default class Create extends BaseController {
 
     _projectDialog: Promise<SelectDialog>;
     _developmentDialog: Promise<SelectDialog>;
-    _tsDialog: Promise<Dialog>;
-    _abapDialog: Promise<Dialog>;
     _feedbackDialog: Promise<Dialog>;
     _documentDialog: Promise<Dialog>;
-    _successDialog: Dialog
-    _docNo:string;
+    _docNo: string;
 
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
@@ -165,48 +160,31 @@ export default class Create extends BaseController {
     }
 
     private onPressTS() {
-
-        if (!this._tsDialog) {
-            this._tsDialog = Fragment.load({
-                name: "com.ntt.chatgptportal.view.fragment.TsDialog",
-                controller: this
-            }).then((dialog) => {
-                this.getView()?.addDependent(dialog as Dialog);
-                return dialog;
-            }) as Promise<Dialog>;
-        }
-
-        this._tsDialog.then((dialog) => {
-            this.getView()?.addDependent(dialog as Dialog);
-            this._readDocuments("01");
-            dialog.open();
-        });
-
+        this.openTSDialog(DocumentTypeEnum.FsToTs);
     }
 
     private onPressDoc(event: Event) {
         const _q = (event.getSource() as Button).getBindingContext()?.getObject();
 
         // @ts-ignore
-        this._readQuery(_q.Doctype, _q.Docno)
+        this._readQuery((_q.Doctype === DocumentTypeEnum.FsToTs), _q.Docno)
     }
 
-    private onPressCreate(type: string) {
-
-        if (type === "02")
-            this.createDocumentDialog();
+    private onPressCreate(fsToTs: boolean) {
+        if (fsToTs)
+            this._createQuery(fsToTs);
         else
-            this._createQuery(type);
+            this.createDocumentDialog();
     }
 
-    private onPressUpdate(type: string) {
+    private onPressUpdate(fsToTs: boolean) {
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
                     const query = (sap.ui.getCore().byId("report") as TextArea).getValue();
-                    this._updateQuery(type, query);
+                    this._updateQuery(fsToTs, query);
                 }
             }
         });
@@ -225,14 +203,14 @@ export default class Create extends BaseController {
 
         this._abapDialog.then((dialog) => {
             dialog.open();
-            this._readDocuments("02");
+            this._readDocuments(DocumentTypeEnum.TsToAbap);
         });
     }
 
     private onConfirmCreAbap(event: Event) {
         const docno = event.getParameter("selectedItem").getTitle();
 
-        this._createQuery("02", docno);
+        this._createQuery(false, docno);
 
     }
 
@@ -255,17 +233,6 @@ export default class Create extends BaseController {
             }))
             dialog.open();
         });
-    }
-
-    private onPressClose(event: Event) {
-        const dialog = ((event.getSource() as ManagedObject).getParent() as Dialog);
-        dialog.close();
-        dialog.destroy();
-
-        // @ts-ignore
-        this._tsDialog = undefined; // @ts-ignore
-        this._abapDialog = undefined;
-
     }
 
     private onSave() {
@@ -368,29 +335,6 @@ export default class Create extends BaseController {
         (this.byId("btnSave") as Button).setVisible(false);
     }
 
-    private createSuccessDialog() {
-
-        if (!this._successDialog) {
-            this._successDialog = new Dialog({
-                type: "Message",
-                title: this.getResourceBundle().getText("Success"),
-                content: [
-                    new IllustratedMessage({ illustrationType: "sapIllus-SuccessHighFive" }),
-                ],
-                buttons: [
-                    new Button({
-                        text: this.getResourceBundle().getText("Close"),
-                        press: (event: Event) => {
-                            ((event.getSource() as ManagedObject).getParent() as Dialog).close()
-                        }
-                    })
-                ]
-            });
-        }
-
-        this._successDialog.open();
-    }
-
     private createDocumentDialog() {
         if (!this._documentDialog) {
             this._documentDialog = Fragment.load({
@@ -403,7 +347,7 @@ export default class Create extends BaseController {
         }
 
         this._documentDialog.then((dialog) => {
-            this._readDocuments("01", dialog);
+            this._readDocuments(DocumentTypeEnum.FsToTs, dialog);
             dialog.open();
         });
     }
@@ -447,7 +391,7 @@ export default class Create extends BaseController {
             success: (response: Header) => {
                 const model = this.getModel<JSONModel>("model");
 
-                model.setProperty("/ProcessType", (response.Devreason !== "") ? "U" : "C");
+                model.setProperty("/ProcessType", (response.Devreason !== "") ? ProcessTypeEnum.Update : ProcessTypeEnum.Create);
                 model.setProperty("/Reportheader", response.Reportheader);
                 model.setProperty("/Devmodule", response.Devmodule);
                 model.setProperty("/Devtype", response.Devtype);
@@ -501,37 +445,9 @@ export default class Create extends BaseController {
         });
     }
 
-    private _readDocuments(type: string, dialog?: Dialog) {
-        const data = this.getModel<JSONModel>("model").getData(),
-            filters: Array<Filter> = [new Filter("Projectid", FilterOperator.EQ, data.Projectid),
-            new Filter("Developmentid", FilterOperator.EQ, data.Developmentid),
-            new Filter("ProcessType", FilterOperator.EQ, data.ProcessType),
-            new Filter("Doctype", FilterOperator.EQ, type)
-            ];
-
-        BusyIndicator.show();
-        this.getModel<ODataModel>().read("/DocumentsSet", {
-            filters: filters,
-            success: (response: any) => {
-                const table = (dialog) ? dialog : sap.ui.getCore().byId("docTable") as Table,
-                    // @ts-ignore
-                    template = table.getBindingInfo("items").template;    // @ts-ignore
-                table.unbindAggregation("items");
-
-                table?.setModel(new JSONModel(response.results));
-                table?.bindAggregation("items", {
-                    path: "/",
-                    template: template,
-                    templateShareable: true
-                });
-
-                BusyIndicator.hide();
-            }
-        });
-    }
-
-    private _readQuery(type: string, docNo: string) {
+    private _readQuery(fsToTs: boolean, docNo: string) {
         const model = this.getModel<JSONModel>("model"),
+            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             path = this.getModel<ODataModel>().createKey("QuerySet", {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
@@ -550,8 +466,9 @@ export default class Create extends BaseController {
         });
     }
 
-    private _createQuery(type: string, docNo?: string) {
+    private _createQuery(fsToTs: boolean, docNo?: string) {
         const model = this.getModel<JSONModel>("model"),
+            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
@@ -570,8 +487,9 @@ export default class Create extends BaseController {
         });
     }
 
-    private _updateQuery(type: string, query: string) {
+    private _updateQuery(fsToTs: boolean, query: string) {
         const model = this.getModel<JSONModel>("model"),
+            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),

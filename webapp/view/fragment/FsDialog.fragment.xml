@@ -4,8 +4,8 @@
 >
     <Dialog
         stretch="true"
-        title="{i18n>Abap}"
-        icon="sap-icon://source-code"
+        title="{i18n>FS}"
+        icon="sap-icon://vds-file"
     >
         <content>
             <core:Fragment
@@ -15,14 +15,14 @@
         </content>
         <buttons>
             <Button
-                text="{i18n>GenerateAbap}"
-                press="onPressCreate(false)"
+                text="{i18n>GenerateFS}"
+                press="onPressCreate('01')"
                 type="Emphasized"
             />
             <Button
                 text="{i18n>Save}"
                 type="Accept"
-                press="onPressUpdate(false)"
+                press="onPressUpdate('01')"
             />
             <Button
                 text="{i18n>Close}"

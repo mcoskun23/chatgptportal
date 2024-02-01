@@ -29,3 +29,17 @@ export function formatTime(time: any) {
     // @ts-ignore
     return `${hours.toString().padStart(2, 0)}:${minutes.toString().padStart(2, 0)}:${seconds.toString().padStart(2, 0)}`;
 }
+
+export function formatStatus(value: boolean) {
+
+    return (value) ? "Success" : "Warning";
+
+}
+
+export function formatStatusText(value: boolean) {
+    // @ts-ignore
+    const resourceBundle = this.getResourceBundle();
+
+    return (value) ? resourceBundle.getText("Created") : resourceBundle.getText("NonCreated");
+
+}

@@ -89,6 +89,11 @@
                 {
                     "uri": "css/style.css"
                 }
+            ],
+            "js": [
+                {
+                    "uri": "lib/util.js"
+                }
             ]
         },
         "routing": {

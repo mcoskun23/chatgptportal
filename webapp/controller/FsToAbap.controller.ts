@@ -476,12 +476,12 @@ export default class Create extends BaseController {
                 IvDocno: docNo
             };
 
-        BusyIndicator.show();
+        this.openBusyDialog();
         this.getModel<ODataModel>().create(`/FsQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
                 (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
-                BusyIndicator.hide();
+                this.closeBusyDialog();
             }
         });
     }

@@ -9,3 +9,15 @@
 	background-position: 0 50%;
     border-radius: 4%;
 }
+
+.center {
+	display: inline-block;
+  }
+
+ .customText{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+	color: #005B96;
+	text-wrap: balance;
+ } 

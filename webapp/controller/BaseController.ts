@@ -20,16 +20,21 @@ import Filter from "sap/ui/model/Filter";
 import Table from "sap/m/Table";
 import Fragment from "sap/ui/core/Fragment";
 import { DocumentTypeEnum } from "../model/models";
+import Text from "sap/m/Text";
+import Image from "sap/m/Image";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default abstract class BaseController extends Controller {
 
+    
     _successDialog: Dialog
     _fsDialog: Promise<Dialog>;
     _tsDialog: Promise<Dialog>;
     _abapDialog: Promise<Dialog>;
+    _busyDialog: Promise<Dialog>;
+
 
 
     /**
@@ -110,7 +115,7 @@ export default abstract class BaseController extends Controller {
         const _q: any = (event.getSource() as ManagedObject).getBindingContext()?.getObject(),
             path: string = this.getModel<ODataModel>().createKey("FileSet", {
                 Docno: _q.Docno,
-                Doctype:_q.Doctype
+                Doctype: _q.Doctype
 
             }) + "/$value",
             service: string = this.getOwnerComponent().getManifestObject().getEntry("/sap.app").dataSources.mainService.uri;
@@ -173,6 +178,52 @@ export default abstract class BaseController extends Controller {
         }
 
         this._successDialog.open();
+    }
+
+
+    public openBusyDialog() {
+        if (!this._busyDialog) {
+            this._busyDialog = Fragment.load({
+                name: "com.ntt.chatgptportal.view.fragment.BusyDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
+
+        this._busyDialog.then((dialog) => {
+            const text = sap.ui.getCore().byId("text") as Text,
+                image = sap.ui.getCore().byId("image") as Image;
+            let index = 2;
+            const interval = setInterval(() => {
+                if (index === 5)
+                    clearInterval(interval);
+                else {
+                    text.setText(this.getResourceBundle().getText(`BusyText${index}`) as string);
+                    index++;
+                }
+            }, 3000);
+
+            // @ts-ignore
+            image.setSrc(loadingImg);
+
+            this.getView()?.setBusy(true);
+            dialog.open();
+        });
+    }
+
+    public closeBusyDialog() {
+        this._busyDialog.then((dialog) => {
+            this.getView()?.setBusy(false);
+            dialog.close()
+            dialog.destroy(); // @ts-ignore
+            this._busyDialog = undefined;
+        });
+    }
+
+    public handleEscape() {
+
     }
 
     public _readDocuments(type: string, dialog?: Dialog, packageName?: string, programName?: string) {

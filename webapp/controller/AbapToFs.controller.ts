@@ -1,5 +1,5 @@
 import ColumnListItem from "sap/m/ColumnListItem";
-import { formatStatus, formatStatusText } from "../model/formatter";
+import { formatStatus, formatStatusText, formatDate, formatTime } from "../model/formatter";
 import { DocumentTypeEnum } from "../model/models";
 import BaseController from "./BaseController";
 import Event from "sap/ui/base/Event";
@@ -13,17 +13,17 @@ import BusyIndicator from "sap/ui/core/BusyIndicator";
 import TextArea from "sap/m/TextArea";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import MessageBox from "sap/m/MessageBox";
+import Button from "sap/m/Button";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default class AbapToFs extends BaseController {
     public readonly formatter = {
-        formatStatus, formatStatusText
+        formatStatus, formatStatusText, formatDate, formatTime
     };
 
     _docNo: string;
-
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
         this.getRouter()?.getRoute("abaptofs")?.attachPatternMatched(this._onMatched, this);
@@ -100,6 +100,13 @@ export default class AbapToFs extends BaseController {
         });
     }
 
+    private onPressDoc(event: Event) {
+        const _q = (event.getSource() as Button).getBindingContext()?.getObject();
+
+        // @ts-ignore
+        this._readQuery((_q.Doctype === DocumentTypeEnum.AbapToTs), _q.Docno);
+    }
+
     private _readQuery(abapToTs: boolean, docNo: string) {
         const model = this.getModel<JSONModel>("abapModel"),
             type = (abapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
@@ -107,7 +114,7 @@ export default class AbapToFs extends BaseController {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
                 IvDoctype: type,
-                IvDocno: docNo
+                Docno: docNo
             });
 
         BusyIndicator.show();
@@ -127,15 +134,15 @@ export default class AbapToFs extends BaseController {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
                 IvDoctype: type,
-                IvDocno: docNo
+                Docno: docNo
             };
 
-        BusyIndicator.show();
+        this.openBusyDialog();
         this.getModel<ODataModel>().create(`/AbapQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
                 (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
-                BusyIndicator.hide();
+                this.closeBusyDialog();
             }
         });
     }
@@ -147,7 +154,7 @@ export default class AbapToFs extends BaseController {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
                 IvDoctype: type,
-                IvDocno: this._docNo
+                Docno: this._docNo
             },
             path = this.getModel<ODataModel>().createKey("AbapQuerySet", _q);
 

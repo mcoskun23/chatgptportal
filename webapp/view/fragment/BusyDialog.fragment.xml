@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        stretch="true"
+        title="{i18n>Loading}"
+        icon="../img/loading.gif"
+        horizontalScrolling="false"
+        verticalScrolling="false"
+        escapeHandler=".handleEscape"
+    >
+        <content>
+            <VBox
+                alignItems="Center"
+                alignContent="Stretch"
+            >
+                <Title
+                    id="text"
+                    text="{i18n>BusyText}"
+                    wrapping="true"
+                    class="customText sapUiLargeMargin"
+                />
+                <Image
+                    id="image"
+                    class="center"
+                />
+            </VBox>
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

@@ -49,12 +49,6 @@
                     icon="sap-icon://source-code"
                     press="onPressAbap"
                 />
-                <Button
-                    text="{i18n>Feedback}"
-                    type="Emphasized"
-                    icon="sap-icon://feedback"
-                    press="onPressFeedback"
-                />
             </OverflowToolbar>
         </f:footer>
     </f:DynamicPage>

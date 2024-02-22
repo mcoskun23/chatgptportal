@@ -19,23 +19,24 @@ import FilterOperator from "sap/ui/model/FilterOperator";
 import Filter from "sap/ui/model/Filter";
 import Table from "sap/m/Table";
 import Fragment from "sap/ui/core/Fragment";
-import { DocumentTypeEnum } from "../model/models";
+import { DocumentTypeEnum, FeedBack } from "../model/models";
 import Text from "sap/m/Text";
 import Image from "sap/m/Image";
+import TextArea from "sap/m/TextArea";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default abstract class BaseController extends Controller {
 
-    
+
     _successDialog: Dialog
     _fsDialog: Promise<Dialog>;
     _tsDialog: Promise<Dialog>;
     _abapDialog: Promise<Dialog>;
     _busyDialog: Promise<Dialog>;
-
-
+    _feedbackDialog: Promise<Dialog>;
+    _docNo: string;
 
     /**
      * Convenience method for accessing the component of the controller's view.
@@ -131,13 +132,15 @@ export default abstract class BaseController extends Controller {
         // @ts-ignore
         this._tsDialog = undefined; // @ts-ignore
         this._abapDialog = undefined; // @ts-ignore
-        this._fsDialog = undefined;
+        this._fsDialog = undefined;  // @ts-ignore
+        this._feedbackDialog = undefined;
     }
 
-    public openTSDialog(type: string, packageName?: string, programName?: string) {
+    public openTSDialog(type: DocumentTypeEnum, packageName?: string, programName?: string) {
 
         if (!this._tsDialog) {
             this._tsDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.TsDialog",
                 controller: this
             }).then((dialog) => {
@@ -184,6 +187,7 @@ export default abstract class BaseController extends Controller {
     public openBusyDialog() {
         if (!this._busyDialog) {
             this._busyDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.BusyDialog",
                 controller: this
             }).then((dialog) => {
@@ -193,8 +197,8 @@ export default abstract class BaseController extends Controller {
         }
 
         this._busyDialog.then((dialog) => {
-            const text = sap.ui.getCore().byId("text") as Text,
-                image = sap.ui.getCore().byId("image") as Image;
+            const text = this.byId("text") as Text,
+                image = this.byId("image") as Image;
             let index = 2;
             const interval = setInterval(() => {
                 if (index === 5)
@@ -226,7 +230,24 @@ export default abstract class BaseController extends Controller {
 
     }
 
-    public _readDocuments(type: string, dialog?: Dialog, packageName?: string, programName?: string) {
+    private onPressFeedback() {
+        if (!this._feedbackDialog) {
+            this._feedbackDialog = Fragment.load({
+                id: this.getView()?.getId(),
+                name: "com.ntt.chatgptportal.view.fragment.FeedbackDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
+
+        this._feedbackDialog.then((dialog) => {
+            dialog.open();
+        });
+    }
+
+    public _readDocuments(type: DocumentTypeEnum, dialog?: Dialog, packageName?: string, programName?: string) {
         const data = this.getModel<JSONModel>("fsModel")?.getData();
 
         let filters: Array<Filter> = [new Filter("Doctype", FilterOperator.EQ, type)];
@@ -248,7 +269,7 @@ export default abstract class BaseController extends Controller {
         this.getModel<ODataModel>().read("/DocumentsSet", {
             filters: filters,
             success: (response: any) => {
-                const table = (dialog) ? dialog : sap.ui.getCore().byId("docTable") as Table,
+                const table = (dialog) ? dialog : this.byId("docTable") as Table,
                     // @ts-ignore
                     template = table.getBindingInfo("items").template;    // @ts-ignore
                 table.unbindAggregation("items");
@@ -263,5 +284,36 @@ export default abstract class BaseController extends Controller {
                 BusyIndicator.hide();
             }
         });
+    }
+
+
+    private onSaveFB(isFsToTs: boolean) {
+
+        const fsModel = this.getModel<JSONModel>("fsModel"),
+            abapModel = this.getModel<JSONModel>("abapModel"),
+            feedBack: FeedBack = {
+                Doctype: (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
+                Docno: this._docNo,
+                Content: (this.byId("content") as TextArea).getValue(),
+                Developmentid: fsModel.getProperty("/Developmentid"),
+                Projectid: fsModel.getProperty("/Projectid"),
+                ProcessType: fsModel.getProperty("/ProcessType"),
+                Devpackage: "",
+                Devprogram: ""
+            }
+
+        // this._cfFeedBack(feedBack);
+    }
+
+    public _cfFeedBack(feedBack: FeedBack) {
+
+        this.getModel<ODataModel>().callFunction("/FeedBack", {
+            "method": "POST",
+            urlParameters: feedBack,
+            success: (response: any) => {
+
+            }
+        });
+
     }
 }

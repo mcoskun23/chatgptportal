@@ -26,12 +26,12 @@ export default class AbapToFs extends BaseController {
     _docNo: string;
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
-        this.getRouter()?.getRoute("abaptofs")?.attachPatternMatched(this._onMatched, this);
+        // this.getRouter()?.getRoute("abaptofs")?.attachPatternMatched(this._onMatched, this);
     }
 
-    private _onMatched() {
+    // private _onMatched() {
 
-    }
+    // }
 
     private onItemPress(event: Event) {
         const listItem = event.getSource() as ColumnListItem,
@@ -68,6 +68,7 @@ export default class AbapToFs extends BaseController {
     private openFSDialog(packageName: string, programName: string) {
         if (!this._fsDialog) {
             this._fsDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.FsDialog",
                 controller: this
             }).then((dialog) => {
@@ -83,18 +84,18 @@ export default class AbapToFs extends BaseController {
     }
 
 
-    private onPressCreate(abapToTs: boolean) {
-        this._createQuery(abapToTs);
+    private onPressCreate(isAbapToTs: boolean) {
+        this._createQuery(isAbapToTs);
     }
 
-    private onPressUpdate(abapToTs: boolean) {
+    private onPressUpdate(isAbapToTs: boolean) {
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = (sap.ui.getCore().byId("report") as TextArea).getValue();
-                    this._updateQuery(abapToTs, query);
+                    const query = (this.byId("report") as TextArea).getValue();
+                    this._updateQuery(isAbapToTs, query);
                 }
             }
         });
@@ -107,9 +108,9 @@ export default class AbapToFs extends BaseController {
         this._readQuery((_q.Doctype === DocumentTypeEnum.AbapToTs), _q.Docno);
     }
 
-    private _readQuery(abapToTs: boolean, docNo: string) {
+    private _readQuery(isAbapToTs: boolean, docNo: string) {
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (abapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
+            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             path = this.getModel<ODataModel>().createKey("AbapQuerySet", {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
@@ -121,15 +122,15 @@ export default class AbapToFs extends BaseController {
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
                 this._docNo = docNo;
-                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                (this.byId("report") as TextArea).setValue(response.EvQuery);
                 BusyIndicator.hide();
             }
         });
     }
 
-    private _createQuery(abapToTs: boolean, docNo?: string) {
+    private _createQuery(isAbapToTs: boolean, docNo?: string) {
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (abapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
+            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             _q = {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
@@ -141,15 +142,15 @@ export default class AbapToFs extends BaseController {
         this.getModel<ODataModel>().create(`/AbapQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
-                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this.closeBusyDialog();
             }
         });
     }
 
-    private _updateQuery(abapToTs: boolean, query: string) {
+    private _updateQuery(isAbapToTs: boolean, query: string) {
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (abapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
+            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             _q = {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
@@ -164,7 +165,7 @@ export default class AbapToFs extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().update(`/${path}`, _q, {
             success: (response: any) => {
-                // (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this._readDocuments(type);
                 this.createSuccessDialog();
                 BusyIndicator.hide();

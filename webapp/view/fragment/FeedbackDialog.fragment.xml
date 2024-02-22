@@ -2,22 +2,32 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
 >
-    <Dialog title="{i18n>Feedback}" icon="sap-icon://feedback">
+    <Dialog
+        title="{i18n>Feedback}"
+        icon="sap-icon://feedback"
+    >
         <content>
             <VBox
                 fitContainer="true"
                 class="sapUiMediumMargin"
             >
-                <Label text="{i18n>Name}" />
+                <!-- <Label text="{i18n>Name}" />
                 <Input value="{/Name}" />
                 <Label text="{i18n>Surname}" />
-                <Input value="{/Surname}" />
+                <Input value="{/Surname}" /> -->
                 <Label text="{i18n>Feedback}" />
-                <TextArea value="{/Feedback}" width="100%" growing="true" />
+                <TextArea
+                    id="content"
+                    width="100%"
+                    growing="true"
+                />
             </VBox>
         </content>
         <beginButton>
-            <Button text="{i18n>Save}" press="onSaveFB" />
+            <Button
+                text="{i18n>Save}"
+                press="onSaveFB"
+            />
         </beginButton>
         <endButton>
             <Button

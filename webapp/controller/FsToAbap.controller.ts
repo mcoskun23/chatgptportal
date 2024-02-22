@@ -1,5 +1,5 @@
 import BaseController from "./BaseController";
-import { createModel, DocumentTypeEnum, ProcessTypeEnum } from "../model/models";
+import { createModel, DocumentTypeEnum, FeedBack, ProcessTypeEnum } from "../model/models";
 import Fragment from "sap/ui/core/Fragment";
 import SelectDialog from "sap/m/SelectDialog";
 import JSONModel from "sap/ui/model/json/JSONModel";
@@ -30,7 +30,7 @@ declare global {
         Projecttxt: string,
         Developmentid: string,
         Developmenttxt: string,
-        ProcessType: string,
+        ProcessType: ProcessTypeEnum,
         Reportheader: string,
         Devmodule: string,
         Devtype: string,
@@ -67,7 +67,6 @@ export default class Create extends BaseController {
 
     _projectDialog: Promise<SelectDialog>;
     _developmentDialog: Promise<SelectDialog>;
-    _feedbackDialog: Promise<Dialog>;
     _documentDialog: Promise<Dialog>;
     _docNo: string;
 
@@ -85,6 +84,7 @@ export default class Create extends BaseController {
 
         if (!this._projectDialog) {
             this._projectDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.ShProject",
                 controller: this
             }).then((dialog) => {
@@ -121,6 +121,7 @@ export default class Create extends BaseController {
 
         if (!this._developmentDialog) {
             this._developmentDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.ShDevelopment",
                 controller: this
             }).then((dialog) => {
@@ -170,21 +171,21 @@ export default class Create extends BaseController {
         this._readQuery((_q.Doctype === DocumentTypeEnum.FsToTs), _q.Docno)
     }
 
-    private onPressCreate(fsToTs: boolean) {
-        if (fsToTs)
-            this._createQuery(fsToTs);
+    private onPressCreate(isFsToTs: boolean) {
+        if (isFsToTs)
+            this._createQuery(isFsToTs);
         else
             this.createDocumentDialog();
     }
 
-    private onPressUpdate(fsToTs: boolean) {
+    private onPressUpdate(isFsToTs: boolean) {
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = (sap.ui.getCore().byId("report") as TextArea).getValue();
-                    this._updateQuery(fsToTs, query);
+                    const query = (this.byId("report") as TextArea).getValue();
+                    this._updateQuery(isFsToTs, query);
                 }
             }
         });
@@ -193,6 +194,7 @@ export default class Create extends BaseController {
     private onPressAbap() {
         if (!this._abapDialog) {
             this._abapDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.AbapDialog",
                 controller: this
             }).then((dialog) => {
@@ -213,26 +215,7 @@ export default class Create extends BaseController {
         this._createQuery(false, docno);
     }
 
-    private onPressFeedback() {
-        if (!this._feedbackDialog) {
-            this._feedbackDialog = Fragment.load({
-                name: "com.ntt.chatgptportal.view.fragment.FeedbackDialog",
-                controller: this
-            }).then((dialog) => {
-                this.getView()?.addDependent(dialog as Dialog);
-                return dialog;
-            }) as Promise<Dialog>;
-        }
-
-        this._feedbackDialog.then((dialog) => {
-            dialog.setModel(new JSONModel({
-                Name: "",
-                Surname: "",
-                Feedback: ""
-            }))
-            dialog.open();
-        });
-    }
+  
 
     private onSave() {
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
@@ -245,10 +228,6 @@ export default class Create extends BaseController {
                 }
             }
         });
-    }
-
-    private onSaveFB(event: Event) {
-        const data = ((event.getSource() as ManagedObject).getParent()?.getModel() as JSONModel).getData();
     }
 
 
@@ -337,6 +316,7 @@ export default class Create extends BaseController {
     private createDocumentDialog() {
         if (!this._documentDialog) {
             this._documentDialog = Fragment.load({
+                id: this.getView()?.getId(),
                 name: "com.ntt.chatgptportal.view.fragment.DocumentDialog",
                 controller: this
             }).then((dialog) => {
@@ -444,9 +424,9 @@ export default class Create extends BaseController {
         });
     }
 
-    private _readQuery(fsToTs: boolean, docNo: string) {
+    private _readQuery(isFsToTs: boolean, docNo: string) {
         const model = this.getModel<JSONModel>("fsModel"),
-            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
+            type = (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             path = this.getModel<ODataModel>().createKey("FsQuerySet", {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
@@ -459,15 +439,15 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
                 this._docNo = docNo;
-                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                (this.byId("report") as TextArea).setValue(response.EvQuery);
                 BusyIndicator.hide();
             }
         });
     }
 
-    private _createQuery(fsToTs: boolean, docNo?: string) {
+    private _createQuery(isFsToTs: boolean, docNo?: string) {
         const model = this.getModel<JSONModel>("fsModel"),
-            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
+            type = (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
@@ -480,15 +460,15 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().create(`/FsQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
-                (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this.closeBusyDialog();
             }
         });
     }
 
-    private _updateQuery(fsToTs: boolean, query: string) {
+    private _updateQuery(isFsToTs: boolean, query: string) {
         const model = this.getModel<JSONModel>("fsModel"),
-            type = (fsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
+            type = (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             _q = {
                 Projectid: model.getProperty("/Projectid"),
                 Developmentid: model.getProperty("/Developmentid"),
@@ -504,7 +484,7 @@ export default class Create extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().update(`/${path}`, _q, {
             success: (response: any) => {
-                // (sap.ui.getCore().byId("report") as TextArea).setValue(response.EvQuery);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this._readDocuments(type);
                 this.createSuccessDialog();
                 BusyIndicator.hide();

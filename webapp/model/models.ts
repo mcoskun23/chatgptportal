@@ -13,6 +13,17 @@ export enum ProcessTypeEnum {
     Update = "U"
 }
 
+export type FeedBack = {
+    Developmentid: string,
+    Projectid: string,
+    ProcessType: ProcessTypeEnum
+    Devpackage: string,
+    Devprogram: string,
+    Doctype: DocumentTypeEnum,
+    Docno: string,
+    Content: string
+}
+
 export function createDeviceModel() {
     const model = new JSONModel(Device);
     model.setDefaultBindingMode("OneWay");

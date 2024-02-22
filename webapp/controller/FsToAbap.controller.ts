@@ -503,7 +503,7 @@ export default class Create extends BaseController {
 
         BusyIndicator.show();
         this.getModel<ODataModel>().create("/HeaderSet", data, {
-            success: (oData: any) => {
+            success: (response: any) => {
                 this.createSuccessDialog();
                 BusyIndicator.hide();
             }

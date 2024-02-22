@@ -73,7 +73,7 @@
                         <Button
                             text="{i18n>Summarize}"
                             icon="sap-icon://decrease-line-height"
-                            press="openBusyDialog"
+                            press="onPressSummarize"
                         />
                     </OverflowToolbar>
                 </smartTable:customToolbar>

@@ -14,6 +14,24 @@ import TextArea from "sap/m/TextArea";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import MessageBox from "sap/m/MessageBox";
 import Button from "sap/m/Button";
+import Context from "sap/ui/model/Context";
+
+declare global {
+    /**
+     * Now declare things that go in the global namespace,
+     * or augment existing declarations in the global namespace.
+     */
+    type Summarize = {
+        Query: string;
+        Programs: Array<Program>
+    }
+
+    type Program = {
+        Devpackage: string;
+        Devprogram: string;
+    }
+}
+
 
 /**
  * @namespace com.ntt.chatgptportal.controller
@@ -32,6 +50,26 @@ export default class AbapToFs extends BaseController {
     // private _onMatched() {
 
     // }
+
+    private onPressSummarize() {
+        const table = this.byId("innerTable") as Table,
+            contexts = table.getSelectedContexts() as Context[];
+
+        if (contexts.length < 1) {
+            MessageToast.show(this.getResourceBundle().getText("SelectMsg") as string);
+            return;
+        }
+
+        const programs = contexts.map(x => {
+            const _q = x.getObject() as Program;
+            return {
+                Devpackage: _q.Devpackage,
+                Devprogram: _q.Devprogram
+            }
+        }) as Array<Program>;
+
+        this._createSummarize(programs);
+    }
 
     private onItemPress(event: Event) {
         const listItem = event.getSource() as ColumnListItem,
@@ -169,6 +207,21 @@ export default class AbapToFs extends BaseController {
                 this._readDocuments(type);
                 this.createSuccessDialog();
                 BusyIndicator.hide();
+            }
+        });
+    }
+
+    private _createSummarize(programs: Array<Program>) {
+        const data = {
+            Query: "",
+            Programs: programs
+        } as Summarize;
+
+        this.openBusyDialog();
+        this.getModel<ODataModel>().create("/SummarizeSet", data, {
+            success: (response: any) => {
+                this.closeBusyDialog();
+                MessageBox.information(response.Query);
             }
         });
     }

@@ -5,7 +5,6 @@
     <Dialog
         stretch="true"
         title="{i18n>Loading}"
-        icon="../img/loading.gif"
         horizontalScrolling="false"
         verticalScrolling="false"
         escapeHandler=".handleEscape"

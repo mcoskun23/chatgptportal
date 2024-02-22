@@ -23,6 +23,8 @@ import { DocumentTypeEnum, FeedBack } from "../model/models";
 import Text from "sap/m/Text";
 import Image from "sap/m/Image";
 import TextArea from "sap/m/TextArea";
+import MessageBox from "sap/m/MessageBox";
+import MessageToast from "sap/m/MessageToast";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
@@ -37,7 +39,7 @@ export default abstract class BaseController extends Controller {
     _busyDialog: Promise<Dialog>;
     _feedbackDialog: Promise<Dialog>;
     _docNo: string;
-
+    _type: DocumentTypeEnum;
     /**
      * Convenience method for accessing the component of the controller's view.
      * @returns The component of the controller's view
@@ -133,7 +135,8 @@ export default abstract class BaseController extends Controller {
         this._tsDialog = undefined; // @ts-ignore
         this._abapDialog = undefined; // @ts-ignore
         this._fsDialog = undefined;  // @ts-ignore
-        this._feedbackDialog = undefined;
+
+        this._type = "";
     }
 
     public openTSDialog(type: DocumentTypeEnum, packageName?: string, programName?: string) {
@@ -148,6 +151,8 @@ export default abstract class BaseController extends Controller {
                 return dialog;
             }) as Promise<Dialog>;
         }
+
+        this._type = type;
 
         this._tsDialog.then((dialog) => {
             this.getView()?.addDependent(dialog as Dialog);
@@ -207,7 +212,7 @@ export default abstract class BaseController extends Controller {
                     text.setText(this.getResourceBundle().getText(`BusyText${index}`) as string);
                     index++;
                 }
-            }, 3000);
+            }, 7500);
 
             // @ts-ignore
             image.setSrc(loadingImg);
@@ -230,7 +235,14 @@ export default abstract class BaseController extends Controller {
 
     }
 
-    private onPressFeedback() {
+    private onPressFeedback(type?: DocumentTypeEnum) {
+        this._type = (type) ? type : this._type;
+
+        if (!this._docNo) {
+            MessageToast.show(this.getResourceBundle().getText("DocMsg") as string)
+            return;
+        }
+
         if (!this._feedbackDialog) {
             this._feedbackDialog = Fragment.load({
                 id: this.getView()?.getId(),
@@ -244,6 +256,15 @@ export default abstract class BaseController extends Controller {
 
         this._feedbackDialog.then((dialog) => {
             dialog.open();
+        });
+    }
+
+    private onPressCloseFB() {
+        this._feedbackDialog.then((dialog) => {
+            dialog.close();
+            dialog.destroy();
+            // @ts-ignore
+            this._feedbackDialog = undefined;
         });
     }
 
@@ -287,31 +308,32 @@ export default abstract class BaseController extends Controller {
     }
 
 
-    private onSaveFB(isFsToTs: boolean) {
+    private onSaveFB() {
 
         const fsModel = this.getModel<JSONModel>("fsModel"),
             abapModel = this.getModel<JSONModel>("abapModel"),
             feedBack: FeedBack = {
-                Doctype: (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
+                Doctype: this._type,
                 Docno: this._docNo,
                 Content: (this.byId("content") as TextArea).getValue(),
-                Developmentid: fsModel.getProperty("/Developmentid"),
-                Projectid: fsModel.getProperty("/Projectid"),
-                ProcessType: fsModel.getProperty("/ProcessType"),
-                Devpackage: "",
-                Devprogram: ""
+                Developmentid: (fsModel) ? fsModel.getProperty("/Developmentid") : "",
+                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : "",
+                ProcessType: (fsModel) ? fsModel.getProperty("/ProcessType") : "",
+                Devpackage: (abapModel) ? abapModel.getProperty("/Devpackage") : "",
+                Devprogram: (abapModel) ? abapModel.getProperty("/Devprogram") : "",
             }
 
-        // this._cfFeedBack(feedBack);
+        this._cfFeedBack(feedBack);
     }
 
     public _cfFeedBack(feedBack: FeedBack) {
 
-        this.getModel<ODataModel>().callFunction("/FeedBack", {
+        BusyIndicator.show();
+        this.getModel<ODataModel>().callFunction("/Feedback", {
             "method": "POST",
             urlParameters: feedBack,
             success: (response: any) => {
-
+                BusyIndicator.hide();
             }
         });
 

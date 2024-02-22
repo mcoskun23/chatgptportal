@@ -127,7 +127,7 @@
                                 <!-- </l:BlockLayoutCell> -->
                                 <!-- <l:BlockLayoutCell class="customCellImageBackground" /> -->
                                 <!-- <l:BlockLayoutCell> -->
-                                <SlideTile
+                                <!-- <SlideTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                 >
                                     <tiles>
@@ -154,7 +154,7 @@
                                             </TileContent>
                                         </GenericTile>
                                     </tiles>
-                                </SlideTile>
+                                </SlideTile> -->
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"

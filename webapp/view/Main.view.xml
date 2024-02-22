@@ -138,7 +138,7 @@
                                         >
                                             <TileContent footer="11/01/2024">
                                                 <NewsContent
-                                                    contentText="🎙️Pods of Business Podcast Serimiz Yayında!"
+                                                    contentText="🎙️Pods of Business Podcast Series is Live!"
                                                 />
                                             </TileContent>
                                         </GenericTile>
@@ -149,7 +149,7 @@
                                         >
                                             <TileContent footer="27/12/2023">
                                                 <NewsContent
-                                                    contentText="CEO’muz Dr. Bahri Danış, Bu Sene de Türkiye’nin En Beğenilen 50 CEO’sundan Biri Oldu!"
+                                                    contentText="Our CEO Dr. Bahri Danış is one of Turkey's 50 Most Admired CEOs this year!"
                                                 />
                                             </TileContent>
                                         </GenericTile>
@@ -158,19 +158,17 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="FS to ABAP"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                                        footer="Code Created"
                                     >
                                         <NumericContent
-                                            scale="M"
-                                            value="1.96"
-                                            valueColor="Error"
+                                            scale="ABAP"
+                                            value="120"
+                                            valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
                                         />
@@ -179,19 +177,17 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="FS to TS"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                                    footer="Documents Created"
                                     >
                                         <NumericContent
-                                            scale="M"
-                                            value="1.96"
-                                            valueColor="Error"
+                                            scale="TS"
+                                            value="95"
+                                            valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
                                         />
@@ -200,25 +196,23 @@
                             </HBox>
                             <HBox>
                                 <GenericTile
-                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
+                                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="Effort for FS to TS"
                                     press="press"
                                     mode="ArticleMode"
                                 >
-                                    <TileContent unit="FS">
+                                    <TileContent unit="Effort savings achieved">
                                         <mc:BulletMicroChart
-                                            size="XS"
-                                            scale="M"
-                                            targetValue="100"
-                                            forecastValue="110"
+                                            size="S"
+                                            scale="%"
+                                            forecastValue="100"
                                             class="sapUiSmallMargin"
                                             press="press"
                                         >
                                             <mc:actual>
                                                 <mc:BulletMicroChartData
-                                                    value="120"
+                                                    value="83"
                                                     color="Good"
                                                 />
                                             </mc:actual>
@@ -228,15 +222,15 @@
                                                     color="Error"
                                                 />
                                                 <mc:BulletMicroChartData
+                                                    value="25"
+                                                    color="Critical"
+                                                />
+                                                <mc:BulletMicroChartData
                                                     value="50"
                                                     color="Critical"
                                                 />
                                                 <mc:BulletMicroChartData
-                                                    value="150"
-                                                    color="Critical"
-                                                />
-                                                <mc:BulletMicroChartData
-                                                    value="200"
+                                                    value="75"
                                                     color="Error"
                                                 />
                                             </mc:thresholds>
@@ -246,31 +240,31 @@
 
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="Revenue Dynamics"
+                                    header="ABAP to FS/TS"
                                     frameType="TwoByOne"
                                 >
                                     <TileContent>
                                         <mc:ComparisonMicroChart
-                                            scale="M"
+                                            scale="P"
                                             view="Wide"
                                             size="Responsive"
                                         >
                                             <mc:data>
                                                 <mc:ComparisonMicroChartData
-                                                    title="Americas"
-                                                    value="10"
-                                                    color="Critical"
-                                                />
-                                                <mc:ComparisonMicroChartData
-                                                    title="EMEA"
-                                                    value="50"
+                                                    title="FS"
+                                                    value="125"
                                                     color="Good"
                                                 />
                                                 <mc:ComparisonMicroChartData
+                                                    title="TS"
+                                                    value="95"
+                                                    color="Critical"
+                                                />
+                                                <!-- <mc:ComparisonMicroChartData
                                                     title="APAC"
                                                     value="-20"
                                                     color="Error"
-                                                />
+                                                /> -->
                                             </mc:data>
                                         </mc:ComparisonMicroChart>
                                     </TileContent>
@@ -279,23 +273,21 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="Effort for FS to ABAP"
                                     press="press"
                                     mode="ArticleMode"
                                 >
-                                    <TileContent unit="EUR">
+                                    <TileContent unit="ABAP">
                                         <mc:BulletMicroChart
-                                            size="XS"
-                                            scale="M"
-                                            targetValue="100"
-                                            forecastValue="110"
+                                            size="S"
+                                            scale="%"
+                                            forecastValue="100"
                                             class="sapUiSmallMargin"
                                             press="press"
                                         >
                                             <mc:actual>
                                                 <mc:BulletMicroChartData
-                                                    value="120"
+                                                    value="76"
                                                     color="Critical"
                                                 />
                                             </mc:actual>
@@ -305,169 +297,36 @@
                                                     color="Error"
                                                 />
                                                 <mc:BulletMicroChartData
+                                                    value="25"
+                                                    color="Critical"
+                                                />
+                                                <mc:BulletMicroChartData
                                                     value="50"
                                                     color="Critical"
                                                 />
                                                 <mc:BulletMicroChartData
-                                                    value="150"
-                                                    color="Critical"
-                                                />
-                                                <mc:BulletMicroChartData
-                                                    value="200"
+                                                    value="75"
                                                     color="Error"
                                                 />
                                             </mc:thresholds>
                                         </mc:BulletMicroChart>
                                     </TileContent>
                                 </GenericTile>
-                                <GenericTile
-                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="Revenue Dynamics"
-                                    frameType="OneByOne"
-                                >
-                                    <TileContent>
-                                        <mc:AreaMicroChart
-                                            size="Responsive"
-                                            minXValue="0"
-                                            maxXValue="100"
-                                            minYValue="0"
-                                            maxYValue="100"
-                                        >
-                                            <mc:firstXLabel>
-                                                <mc:AreaMicroChartLabel
-                                                    label="June 1"
-                                                    color="Good"
-                                                />
-                                            </mc:firstXLabel>
-                                            <mc:lastXLabel>
-                                                <mc:AreaMicroChartLabel
-                                                    label="June 30"
-                                                    color="Critical"
-                                                />
-                                            </mc:lastXLabel>
-                                            <mc:firstYLabel>
-                                                <mc:AreaMicroChartLabel
-                                                    label="0M"
-                                                    color="Good"
-                                                />
-                                            </mc:firstYLabel>
-                                            <mc:lastYLabel>
-                                                <mc:AreaMicroChartLabel
-                                                    label="80M"
-                                                    color="Critical"
-                                                />
-                                            </mc:lastYLabel>
-                                            <mc:chart>
-                                                <mc:AreaMicroChartItem>
-                                                    <mc:points>
-                                                        <mc:AreaMicroChartPoint
-                                                            x="0"
-                                                            y="0"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="30"
-                                                            y="20"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="60"
-                                                            y="20"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="100"
-                                                            y="80"
-                                                        />
-                                                    </mc:points>
-                                                </mc:AreaMicroChartItem>
-                                            </mc:chart>
-                                            <mc:target>
-                                                <mc:AreaMicroChartItem>
-                                                    <mc:points>
-                                                        <mc:AreaMicroChartPoint
-                                                            x="0"
-                                                            y="0"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="30"
-                                                            y="30"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="60"
-                                                            y="40"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="100"
-                                                            y="90"
-                                                        />
-                                                    </mc:points>
-                                                </mc:AreaMicroChartItem>
-                                            </mc:target>
-                                            <mc:maxThreshold>
-                                                <mc:AreaMicroChartItem
-                                                    color="Good"
-                                                >
-                                                    <mc:points>
-                                                        <mc:AreaMicroChartPoint
-                                                            x="0"
-                                                            y="0"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="30"
-                                                            y="40"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="60"
-                                                            y="50"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="100"
-                                                            y="100"
-                                                        />
-                                                    </mc:points>
-                                                </mc:AreaMicroChartItem>
-                                            </mc:maxThreshold>
-                                            <mc:minThreshold>
-                                                <mc:AreaMicroChartItem
-                                                    color="Error"
-                                                >
-                                                    <mc:points>
-                                                        <mc:AreaMicroChartPoint
-                                                            x="0"
-                                                            y="0"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="30"
-                                                            y="20"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="60"
-                                                            y="30"
-                                                        />
-                                                        <mc:AreaMicroChartPoint
-                                                            x="100"
-                                                            y="70"
-                                                        />
-                                                    </mc:points>
-                                                </mc:AreaMicroChartItem>
-                                            </mc:minThreshold>
-                                        </mc:AreaMicroChart>
-                                    </TileContent>
-                                </GenericTile>
+                                
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="ABAP to FS"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                                        footer="Documents Created"
                                     >
                                         <NumericContent
-                                            scale="M"
-                                            value="1.96"
-                                            valueColor="Error"
+                                            scale="FS"
+                                            value="90"
+                                            valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
                                         />
@@ -484,13 +343,13 @@
                             <HBox>
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="Country-Specific Profit Margin"
+                                    header="FS to ABAP Chart of Effort/Day"
                                 >
                                     <TileContent
-                                        unit="EUR"
+                                    footer="47 Days Effort Savings"
                                     >
                                         <mc:LineMicroChart
-                                            threshold="32"
+                                            threshold="12"
                                             size="Responsive"
                                             showPoints="true"
                                             color="{above: 'Good', below: 'Error'}">
@@ -526,19 +385,17 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="Effort Savings for ABAP to FS"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                                    footer="27 Days Effort Savings"
                                     >
                                         <NumericContent
-                                            scale="M"
-                                            value="1.96"
-                                            valueColor="Error"
+                                            scale="D"
+                                            value="27"
+                                            valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
                                         />
@@ -548,66 +405,65 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Country-Specific Profit Margin"
-                                    subheader="Expenses"
+                                    header="Daily Application Usage"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        unit="EUR"
                                         footer="Current Quarter"
                                     >
                                         <NumericContent
-                                            scale="M"
-                                            value="1.96"
-                                            valueColor="Error"
-                                            indicator="Up"
+                                            scale="Employees"
+                                            value="0"
+                                            valueColor="Critical"
+                                            indicator="None"
                                             withMargin="false"
                                         />
                                     </TileContent>
                                 </GenericTile>
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="Share of Votes Processed"
+                                    header="Employees/Number of Employees Using the Application"
+                                    subheader="Monthly"
                                     frameType="TwoByOne"
                                 >
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                                      
+                                        footer="ABAP to TS"
                                     >
                                         <content>
                                             <mc:HarveyBallMicroChart
-                                                total="100"
+                                                total="180"
                                                 size="Responsive"
                                                 alignContent="Right"
-                                                totalScale="Mrd"
+                                                totalScale="P"
                                             >
                                                 <mc:items>
                                                     <mc:HarveyBallMicroChartItem
-                                                        fraction="85"
-                                                        color="Good"
-                                                        fractionScale="Mrd"
+                                                        fraction="143"
+                                                        color="Critical"
+                                                        fractionScale="P"
                                                     />
                                                 </mc:items>
                                             </mc:HarveyBallMicroChart>
                                         </content>
                                     </TileContent>
                                     <TileContent
-                                        unit="EUR"
-                                        footer="Current Quarter"
+                   
+                                        footer="FS to ABAP"
                                     >
                                         <content>
                                             <mc:HarveyBallMicroChart
-                                                total="100"
+                                                total="127"
                                                 size="Responsive"
                                                 alignContent="Right"
-                                                totalScale="Mrd"
+                                                totalScale="P"
                                             >
                                                 <mc:items>
                                                     <mc:HarveyBallMicroChartItem
-                                                        fraction="65"
+                                                        fraction="118"
                                                         color="Good"
-                                                        fractionScale="Mrd"
+                                                        fractionScale="P"
                                                     />
                                                 </mc:items>
                                             </mc:HarveyBallMicroChart>

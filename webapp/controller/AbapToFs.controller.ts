@@ -15,6 +15,7 @@ import JSONModel from "sap/ui/model/json/JSONModel";
 import MessageBox from "sap/m/MessageBox";
 import Button from "sap/m/Button";
 import Context from "sap/ui/model/Context";
+import SmartTable from "sap/ui/comp/smarttable/SmartTable";
 
 declare global {
     /**
@@ -169,9 +170,11 @@ export default class AbapToFs extends BaseController {
     private _createQuery(isAbapToTs: boolean, docNo?: string) {
         const model = this.getModel<JSONModel>("abapModel"),
             type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
+            packageName = model.getProperty("/Devpackage"),
+            programName = model.getProperty("/Devprogram"),
             _q = {
-                Devpackage: model.getProperty("/Devpackage"),
-                Devprogram: model.getProperty("/Devprogram"),
+                Devpackage: packageName,
+                Devprogram: programName,
                 IvDoctype: type,
                 Docno: docNo
             };
@@ -179,7 +182,9 @@ export default class AbapToFs extends BaseController {
         this.openBusyDialog();
         this.getModel<ODataModel>().create(`/AbapQuerySet`, _q, {
             success: (response: any) => {
-                this._readDocuments(type);
+                 // @ts-ignore
+                this.byId("smartTable").rebindTable();
+                this._readDocuments(type, undefined, packageName, programName);
                 (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this.closeBusyDialog();
             }
@@ -189,9 +194,11 @@ export default class AbapToFs extends BaseController {
     private _updateQuery(isAbapToTs: boolean, query: string) {
         const model = this.getModel<JSONModel>("abapModel"),
             type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
+            packageName = model.getProperty("/Devpackage"),
+            programName = model.getProperty("/Devprogram"),
             _q = {
-                Devpackage: model.getProperty("/Devpackage"),
-                Devprogram: model.getProperty("/Devprogram"),
+                Devpackage: packageName,
+                Devprogram: programName,
                 IvDoctype: type,
                 Docno: this._docNo
             },
@@ -204,7 +211,7 @@ export default class AbapToFs extends BaseController {
         this.getModel<ODataModel>().update(`/${path}`, _q, {
             success: (response: any) => {
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
-                this._readDocuments(type);
+                this._readDocuments(type, undefined, packageName, programName);
                 this.createSuccessDialog();
                 BusyIndicator.hide();
             }

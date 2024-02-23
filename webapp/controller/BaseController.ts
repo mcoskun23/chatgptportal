@@ -333,6 +333,8 @@ export default abstract class BaseController extends Controller {
             "method": "POST",
             urlParameters: feedBack,
             success: (response: any) => {
+                MessageToast.show(this.getResourceBundle().getText("Success") as string);
+                this.onPressCloseFB();
                 BusyIndicator.hide();
             }
         });

@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        title="{i18n>Regenerate}"
+        icon="sap-icon://synchronize"
+    >
+        <content>
+            <VBox
+                fitContainer="true"
+                class="sapUiSmallMargin"
+            >
+                <!-- <Label text="{i18n>Name}" />
+                <Input value="{/Name}" />
+                <Label text="{i18n>Surname}" />
+                <Input value="{/Surname}" /> -->
+                <!-- <Label text="{i18n>Regenerate}" /> -->
+                <TextArea
+                    id="feedback"
+                    width="100%"
+                    growing="true"
+                />
+            </VBox>
+        </content>
+        <beginButton>
+            <Button
+                type="Emphasized"
+                text="{i18n>Regenerate}"
+                icon="sap-icon://synchronize"
+                press="onCreateReg"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="{i18n>Close}"
+                press="onPressCloseRG"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

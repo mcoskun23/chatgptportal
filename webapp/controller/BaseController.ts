@@ -19,7 +19,7 @@ import FilterOperator from "sap/ui/model/FilterOperator";
 import Filter from "sap/ui/model/Filter";
 import Table from "sap/m/Table";
 import Fragment from "sap/ui/core/Fragment";
-import { DocumentTypeEnum, FeedBack } from "../model/models";
+import { DocumentTypeEnum, FeedBack, Regenerate } from "../model/models";
 import Text from "sap/m/Text";
 import Image from "sap/m/Image";
 import TextArea from "sap/m/TextArea";
@@ -38,6 +38,7 @@ export default abstract class BaseController extends Controller {
     _abapDialog: Promise<Dialog>;
     _busyDialog: Promise<Dialog>;
     _feedbackDialog: Promise<Dialog>;
+    _regenerateDialog: Promise<Dialog>;
     _docNo: string;
     _type: DocumentTypeEnum;
     /**
@@ -268,6 +269,39 @@ export default abstract class BaseController extends Controller {
         });
     }
 
+    private onPressRegenerate(type?: DocumentTypeEnum) {
+        this._type = (type) ? type : this._type;
+
+        if (!this._docNo) {
+            MessageToast.show(this.getResourceBundle().getText("DocMsg") as string)
+            return;
+        }
+
+        if (!this._regenerateDialog) {
+            this._regenerateDialog = Fragment.load({
+                id: this.getView()?.getId(),
+                name: "com.ntt.chatgptportal.view.fragment.RegenerateDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
+
+        this._regenerateDialog.then((dialog) => {
+            dialog.open();
+        });
+    }
+
+    private onPressCloseRG() {
+        this._regenerateDialog.then((dialog) => {
+            dialog.close();
+            dialog.destroy();
+            // @ts-ignore
+            this._regenerateDialog = undefined;
+        });
+    }
+
     public _readDocuments(type: DocumentTypeEnum, dialog?: Dialog, packageName?: string, programName?: string) {
         const data = this.getModel<JSONModel>("fsModel")?.getData();
 
@@ -307,6 +341,23 @@ export default abstract class BaseController extends Controller {
         });
     }
 
+    private onCreateReg() {
+
+        const fsModel = this.getModel<JSONModel>("fsModel"),
+            abapModel = this.getModel<JSONModel>("abapModel"),
+            regenerate: Regenerate = {
+                Doctype: this._type,
+                Docno: this._docNo,
+                Developmentid: (fsModel) ? fsModel.getProperty("/Developmentid") : "",
+                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : "",
+                ProcessType: (fsModel) ? fsModel.getProperty("/ProcessType") : "",
+                Devpackage: (abapModel) ? abapModel.getProperty("/Devpackage") : "",
+                Devprogram: (abapModel) ? abapModel.getProperty("/Devprogram") : "",
+                Feedback: (this.byId("feedback") as TextArea).getValue()
+            }
+
+        this._cfRegenerate(regenerate);
+    }
 
     private onSaveFB() {
 
@@ -338,6 +389,20 @@ export default abstract class BaseController extends Controller {
                 BusyIndicator.hide();
             }
         });
-
     }
+
+    public _cfRegenerate(regenerate: Regenerate) {
+
+        this.openBusyDialog();
+        this.getModel<ODataModel>().callFunction("/Regenerate", {
+            "method": "POST",
+            urlParameters: regenerate,
+            success: (response: any) => {
+                (this.byId("report") as TextArea).setValue(response.Query);
+                this.onPressCloseRG();
+                this.closeBusyDialog();
+            }
+        });
+    }
+
 }

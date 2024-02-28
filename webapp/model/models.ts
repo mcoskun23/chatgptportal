@@ -24,6 +24,17 @@ export type FeedBack = {
     Content: string
 }
 
+export type Regenerate = {
+    Developmentid: string,
+    Projectid: string,
+    ProcessType: ProcessTypeEnum
+    Devpackage: string,
+    Devprogram: string,
+    Doctype: DocumentTypeEnum,
+    Docno: string,
+    Feedback: string
+}
+
 export function createDeviceModel() {
     const model = new JSONModel(Device);
     model.setDefaultBindingMode("OneWay");

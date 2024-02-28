@@ -14,12 +14,18 @@
             />
         </content>
         <buttons>
-           <Button
-                    text="{i18n>Feedback}"
-                    type="Emphasized"
-                    icon="sap-icon://feedback"
-                    press="onPressFeedback('')"
-                />
+            <Button
+                text="{i18n>Regenerate}"
+                type="Emphasized"
+                icon="sap-icon://synchronize"
+                press="onPressRegenerate('')"
+            />
+            <Button
+                text="{i18n>Feedback}"
+                type="Emphasized"
+                icon="sap-icon://feedback"
+                press="onPressFeedback('')"
+            />
             <Button
                 text="{i18n>GenerateTS}"
                 press="onPressCreate(true)"

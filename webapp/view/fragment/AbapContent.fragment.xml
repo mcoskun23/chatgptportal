@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <ScrollContainer
+        id="scrollCont"
+        height="100%"
+        width="100%"
+        vertical="true"
+        focusable="true"
+    >
+        <content>
+            <VBox
+                fitContainer="true"
+                class="sapUiMediumMargin"
+            >
+                <core:Fragment
+                    fragmentName="com.ntt.chatgptportal.view.fragment.DialogContent"
+                    type="XML"
+                />
+                <f:SimpleForm
+                    id="form"
+                    visible="{= ${viewModel>/report} &amp;&amp; ${viewModel>/edit} }"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    singleContainerFullSize="true"
+                >
+                    <f:content>
+                        <Label text="AbapCode" />
+                        <TextArea
+                            value="{ path: 'model>/AbapCode', formatter: '.formatter.formatTextArea'}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="TimeEstimation" />
+                        <TextArea
+                            value="{model>/TimeEstimation}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </ScrollContainer>
+</core:FragmentDefinition>

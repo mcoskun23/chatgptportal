@@ -1,0 +1,112 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <ScrollContainer
+        id="scrollCont"
+        height="100%"
+        width="100%"
+        vertical="true"
+        focusable="true"
+    >
+        <content>
+            <VBox
+                fitContainer="true"
+                class="sapUiMediumMargin"
+            >
+                <core:Fragment
+                    fragmentName="com.ntt.chatgptportal.view.fragment.DialogContent"
+                    type="XML"
+                />
+                <f:SimpleForm
+                    id="form"
+                    visible="{= ${viewModel>/report} &amp;&amp; ${viewModel>/edit} }"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    singleContainerFullSize="true"
+                >
+                    <f:content>
+                        <Label text="Background" />
+                        <TextArea
+                            value="{model>/TsReport/Background}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="DataDictionary" />
+                        <TextArea
+                            value="{model>/TsReport/DataDictionary}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="DataDictionary" />
+                        <TextArea
+                            value="{model>/TsReport/DataDictionary}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="ErrorHandling" />
+                        <TextArea
+                            value="{model>/TsReport/ErrorHandling}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Interfaces" />
+                        <TextArea
+                            value="{model>/TsReport/Interfaces}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Purpose" />
+                        <TextArea
+                            value="{model>/TsReport/Purpose}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Requirements" />
+                        <TextArea
+                            value="{model>/TsReport/Requirements}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="SecurityandAuthorization" />
+                        <TextArea
+                            value="{model>/TsReport/SecurityandAuthorization}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="TechnicalDesign" />
+                        <TextArea
+                            value="{model>/TsReport/TechnicalDesign}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Title" />
+                        <TextArea
+                            value="{model>/TsReport/Title}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="TimeEstimation" />
+                        <TextArea
+                            value="{model>/TimeEstimation}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </ScrollContainer>
+</core:FragmentDefinition>

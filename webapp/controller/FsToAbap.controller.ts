@@ -1,5 +1,5 @@
 import BaseController from "./BaseController";
-import { createModel, DocumentTypeEnum, FeedBack, ProcessTypeEnum } from "../model/models";
+import { createModel, createViewModel, DocumentTypeEnum, FeedBack, ProcessTypeEnum } from "../model/models";
 import Fragment from "sap/ui/core/Fragment";
 import SelectDialog from "sap/m/SelectDialog";
 import JSONModel from "sap/ui/model/json/JSONModel";
@@ -15,7 +15,7 @@ import WizardStep from "sap/m/WizardStep";
 import Dialog from "sap/m/Dialog";
 import MessageBox from "sap/m/MessageBox";
 import DynamicPage from "sap/f/DynamicPage";
-import { formatDate, formatTime } from "../model/formatter";
+import { formatDate, formatTime, formatTextArea } from "../model/formatter";
 import Button from "sap/m/Button";
 import TextArea from "sap/m/TextArea";
 
@@ -62,7 +62,7 @@ declare global {
  */
 export default class Create extends BaseController {
     public readonly formatter = {
-        formatDate, formatTime
+        formatDate, formatTime, formatTextArea
     };
 
     _projectDialog: Promise<SelectDialog>;
@@ -77,6 +77,8 @@ export default class Create extends BaseController {
 
     private _onMatched() {
         this.setModel(createModel(), "fsModel");
+        this.setModel(createViewModel(), "viewModel");
+
         this._clearModel();
     }
 
@@ -178,14 +180,17 @@ export default class Create extends BaseController {
             this.createDocumentDialog();
     }
 
-    private onPressUpdate(isFsToTs: boolean) {
+    private onPressUpdate() {
+        const isFsToTs = this.getModel<JSONModel>("viewModel").getProperty("/isTs");
+
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = (this.byId("report") as TextArea).getValue();
-                    this._updateQuery(isFsToTs, query);
+                    const query = this._formatToJson((isFsToTs) ? "TsReport" : "AbapCode");
+                    // const query = (this.byId("report") as TextArea).getValue();
+                    // this._updateQuery(isFsToTs, query);
                 }
             }
         });
@@ -214,8 +219,6 @@ export default class Create extends BaseController {
 
         this._createQuery(false, docno);
     }
-
-  
 
     private onSave() {
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
@@ -439,7 +442,8 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
                 this._docNo = docNo;
-                (this.byId("report") as TextArea).setValue(response.EvQuery);
+                this._createDynamicForm(response.EvQuery, isFsToTs);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 BusyIndicator.hide();
             }
         });
@@ -460,7 +464,8 @@ export default class Create extends BaseController {
         this.getModel<ODataModel>().create(`/FsQuerySet`, _q, {
             success: (response: any) => {
                 this._readDocuments(type);
-                (this.byId("report") as TextArea).setValue(response.EvQuery);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
+                this._createDynamicForm(response.EvQuery, isFsToTs);
                 this.closeBusyDialog();
             }
         });

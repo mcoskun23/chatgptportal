@@ -61,3 +61,13 @@ export function createModel() {
 
     return new JSONModel(data);
 }
+
+export function createViewModel() {
+    const data = {
+        report: false,
+        edit: false,
+        isTs: false
+    }
+
+    return new JSONModel(data);
+}

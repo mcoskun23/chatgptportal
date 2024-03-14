@@ -1,0 +1,245 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <ScrollContainer
+        id="scrollCont"
+        height="100%"
+        width="100%"
+        vertical="true"
+        focusable="true"
+    >
+        <content>
+            <VBox
+                fitContainer="true"
+                class="sapUiMediumMargin"
+            >
+                <core:Fragment
+                    fragmentName="com.ntt.chatgptportal.view.fragment.DialogContent"
+                    type="XML"
+                />
+                <f:SimpleForm
+                    id="form"
+                    visible="{= ${viewModel>/report} &amp;&amp; ${viewModel>/edit} }"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    singleContainerFullSize="true"
+                >
+                    <f:content>
+                        <Label text="DevelopmentMainPurpose" />
+                        <TextArea
+                            value="{model>/DevelopmentMainPurpose}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="DevelopmentGoals" />
+                        <TextArea
+                            value="{model>/DevelopmentGoals}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="ReportMethod" />
+                        <TextArea
+                            value="{model>/ReportMethod}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="ReportTitle" />
+                        <TextArea
+                            value="{model>/ReportTitle}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Module" />
+                        <TextArea
+                            value="{model>/Module}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="LoginScreenParameters" />
+                        <Table items="{model>/LoginScreenParameters}">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <ToolbarSpacer />
+                                    <Button
+                                        text="{i18n>AddRow}"
+                                        icon="sap-icon://sys-add"
+                                        press="onPressAddParam"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Parameter}" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Required}" />
+                                </Column>
+                                <Column hAlign="End" />
+                            </columns>
+                            <items>
+                                <ColumnListItem vAlign="Middle">
+                                    <cells>
+                                        <Input
+                                            class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner"
+                                            value="{model>PropName}"
+                                        />
+                                        <Select selectedKey="{model>PropVal}">
+                                            <core:Item
+                                                key="01"
+                                                text="{i18n>Optional}"
+                                            />
+                                            <core:Item
+                                                key="02"
+                                                text="{i18n>Mandatory}"
+                                            />
+                                        </Select>
+                                        <Button
+                                            icon="sap-icon://delete"
+                                            press="onPressDeleteParam"
+                                            type="Reject"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <Label text="Lists" />
+                        <Table items="{model>/Lists}">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <ToolbarSpacer />
+                                    <Button
+                                        text="{i18n>AddRow}"
+                                        icon="sap-icon://sys-add"
+                                        press="onPressAddParam"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Parameter}" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Required}" />
+                                </Column>
+                                <Column hAlign="End" />
+                            </columns>
+                            <items>
+                                <ColumnListItem vAlign="Middle">
+                                    <cells>
+                                        <TextArea
+                                            class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner"
+                                            value="{model>PropName}"
+                                            growing="true"
+                                        />
+                                        <Select selectedKey="{model>PropVal}">
+                                            <core:Item
+                                                key="01"
+                                                text="{i18n>Optional}"
+                                            />
+                                            <core:Item
+                                                key="02"
+                                                text="{i18n>Mandatory}"
+                                            />
+                                        </Select>
+                                        <Button
+                                            icon="sap-icon://delete"
+                                            press="onPressDeleteParam"
+                                            type="Reject"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <Label text="Formulas" />
+                        <Table items="{model>/Formulas}">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <ToolbarSpacer />
+                                    <Button
+                                        text="{i18n>AddRow}"
+                                        icon="sap-icon://sys-add"
+                                        press="onPressAddParam"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Parameter}" />
+                                </Column>
+                                <Column
+                                    minScreenWidth="Tablet"
+                                    demandPopin="true"
+                                >
+                                    <Text text="{i18n>Required}" />
+                                </Column>
+                                <Column hAlign="End" />
+                            </columns>
+                            <items>
+                                <ColumnListItem vAlign="Middle">
+                                    <cells>
+                                        <Input
+                                            class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner"
+                                            value="{model>PropName}"
+                                        />
+                                        <Input
+                                            class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner"
+                                            value="{model>PropVal}"
+                                        />
+                                        <Button
+                                            icon="sap-icon://delete"
+                                            press="onPressDeleteParam"
+                                            type="Reject"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <Label text="AuthorizationObject" />
+                        <TextArea
+                            value="{model>/AuthorizationObject}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="Procedure" />
+                        <TextArea
+                            value="{model>/Procedure}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                        <Label text="TimeEstimation" />
+                        <TextArea
+                            value="{model>/TimeEstimation}"
+                            growing="true"
+                            growingMaxLines="1000000"
+                            width="100%"
+                        />
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </ScrollContainer>
+</core:FragmentDefinition>

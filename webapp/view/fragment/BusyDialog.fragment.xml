@@ -21,8 +21,10 @@
                     class="customText sapUiLargeMargin"
                 />
                 <Image
+                    height="27rem"
+                    width="27rem"
                     id="image"
-                    class="center"
+                    class="sapUiMediumMarginBottom"
                 />
             </VBox>
         </content>

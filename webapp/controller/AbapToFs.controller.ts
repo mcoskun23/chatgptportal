@@ -1,6 +1,6 @@
 import ColumnListItem from "sap/m/ColumnListItem";
-import { formatStatus, formatStatusText, formatDate, formatTime } from "../model/formatter";
-import { DocumentTypeEnum } from "../model/models";
+import { formatStatus, formatStatusText, formatDate, formatTime, formatTextArea } from "../model/formatter";
+import { DocumentTypeEnum, createViewModel } from "../model/models";
 import BaseController from "./BaseController";
 import Event from "sap/ui/base/Event";
 import ManagedObject from "sap/ui/base/ManagedObject";
@@ -39,18 +39,18 @@ declare global {
  */
 export default class AbapToFs extends BaseController {
     public readonly formatter = {
-        formatStatus, formatStatusText, formatDate, formatTime
+        formatStatus, formatStatusText, formatDate, formatTime, formatTextArea
     };
 
     _docNo: string;
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
-        // this.getRouter()?.getRoute("abaptofs")?.attachPatternMatched(this._onMatched, this);
+        this.getRouter()?.getRoute("abaptofs")?.attachPatternMatched(this._onMatched, this);
     }
 
-    // private _onMatched() {
-
-    // }
+    private _onMatched() {
+        this.setModel(createViewModel(), "viewModel");
+    }
 
     private onPressSummarize() {
         const table = this.byId("innerTable") as Table,
@@ -127,14 +127,18 @@ export default class AbapToFs extends BaseController {
         this._createQuery(isAbapToTs);
     }
 
-    private onPressUpdate(isAbapToTs: boolean) {
+    private onPressUpdate() {
+
+        const isAbapToTs = this.getModel<JSONModel>("viewModel").getProperty("/isTs");
+
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = (this.byId("report") as TextArea).getValue();
-                    this._updateQuery(isAbapToTs, query);
+                    const query = this._formatToJson((isAbapToTs) ? "TsReport" : "FsReport");
+                    // const query = (this.byId("report") as TextArea).getValue();
+                    // this._updateQuery(isAbapToTs, query);
                 }
             }
         });
@@ -161,7 +165,8 @@ export default class AbapToFs extends BaseController {
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
                 this._docNo = docNo;
-                (this.byId("report") as TextArea).setValue(response.EvQuery);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
+                this._createDynamicForm(response.EvQuery, isAbapToTs);
                 BusyIndicator.hide();
             }
         });
@@ -182,10 +187,11 @@ export default class AbapToFs extends BaseController {
         this.openBusyDialog();
         this.getModel<ODataModel>().create(`/AbapQuerySet`, _q, {
             success: (response: any) => {
-                 // @ts-ignore
+                // @ts-ignore
                 this.byId("smartTable").rebindTable();
                 this._readDocuments(type, undefined, packageName, programName);
-                (this.byId("report") as TextArea).setValue(response.EvQuery);
+                this._createDynamicForm(response.EvQuery, isAbapToTs);
+                // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this.closeBusyDialog();
             }
         });
@@ -228,7 +234,15 @@ export default class AbapToFs extends BaseController {
         this.getModel<ODataModel>().create("/SummarizeSet", data, {
             success: (response: any) => {
                 this.closeBusyDialog();
-                MessageBox.information(response.Query);
+                const _q = JSON.parse(response.Query),
+                    queryKeys = Object.keys(_q);
+
+                let query = "";
+                queryKeys.forEach(e => {
+                    query += `${e}\u000a${this._formatValue(_q[e])}\u000a`;
+                });
+
+                MessageBox.information(query);
             }
         });
     }

@@ -43,3 +43,6 @@ export function formatStatusText(value: boolean) {
     return (value) ? resourceBundle.getText("Created") : resourceBundle.getText("NonCreated");
 
 }
+export function formatTextArea(value: Record<string, any>) {
+    return (Array.isArray(value)) ? value.join("\u000a") : value;
+}

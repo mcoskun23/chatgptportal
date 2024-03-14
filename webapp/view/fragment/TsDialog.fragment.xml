@@ -9,7 +9,7 @@
     >
         <content>
             <core:Fragment
-                fragmentName="com.ntt.chatgptportal.view.fragment.DialogContent"
+                fragmentName="com.ntt.chatgptportal.view.fragment.TsContent"
                 type="XML"
             />
         </content>
@@ -31,11 +31,11 @@
                 press="onPressCreate(true)"
                 type="Emphasized"
             />
-            <Button
+            <!-- <Button
                 text="{i18n>Save}"
                 type="Accept"
                 press="onPressUpdate(true)"
-            />
+            /> -->
             <Button
                 text="{i18n>Close}"
                 press="onPressClose"

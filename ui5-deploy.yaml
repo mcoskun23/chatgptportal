@@ -15,8 +15,8 @@ builder:
       configuration:
         ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepte
         target:
-          url: https://bfes13052.solco.global.nttdata.com:44300/
-          client: "200"
+          url: https://sap.ndbstr.com:1081/
+          client: "100"
         log: 0  
         app:
           name: ZGPT_PRTL

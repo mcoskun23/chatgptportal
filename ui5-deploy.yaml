@@ -13,14 +13,13 @@ builder:
     - name: deploy-to-abap
       afterTask: generateCachebusterInfo
       configuration:
-        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepte
+        ignoreCertError: true
         target:
           url: https://sap.ndbstr.com:1081/
           client: "100"
-        log: 0  
         app:
           name: ZGPT_PRTL
           package: ZGPT_004
-          transport: S22K908575
+          transport: NP4K902940
         exclude:
           - /test/

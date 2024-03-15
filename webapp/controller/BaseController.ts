@@ -10,7 +10,6 @@ import JSONModel from "sap/ui/model/json/JSONModel";
 import ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import BusyIndicator from "sap/ui/core/BusyIndicator";
 import View from "sap/ui/core/mvc/View";
-import IllustratedMessage from "sap/m/IllustratedMessage";
 import Button from "sap/m/Button";
 import Dialog from "sap/m/Dialog";
 import ManagedObject from "sap/ui/base/ManagedObject";
@@ -432,7 +431,7 @@ export default abstract class BaseController extends Controller {
                 type: "Message",
                 title: this.getResourceBundle().getText("Success"),
                 content: [
-                    new IllustratedMessage({ illustrationType: "sapIllus-SuccessHighFive" }),
+                    // new IllustratedMessage({ illustrationType: "sapIllus-SuccessHighFive" }),
                 ],
                 buttons: [
                     new Button({

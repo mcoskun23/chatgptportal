@@ -22,28 +22,20 @@ import { DocumentTypeEnum, FeedBack, Regenerate } from "../model/models";
 import Text from "sap/m/Text";
 import Image from "sap/m/Image";
 import TextArea from "sap/m/TextArea";
-import MessageBox from "sap/m/MessageBox";
 import MessageToast from "sap/m/MessageToast";
 import SimpleForm from "sap/ui/layout/form/SimpleForm";
-import Label from "sap/m/Label";
-import UI5Element from "sap/ui/core/Element";
 import ScrollContainer from "sap/m/ScrollContainer";
 import OverflowToolbar from "sap/m/OverflowToolbar";
-import List from "sap/m/List";
-import InputListItem from "sap/m/InputListItem";
-import Select from "sap/m/Select";
-import Item from "sap/ui/core/Item";
-import ColumnListItem from "sap/m/ColumnListItem";
-import Column from "sap/m/Column";
-import Toolbar from "sap/m/Toolbar";
-import ToolbarSpacer from "sap/m/ToolbarSpacer";
-import Input from "sap/m/Input";
+import { formatText } from "../model/formatter";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default abstract class BaseController extends Controller {
 
+    public readonly formatter = {
+        formatText
+    };
 
     _successDialog: Dialog
     _fsDialog: Promise<Dialog>;
@@ -139,8 +131,6 @@ export default abstract class BaseController extends Controller {
                 (this.byId("scrollCont") as ScrollContainer).scrollToElement(this.byId("toolbar") as OverflowToolbar);
             }, 5);
         }
-
-
     }
 
     public onPressCopy(event: Event) {
@@ -150,9 +140,8 @@ export default abstract class BaseController extends Controller {
     }
 
     public _createCopyText(): string {
-        const form = this.byId("form") as SimpleForm;
-        const data = this.getModel<JSONModel>("model").getData()
-        const content = form.getContent();
+        const form = this.byId("form") as SimpleForm,
+            data = this.getModel<JSONModel>("model").getData();
 
         let copyText = "";
 
@@ -162,34 +151,22 @@ export default abstract class BaseController extends Controller {
                 const inlineKeys: string[] = Object.keys(data[e]);
                 inlineKeys.forEach(x => {
                     copyText += "\u000a" + x + "\u000a";
-                    copyText += this._formatValue(data[e][x]);
+                    copyText += this.formatter.formatText(data[e][x], this.getResourceBundle());
                 });
             } else {
                 copyText += "\u000a" + e + "\u000a";
-                copyText += this._formatValue(data[e]);
+                copyText += this.formatter.formatText(data[e], this.getResourceBundle());
             }
         });
-
-        // if (Array.isArray(content)) {
-        //     for (const control of content) {
-        //         if (control instanceof TextArea) {
-        //             copyText += control.getValue() + "\u000a";
-        //         } else if (control instanceof Label) {
-        //             copyText += control.getText() + "\u000a";
-        //         } else if (control instanceof Table) {
-        //             // copyText += control.getText() + "\u000a";
-        //             debugger;
-        //         }
-        //     }
-        // }
-
         return copyText;
     }
 
     public _createDynamicForm(report?: string, isTs?: boolean) {
-        this.getModel<JSONModel>("viewModel").setProperty("/report", true);
-        this.getModel<JSONModel>("viewModel").setProperty("/edit", false);
-        this.getModel<JSONModel>("viewModel").setProperty("/isTs", false);
+        const model = this.getModel<JSONModel>("viewModel");
+        //clear
+        model.setProperty("/report", true);
+        model.setProperty("/edit", false);
+        model.setProperty("/isTs", false);
 
         if (!report) {
             report = this._jsonString;
@@ -197,177 +174,31 @@ export default abstract class BaseController extends Controller {
             this._jsonString = report;
         }
 
-        const form = this.byId("form") as SimpleForm,
-            txtForm = this.byId("txtForm") as TextArea,
+        const txtForm = this.byId("txtForm") as Text,
             _q: Record<string, any> = JSON.parse(report),
             keys: string[] = Object.keys(_q);
 
+        //show with space
+        keys.forEach(e => {
+            if (e === "TsReport") {
+                const inlineKeys: string[] = Object.keys(_q[e]);
+                inlineKeys.forEach(x => {
+                    _q[e][x] = this.formatter.formatText(_q[e][x], this.getResourceBundle())
+                });
+            } else if (e !== "LoginScreenParameters" && e !== "Lists" &&
+                e !== "Formulas") {
+                _q[e] = this.formatter.formatText(_q[e], this.getResourceBundle())
+            }
+        });
+
         this.setModel(new JSONModel(_q), "model");
 
-
-        // form.removeAllContent();
-
-        // keys.forEach(e => {
-        //     if (e === "TsReport") {
-        //         const inlineKeys: string[] = Object.keys(_q[e]);
-        //         inlineKeys.forEach(x => {
-        //             const [label, textArea] = this._createFormItem(x, _q[e][x]);
-        //             form.addContent(label);
-        //             form.addContent(textArea);
-        //         });
-        //     } else {
-        //         if (e === "LoginScreenParameters" || e === "Lists" ||
-        //             e === "Formulas") {
-        //             const [label, table] = this._createFormTable(e, _q[e]);
-        //             form.addContent(label);
-        //             form.addContent(table);
-        //         } else {
-        //             const [label, textArea] = this._createFormItem(e, _q[e]);
-        //             form.addContent(label);
-        //             form.addContent(textArea);
-
-        //         }
-        //     }
-        // });
-
-
-        txtForm.setValue(this._createCopyText());
+        txtForm.setText(this._createCopyText());
 
         setTimeout(() => {
             (this.byId("scrollCont") as ScrollContainer).scrollToElement(this.byId("toolbar") as OverflowToolbar);
         }, 5);
 
-    }
-
-    private _createFormItem(key: string, value: any): [Label, TextArea] {
-
-        const label = new Label({ text: key }),
-            textAreaValue: string = this._formatValue(value),
-            textArea = new TextArea({ value: textAreaValue, growing: true, growingMaxLines: 1000000, width: "100%" });
-
-        return [label, textArea];
-    }
-
-    public _createFormTable(key: string, value: any): [Label, Table] {
-        const label = new Label({ text: key }),
-            table = new Table({
-                headerToolbar: new Toolbar({
-                    content: [
-                        new ToolbarSpacer(),
-                        new Button({
-                            text: "Add",
-                            icon: "sap-icon://sys-add",
-                            type: "Emphasized"
-                        })
-                    ]
-                }),
-                columns: [
-                    new Column({
-                        header: new Text({
-                            text: "Column1"
-                        })
-                    }),
-                    new Column({
-                        header: new Text({
-                            text: "Column2"
-                        })
-                    }),
-                    new Column({
-                        header: new Text(),
-                        hAlign: "End"
-                    })
-                ],
-                items: [
-                    new ColumnListItem({
-                        cells: [
-                            new Input({
-                                value: "123"
-                            }),
-                            new Select({
-                                selectedKey: "01",
-                                items: [
-                                    new Item({ key: "01", text: "Opsiyonel" }),
-                                    new Item({ key: "02", text: "Zorunlu" })
-                                ]
-                            }),
-                            new Button({ icon: "sap-icon://delete", type: "Reject" })
-                        ]
-                    }),
-                    new ColumnListItem({
-                        cells: [
-                            new Input({
-                                value: "123"
-                            }),
-                            new Select({
-                                items: [
-                                    new Item({ key: "01", text: "Opsiyonel" }),
-                                    new Item({ key: "02", text: "Zorunlu" })
-                                ]
-                            }),
-                            new Button({ icon: "sap-icon://delete", type: "Reject" })
-                        ]
-                    }),
-                    new ColumnListItem({
-                        cells: [
-                            new Input({
-                                value: "123"
-                            }),
-                            new Input({
-                                value: "123"
-                            }),
-                            new Button({ icon: "sap-icon://delete", type: "Reject" })
-                        ]
-                    })
-                ]
-            });
-
-        return [label, table];
-
-    }
-
-    public _formatValue(value: string): string {
-        value = Array.isArray(value) ? value.map(x => {
-            if (x.PropName) {
-                return `${x.PropName}:${(x.PropVal) === "01" ? "Opsiyonel" : x.PropVal === "02" ? "Zorunlu" : x.PropVal}`;
-            }
-            else
-                return x;
-        }).join("\u000a") : value;
-
-        return value;
-    }
-
-    public _formatToJson(type: string): string {
-        const form = this.byId("form") as SimpleForm;
-        const content = form.getContent();
-        const json: Record<string, any> = {};
-
-        if (type === "TsReport") {
-            json[type] = {};
-        }
-
-        if (Array.isArray(content)) {
-            for (let i = 0; i < content.length; i += 2) {
-                const label = content[i] as Label;
-                const valueControl = content[i + 1];
-
-                if (label instanceof Label) {
-                    const labelText = label.getText(); // @ts-ignore
-                    const value = valueControl.getValue().trim();
-                    const splitValue = value.split("\u000a");
-
-                    if (labelText === "TimeEstimation") {
-                        json[labelText] = value;
-                    } else if (type === "TsReport") {
-                        json[type][labelText] = splitValue;
-                    } else {
-                        json[labelText] = splitValue;
-                    }
-                }
-            }
-        }
-
-        return JSON.stringify(json);
     }
 
     private onPressDownload(event: Event) {

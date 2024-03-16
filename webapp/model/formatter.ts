@@ -1,4 +1,7 @@
+import ResourceBundle from "sap/base/i18n/ResourceBundle";
 import DateFormat from "sap/ui/core/format/DateFormat";
+import Controller from "sap/ui/core/mvc/Controller";
+import ResourceModel from "sap/ui/model/resource/ResourceModel";
 
 /**
 * Rounds the currency value to 2 digits
@@ -12,6 +15,19 @@ export function formatValue(value: string): string {
 
 export function formatNumber(value: string): string {
     return parseFloat(value).toFixed(2).toString();
+}
+
+export function formatText(value: Record<string, any>, resourceBundle: ResourceBundle) {
+
+    return Array.isArray(value) ? value.map(x => {
+        if (x.PropName) {
+            return `${x.PropName}:${(x.PropVal) === "01" ? resourceBundle.getText("Optional") : x.PropVal === "02" ?
+                resourceBundle.getText("Mandatory") : x.PropVal}`;
+        }
+        else
+            return x;
+    }).join("\u000a") : value;
+
 }
 
 export function formatDate(date: Date) {
@@ -36,13 +52,10 @@ export function formatStatus(value: boolean) {
 
 }
 
-export function formatStatusText(value: boolean) {
-    // @ts-ignore
-    const resourceBundle = this.getResourceBundle();
+export function formatStatusText(this: Controller, value: boolean) {
+    const resourceBundle = <ResourceBundle>(<ResourceModel>this?.getOwnerComponent()?.getModel("i18n"))?.getResourceBundle();
 
     return (value) ? resourceBundle.getText("Created") : resourceBundle.getText("NonCreated");
 
 }
-export function formatTextArea(value: Record<string, any>) {
-    return (Array.isArray(value)) ? value.join("\u000a") : value;
-}
+

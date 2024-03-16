@@ -128,10 +128,7 @@
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
-                                <Column
-                                    minScreenWidth="Tablet"
-                                    demandPopin="true"
-                                >
+                                <Column>
                                     <Text text="{i18n>Parameter}" />
                                 </Column>
                                 <Column

@@ -1,5 +1,5 @@
 import BaseController from "./BaseController";
-import { createModel, createViewModel, DocumentTypeEnum, FeedBack, ProcessTypeEnum } from "../model/models";
+import { createModel, createViewModel, DocumentTypeEnum, ProcessTypeEnum } from "../model/models";
 import Fragment from "sap/ui/core/Fragment";
 import SelectDialog from "sap/m/SelectDialog";
 import JSONModel from "sap/ui/model/json/JSONModel";
@@ -15,9 +15,9 @@ import WizardStep from "sap/m/WizardStep";
 import Dialog from "sap/m/Dialog";
 import MessageBox from "sap/m/MessageBox";
 import DynamicPage from "sap/f/DynamicPage";
-import { formatDate, formatTime, formatTextArea } from "../model/formatter";
 import Button from "sap/m/Button";
 import TextArea from "sap/m/TextArea";
+import { formatDate, formatTime, formatText } from "../model/formatter";
 
 
 declare global {
@@ -61,8 +61,9 @@ declare global {
  * @namespace com.ntt.chatgptportal.controller
  */
 export default class Create extends BaseController {
+
     public readonly formatter = {
-        formatDate, formatTime, formatTextArea
+        formatDate, formatTime, formatText
     };
 
     _projectDialog: Promise<SelectDialog>;
@@ -188,7 +189,7 @@ export default class Create extends BaseController {
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = this._formatToJson((isFsToTs) ? "TsReport" : "AbapCode");
+                    // const query = this._formatToJson((isFsToTs) ? "TsReport" : "AbapCode");
                     // const query = (this.byId("report") as TextArea).getValue();
                     // this._updateQuery(isFsToTs, query);
                 }

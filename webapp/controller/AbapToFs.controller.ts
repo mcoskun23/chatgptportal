@@ -1,5 +1,5 @@
 import ColumnListItem from "sap/m/ColumnListItem";
-import { formatStatus, formatStatusText, formatDate, formatTime, formatTextArea } from "../model/formatter";
+import { formatStatus, formatStatusText, formatDate, formatTime, formatText } from "../model/formatter";
 import { DocumentTypeEnum, createViewModel } from "../model/models";
 import BaseController from "./BaseController";
 import Event from "sap/ui/base/Event";
@@ -33,13 +33,12 @@ declare global {
     }
 }
 
-
 /**
  * @namespace com.ntt.chatgptportal.controller
  */
 export default class AbapToFs extends BaseController {
     public readonly formatter = {
-        formatStatus, formatStatusText, formatDate, formatTime, formatTextArea
+        formatStatus, formatStatusText, formatDate, formatTime, formatText
     };
 
     _docNo: string;
@@ -136,7 +135,7 @@ export default class AbapToFs extends BaseController {
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    const query = this._formatToJson((isAbapToTs) ? "TsReport" : "FsReport");
+                    // const query = this._formatToJson((isAbapToTs) ? "TsReport" : "FsReport");
                     // const query = (this.byId("report") as TextArea).getValue();
                     // this._updateQuery(isAbapToTs, query);
                 }
@@ -239,7 +238,7 @@ export default class AbapToFs extends BaseController {
 
                 let query = "";
                 queryKeys.forEach(e => {
-                    query += `${e}\u000a${this._formatValue(_q[e])}\u000a`;
+                    query += `${e}\u000a${this.formatter.formatText(_q[e], this.getResourceBundle())}\u000a`;
                 });
 
                 MessageBox.information(query);

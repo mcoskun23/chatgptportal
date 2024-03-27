@@ -61,7 +61,20 @@ export function createModel() {
 
     return new JSONModel(data);
 }
+export function createDashboardModel() {
+    const data = {
+        FsToTs: "",
+        TsToAbap: "",
+        AbapToTs: "",
+        AbapToFs: "",
+        Summary: "",
+        Regenerate: "",
+        Daily: "",
+        DailyUserCount: ""
+    }
 
+    return new JSONModel(data);
+}
 export function createViewModel() {
     const data = {
         report: false,

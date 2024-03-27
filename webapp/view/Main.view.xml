@@ -91,17 +91,17 @@
                 <l:BlockLayoutRow>
                     <l:BlockLayoutCell title="Overview">
                         <VBox>
-                            <Title text="Insights and Monitoring" />
+                            <Title text="{i18n>dashboardTitle}" />
                             <HBox>
                                 <GenericTile
                                     class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="Generate TS/ABAP from Functional Spec"
+                                    header="{i18n>GenerateFsToAbapHeader}"
                                     press="onPressFsToAbap"
                                 >
-                                    <TileContent footer="Current Quarter">
+                                    <TileContent footer="{i18n>CurrentQuarter}">
                                         <NumericContent
                                             scale="FS"
-                                            value="125"
+                                            value="{dashboardModel>/TotalTsAbap}"
                                             valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
@@ -111,13 +111,13 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     frameType="OneByOne"
-                                    header="Generate FS/TS from Programs"
+                                    header="{i18n>GenerateFSTS}"
                                     press="onPressAbapToFs"
                                 >
-                                    <TileContent footer="Current Quarter">
+                                    <TileContent footer="{i18n>CurrentQuarter}">
                                         <NumericContent
                                             scale="P"
-                                            value="95"
+                                            value="{dashboardModel>/TotalFsTs}"
                                             valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
@@ -158,16 +158,16 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="FS to ABAP"
+                                    header="{i18n>FsToAbapHeader}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        footer="Code Created"
+                                        footer="{i18n>CodeCreated}"
                                     >
                                         <NumericContent
                                             scale="ABAP"
-                                            value="120"
+                                            value="9"
                                             valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
@@ -177,16 +177,16 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="FS to TS"
+                                    header="{i18n>FsToTs}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                    footer="Documents Created"
+                                    footer="{i18n>DocumentsCreated}"
                                     >
                                         <NumericContent
                                             scale="TS"
-                                            value="95"
+                                            value="{dashboardModel>/FsToTs}"
                                             valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
@@ -198,11 +198,11 @@
                                 <GenericTile
                                     class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Effort for FS to TS"
+                                    header="{i18n>EffortFStoTS}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
-                                    <TileContent unit="Effort savings achieved">
+                                    <TileContent unit="{i18n>EffortSavings}">
                                         <mc:BulletMicroChart
                                             size="S"
                                             scale="%"
@@ -240,7 +240,7 @@
 
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="ABAP to FS/TS"
+                                    header="{i18n>ABAPtoFSTS}"
                                     frameType="TwoByOne"
                                 >
                                     <TileContent>
@@ -252,12 +252,12 @@
                                             <mc:data>
                                                 <mc:ComparisonMicroChartData
                                                     title="FS"
-                                                    value="125"
+                                                    value="{dashboardModel>/AbapToFs}"
                                                     color="Good"
                                                 />
                                                 <mc:ComparisonMicroChartData
                                                     title="TS"
-                                                    value="95"
+                                                    value="{dashboardModel>/AbapToTs}"
                                                     color="Critical"
                                                 />
                                                 <!-- <mc:ComparisonMicroChartData
@@ -273,7 +273,7 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Effort for FS to ABAP"
+                                    header="{i18n>EffortFSABAP}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
@@ -316,16 +316,16 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="ABAP to FS"
+                                    header="{i18n>ABAPFs}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        footer="Documents Created"
+                                        footer="{i18n>DocumentsCreated}"
                                     >
                                         <NumericContent
                                             scale="FS"
-                                            value="90"
+                                            value="{dashboardModel>/AbapToFs}"
                                             valueColor="Good"
                                             indicator="Up"
                                             withMargin="false"
@@ -343,7 +343,7 @@
                             <HBox>
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    header="FS to ABAP Chart of Effort/Day"
+                                    header="{i18n>FsToAbapEffortDayChart}"
                                 >
                                     <TileContent
                                     footer="47 Days Effort Savings"
@@ -385,7 +385,7 @@
                                 <GenericTile
                                     class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
                                     size="L"
-                                    header="Effort Savings for ABAP to FS"
+                                    header="{i18n>AbapToFsEffortSavingsHeader}"
                                     press="press"
                                     mode="ArticleMode"
                                 >
@@ -410,11 +410,11 @@
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                        footer="Current Quarter"
+                                        footer="{i18n>CurrentQuarter}"
                                     >
                                         <NumericContent
                                             scale="Employees"
-                                            value="0"
+                                            value="{dashboardModel>/DailyUserCount}"
                                             valueColor="Critical"
                                             indicator="None"
                                             withMargin="false"

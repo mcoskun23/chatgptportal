@@ -29,6 +29,12 @@
                     >
                         <smartFilterBar:controlConfiguration>
                             <smartFilterBar:ControlConfiguration
+                                key="Projectid"
+                                preventInitialDataFetchInValueHelpDialog="false"
+                            />
+                        </smartFilterBar:controlConfiguration>
+                        <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration
                                 key="Devpackage"
                                 preventInitialDataFetchInValueHelpDialog="false"
                             />
@@ -53,7 +59,7 @@
                 persistencyKey="SmartVariantPKey"
                 beforeExport="onExcel"
                 beforeRebindTable="onBeforeRebindTable"
-                enableAutoBinding="true"
+                enableAutoBinding="false"
                 cd:dateFormatSettings='\{"pattern":"dd.MM.yyyy","UTC": true\}'
                 showRowCount="true"
             >
@@ -106,6 +112,18 @@
                                 />
                             </customData>
                         </Column>
+                        <Column>
+                            <Text
+                                text="{i18n>EccToS4}"
+                                wrapping="true"
+                            />
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "IsTsCreated", "leadingProperty": "IsTsCreated", "columnIndex": 5}'
+                                />
+                            </customData>
+                        </Column>
                     </columns>
                     <items>
                         <ColumnListItem>
@@ -119,6 +137,11 @@
                                     text="{ path: 'IsTsCreated', formatter: '.formatter.formatStatusText'}"
                                     status="{ path: 'IsTsCreated', formatter: '.formatter.formatStatus'}"
                                     press="onPressOpenDialog($event, '03')"
+                                />
+                                <GenericTag
+                                    text="{ path: 'IsAbapCreated', formatter: '.formatter.formatStatusText'}"
+                                    status="{ path: 'IsAbapCreated', formatter: '.formatter.formatStatus'}"
+                                    press="onPressOpenDialog($event, '07')"
                                 />
                             </cells>
                         </ColumnListItem>

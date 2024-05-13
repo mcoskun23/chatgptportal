@@ -5,7 +5,8 @@ export enum DocumentTypeEnum {
     FsToTs = "01",
     TsToAbap = "02",
     AbapToTs = "03",
-    AbapToFs = "04"
+    AbapToFs = "04",
+    EccToHana = "07"
 }
 
 export enum ProcessTypeEnum {
@@ -78,8 +79,7 @@ export function createDashboardModel() {
 export function createViewModel() {
     const data = {
         report: false,
-        edit: false,
-        isTs: false
+        edit: false
     }
 
     return new JSONModel(data);

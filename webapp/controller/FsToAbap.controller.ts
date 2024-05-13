@@ -171,7 +171,7 @@ export default class Create extends BaseController {
         const _q = (event.getSource() as Button).getBindingContext()?.getObject();
 
         // @ts-ignore
-        this._readQuery((_q.Doctype === DocumentTypeEnum.FsToTs), _q.Docno)
+        this._readQuery((_q.Doctype === DocumentTypeEnum.FsToTs), _q.Docno, _q.Doclangu)
     }
 
     private onPressCreate(isFsToTs: boolean) {
@@ -182,16 +182,18 @@ export default class Create extends BaseController {
     }
 
     private onPressUpdate() {
-        const isFsToTs = this.getModel<JSONModel>("viewModel").getProperty("/isTs");
-
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    // const query = this._formatToJson((isFsToTs) ? "TsReport" : "AbapCode");
-                    // const query = (this.byId("report") as TextArea).getValue();
-                    // this._updateQuery(isFsToTs, query);
+                    try {
+                        const model = this.getModel<JSONModel>("model").getData();
+                        this._updateQuery((this._type === DocumentTypeEnum.FsToTs), JSON.stringify(model));
+                    } catch (error) {
+                        console.log(error);
+                        MessageBox.error(this.getResourceBundle().getText("errorText") as string);
+                    }
                 }
             }
         });
@@ -428,7 +430,7 @@ export default class Create extends BaseController {
         });
     }
 
-    private _readQuery(isFsToTs: boolean, docNo: string) {
+    private _readQuery(isFsToTs: boolean, docNo: string, langu: string) {
         const model = this.getModel<JSONModel>("fsModel"),
             type = (isFsToTs) ? DocumentTypeEnum.FsToTs : DocumentTypeEnum.TsToAbap,
             path = this.getModel<ODataModel>().createKey("FsQuerySet", {
@@ -436,14 +438,17 @@ export default class Create extends BaseController {
                 Developmentid: model.getProperty("/Developmentid"),
                 ProcessType: model.getProperty("/ProcessType"),
                 IvDoctype: type,
-                IvDocno: docNo
+                IvDocno: docNo,
+                Doclangu: langu
             });
+
+        this._type = type;
 
         BusyIndicator.show();
         this.getModel<ODataModel>().read(`/${path}`, {
             success: (response: any) => {
                 this._docNo = docNo;
-                this._createDynamicForm(response.EvQuery, isFsToTs);
+                this._createDynamicForm(response.EvQuery);
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 BusyIndicator.hide();
             }
@@ -458,7 +463,8 @@ export default class Create extends BaseController {
                 Developmentid: model.getProperty("/Developmentid"),
                 ProcessType: model.getProperty("/ProcessType"),
                 IvDoctype: type,
-                IvDocno: docNo
+                IvDocno: docNo,
+                Doclangu: sap.ui.getCore().getConfiguration().getLanguage()
             };
 
         this.openBusyDialog();
@@ -466,7 +472,7 @@ export default class Create extends BaseController {
             success: (response: any) => {
                 this._readDocuments(type);
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
-                this._createDynamicForm(response.EvQuery, isFsToTs);
+                this._createDynamicForm(response.EvQuery);
                 this.closeBusyDialog();
             }
         });
@@ -480,9 +486,10 @@ export default class Create extends BaseController {
                 Developmentid: model.getProperty("/Developmentid"),
                 ProcessType: model.getProperty("/ProcessType"),
                 IvDoctype: type,
-                IvDocno: this._docNo
+                IvDocno: this._docNo,
+                Doclangu: sap.ui.getCore().getConfiguration().getLanguage()
             },
-            path = this.getModel<ODataModel>().createKey("QuerySet", _q);
+            path = this.getModel<ODataModel>().createKey("FsQuerySet", _q);
 
         // @ts-ignore
         _q.EvQuery = query;
@@ -492,7 +499,8 @@ export default class Create extends BaseController {
             success: (response: any) => {
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this._readDocuments(type);
-                this.createSuccessDialog();
+                // this.createSuccessDialog();
+                MessageBox.success(this.getResourceBundle().getText("SuccessMsg") as string);
                 BusyIndicator.hide();
             }
         });
@@ -510,7 +518,8 @@ export default class Create extends BaseController {
         BusyIndicator.show();
         this.getModel<ODataModel>().create("/HeaderSet", data, {
             success: (response: any) => {
-                this.createSuccessDialog();
+                // this.createSuccessDialog();
+                MessageBox.success(this.getResourceBundle().getText("SuccessMsg") as string);
                 BusyIndicator.hide();
             }
         });

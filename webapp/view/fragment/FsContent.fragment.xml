@@ -70,7 +70,7 @@
                                     <Button
                                         text="{i18n>AddRow}"
                                         icon="sap-icon://sys-add"
-                                        press="onPressAddParam"
+                                        press="onPressAddParam('LoginScreenParameters')"
                                     />
                                 </OverflowToolbar>
                             </headerToolbar>
@@ -108,7 +108,7 @@
                                         </Select>
                                         <Button
                                             icon="sap-icon://delete"
-                                            press="onPressDeleteParam"
+                                            press="onPressDeleteParam($event, 'LoginScreenParameters')"
                                             type="Reject"
                                         />
                                     </cells>
@@ -123,7 +123,7 @@
                                     <Button
                                         text="{i18n>AddRow}"
                                         icon="sap-icon://sys-add"
-                                        press="onPressAddParam"
+                                        press="onPressAddParam('Lists')"
                                     />
                                 </OverflowToolbar>
                             </headerToolbar>
@@ -159,7 +159,7 @@
                                         </Select>
                                         <Button
                                             icon="sap-icon://delete"
-                                            press="onPressDeleteParam"
+                                            press="onPressDeleteParam($event, 'Lists')"
                                             type="Reject"
                                         />
                                     </cells>
@@ -174,7 +174,7 @@
                                     <Button
                                         text="{i18n>AddRow}"
                                         icon="sap-icon://sys-add"
-                                        press="onPressAddParam"
+                                        press="onPressAddParam('Formulas')"
                                     />
                                 </OverflowToolbar>
                             </headerToolbar>
@@ -206,7 +206,7 @@
                                         />
                                         <Button
                                             icon="sap-icon://delete"
-                                            press="onPressDeleteParam"
+                                            press="onPressDeleteParam($event, 'Formulas')"
                                             type="Reject"
                                         />
                                     </cells>

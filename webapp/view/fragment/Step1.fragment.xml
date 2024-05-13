@@ -38,7 +38,13 @@
                 <Label text="{i18n>Reportheader}" />
                 <Input value="{fsModel>/Reportheader}" />
                 <Label text="{i18n>Devtype}" />
-                <Input value="{fsModel>/Devtype}" />
+                <!-- <Input value="{fsModel>/Devtype}" /> -->
+                <ComboBox selectedKey="{fsModel>/Devtype}">
+                    <core:Item
+                        key="01"
+                        text="{i18n>Report}"
+                    />
+                </ComboBox>
                 <Label text="{i18n>Devmodule}" />
                 <Input value="{fsModel>/Devmodule}" />
                 <Label text="{i18n>Devpurpose}" />
@@ -65,9 +71,7 @@
                     />
                 </Select>
                 <Label text="{i18n>EstTime}" />
-                <CheckBox
-                    selected="{fsModel>/EstTime}"
-                />
+                <CheckBox selected="{fsModel>/EstTime}" />
             </form:content>
         </form:SimpleForm>
     </WizardStep>

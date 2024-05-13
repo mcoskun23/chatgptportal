@@ -30,6 +30,7 @@ declare global {
     type Program = {
         Devpackage: string;
         Devprogram: string;
+        Projectid: string;
     }
 }
 
@@ -79,7 +80,7 @@ export default class AbapToFs extends BaseController {
     }
 
     private onPressOpenDialog(event: Event, type: string) {
-        let _q = (event.getSource() as ManagedObject).getBindingContext()?.getObject();
+        let _q: any = (event.getSource() as ManagedObject).getBindingContext()?.getObject();
 
         if (!_q) {
             const items = (this.byId("innerTable") as Table).getSelectedItems();
@@ -97,10 +98,12 @@ export default class AbapToFs extends BaseController {
 
         this.setModel(new JSONModel(_q), "abapModel");
 
-        if (type === DocumentTypeEnum.AbapToTs) // @ts-ignore
-            this.openTSDialog(DocumentTypeEnum.AbapToTs, _q.Devpackage, _q.Devprogram);
-        else // @ts-ignore
+        if (type === DocumentTypeEnum.AbapToFs)
             this.openFSDialog(_q.Devpackage, _q.Devprogram);
+        else if (type === DocumentTypeEnum.AbapToTs)
+            this.openTSDialog(DocumentTypeEnum.AbapToTs, _q.Devpackage, _q.Devprogram);
+        else if (type === DocumentTypeEnum.EccToHana)
+            this.openHanaDialog(_q.Devpackage, _q.Devprogram);
     }
 
     private openFSDialog(packageName: string, programName: string) {
@@ -121,43 +124,94 @@ export default class AbapToFs extends BaseController {
         });
     }
 
+    private openHanaDialog(packageName: string, programName: string) {
+        if (!this._hanaDialog) {
+            this._hanaDialog = Fragment.load({
+                id: this.getView()?.getId(),
+                name: "com.ntt.chatgptportal.view.fragment.HanaDialog",
+                controller: this
+            }).then((dialog) => {
+                this.getView()?.addDependent(dialog as Dialog);
+                return dialog;
+            }) as Promise<Dialog>;
+        }
 
-    private onPressCreate(isAbapToTs: boolean) {
-        this._createQuery(isAbapToTs);
+        this._hanaDialog.then((dialog) => {
+            dialog.open();
+            this._readDocuments(DocumentTypeEnum.EccToHana, undefined, packageName, programName);
+        });
+    }
+
+    private onPressAddParam(property: string) {
+        const model = this.getModel<JSONModel>("model"),
+            parameters = model.getProperty(`/${property}`),
+            _q: any = {
+                PropName: "",
+                PropVal: "01"
+            };
+
+        parameters.push(_q);
+
+        model.setProperty(`/${property}`, parameters);
+    }
+
+    private onPressDeleteParam(event: Event, property: string) {
+        const _q: any = (event.getSource() as ManagedObject).getBindingContext("model")?.getObject(),
+            model = this.getModel<JSONModel>("model"),
+            parameters = model.getProperty(`/${property}`),
+            filteredParams = parameters.filter((x: any) => (x.PropName !== _q.PropName ||
+                x.PropVal !== _q.PropVal));
+
+        model.setProperty(`/${property}`, filteredParams);
+    }
+
+    private onPressCreate(type: DocumentTypeEnum) {
+
+        type = (typeof type == "boolean") ? DocumentTypeEnum.AbapToTs : type;
+
+        this._createQuery(type);
     }
 
     private onPressUpdate() {
-
-        const isAbapToTs = this.getModel<JSONModel>("viewModel").getProperty("/isTs");
 
         MessageBox.confirm(this.getResourceBundle().getText("SaveMsg") as string, {
             actions: [this.getResourceBundle().getText("Save") as string,
             this.getResourceBundle().getText("Close") as string],
             onClose: (action: string) => {
                 if (this.getResourceBundle().getText("Save") as string === action) {
-                    // const query = this._formatToJson((isAbapToTs) ? "TsReport" : "FsReport");
-                    // const query = (this.byId("report") as TextArea).getValue();
-                    // this._updateQuery(isAbapToTs, query);
+                    try {
+                        const model = this.getModel<JSONModel>("model").getData();
+                        this._updateQuery(this._type, JSON.stringify(model));
+                    } catch (error) {
+                        console.log(error);
+                        MessageBox.error(this.getResourceBundle().getText("errorText") as string);
+                    }
+
                 }
             }
         });
     }
 
     private onPressDoc(event: Event) {
-        const _q = (event.getSource() as Button).getBindingContext()?.getObject();
+        const _q: any = (event.getSource() as Button).getBindingContext()?.getObject();
 
-        // @ts-ignore
-        this._readQuery((_q.Doctype === DocumentTypeEnum.AbapToTs), _q.Docno);
+        this._readQuery(_q.Doctype, _q.Docno, _q.Doclangu);
     }
 
-    private _readQuery(isAbapToTs: boolean, docNo: string) {
+    private _readQuery(type: DocumentTypeEnum, docNo: string, langu: string) {
+        // @ts-ignore
+        const key = this.byId("smartFilterBar").getControlByKey("Projectid").getValue();
+
+        this._type = type;
+
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             path = this.getModel<ODataModel>().createKey("AbapQuerySet", {
                 Devpackage: model.getProperty("/Devpackage"),
                 Devprogram: model.getProperty("/Devprogram"),
                 IvDoctype: type,
-                Docno: docNo
+                Docno: docNo,
+                Projectid: key,
+                Doclangu: langu
             });
 
         BusyIndicator.show();
@@ -165,22 +219,26 @@ export default class AbapToFs extends BaseController {
             success: (response: any) => {
                 this._docNo = docNo;
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
-                this._createDynamicForm(response.EvQuery, isAbapToTs);
+                this._createDynamicForm(response.EvQuery);
                 BusyIndicator.hide();
             }
         });
     }
 
-    private _createQuery(isAbapToTs: boolean, docNo?: string) {
+    private _createQuery(type: DocumentTypeEnum, docNo?: string) {
+        // @ts-ignore
+        const key = this.byId("smartFilterBar").getControlByKey("Projectid").getValue();
+
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             packageName = model.getProperty("/Devpackage"),
             programName = model.getProperty("/Devprogram"),
             _q = {
                 Devpackage: packageName,
                 Devprogram: programName,
                 IvDoctype: type,
-                Docno: docNo
+                Docno: docNo,
+                Projectid: key,
+                Doclangu: sap.ui.getCore().getConfiguration().getLanguage()
             };
 
         this.openBusyDialog();
@@ -189,23 +247,27 @@ export default class AbapToFs extends BaseController {
                 // @ts-ignore
                 this.byId("smartTable").rebindTable();
                 this._readDocuments(type, undefined, packageName, programName);
-                this._createDynamicForm(response.EvQuery, isAbapToTs);
+                this._createDynamicForm(response.EvQuery);
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this.closeBusyDialog();
             }
         });
     }
 
-    private _updateQuery(isAbapToTs: boolean, query: string) {
+    private _updateQuery(type: DocumentTypeEnum, query: string) {
+        // @ts-ignore
+        const key = this.byId("smartFilterBar").getControlByKey("Projectid").getValue();
+
         const model = this.getModel<JSONModel>("abapModel"),
-            type = (isAbapToTs) ? DocumentTypeEnum.AbapToTs : DocumentTypeEnum.AbapToFs,
             packageName = model.getProperty("/Devpackage"),
             programName = model.getProperty("/Devprogram"),
             _q = {
                 Devpackage: packageName,
                 Devprogram: programName,
                 IvDoctype: type,
-                Docno: this._docNo
+                Docno: this._docNo,
+                Projectid: key,
+                Doclangu: sap.ui.getCore().getConfiguration().getLanguage()
             },
             path = this.getModel<ODataModel>().createKey("AbapQuerySet", _q);
 
@@ -217,15 +279,20 @@ export default class AbapToFs extends BaseController {
             success: (response: any) => {
                 // (this.byId("report") as TextArea).setValue(response.EvQuery);
                 this._readDocuments(type, undefined, packageName, programName);
-                this.createSuccessDialog();
+                // this.createSuccessDialog();
+                MessageBox.success(this.getResourceBundle().getText("successMsg") as string);
                 BusyIndicator.hide();
             }
         });
     }
 
     private _createSummarize(programs: Array<Program>) {
+        // @ts-ignore
+        const key = this.byId("smartFilterBar").getControlByKey("Projectid").getValue();
+
         const data = {
             Query: "",
+            Projectid: key,
             Programs: programs
         } as Summarize;
 

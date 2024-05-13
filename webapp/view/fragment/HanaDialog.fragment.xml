@@ -4,30 +4,30 @@
 >
     <Dialog
         stretch="true"
-        title="{i18n>FS}"
-        icon="sap-icon://vds-file"
+        title="{i18n>Abap}"
+        icon="sap-icon://source-code"
     >
         <content>
             <core:Fragment
-                fragmentName="com.ntt.chatgptportal.view.fragment.FsContent"
+                fragmentName="com.ntt.chatgptportal.view.fragment.HanaContent"
                 type="XML"
             />
         </content>
         <buttons>
-         <Button
+           <Button
                 text="{i18n>Regenerate}"
                 type="Emphasized"
                 icon="sap-icon://synchronize"
-                press="onPressRegenerate('04')"
+                press="onPressRegenerate('07')"
             />
             <Button
                 text="{i18n>Feedback}"
                 type="Emphasized"
                 icon="sap-icon://feedback"
-                press="onPressFeedback('04')"
+                press="onPressFeedback('07')"
             />
             <Button
-                text="{i18n>GenerateFS}"
+                text="{i18n>GenerateAbap}"
                 press="onPressCreate('07')"
                 type="Emphasized"
             />

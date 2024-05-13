@@ -40,7 +40,7 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input class="sapMInputBaseInner myCustomCSSClass sapMInputBaseInner" value="{fsModel>Fieldname}" />
+                        <Input class="sapMInputBaseInner myCustomCSSClass" value="{fsModel>Fieldname}" />
                         <Select selectedKey="{fsModel>Fieldattribute}" >
                             <core:Item
                                 key="01"

@@ -27,6 +27,7 @@ import SimpleForm from "sap/ui/layout/form/SimpleForm";
 import ScrollContainer from "sap/m/ScrollContainer";
 import OverflowToolbar from "sap/m/OverflowToolbar";
 import { formatText } from "../model/formatter";
+import MessageBox from "sap/m/MessageBox";
 
 /**
  * @namespace com.ntt.chatgptportal.controller
@@ -41,6 +42,7 @@ export default abstract class BaseController extends Controller {
     _fsDialog: Promise<Dialog>;
     _tsDialog: Promise<Dialog>;
     _abapDialog: Promise<Dialog>;
+    _hanaDialog: Promise<Dialog>;
     _busyDialog: Promise<Dialog>;
     _feedbackDialog: Promise<Dialog>;
     _regenerateDialog: Promise<Dialog>;
@@ -161,44 +163,49 @@ export default abstract class BaseController extends Controller {
         return copyText;
     }
 
-    public _createDynamicForm(report?: string, isTs?: boolean) {
-        const model = this.getModel<JSONModel>("viewModel");
-        //clear
-        model.setProperty("/report", true);
-        model.setProperty("/edit", false);
-        model.setProperty("/isTs", false);
+    public _createDynamicForm(report?: string) {
 
-        if (!report) {
-            report = this._jsonString;
-        } else {
-            this._jsonString = report;
-        }
-
-        const txtForm = this.byId("txtForm") as Text,
-            _q: Record<string, any> = JSON.parse(report),
-            keys: string[] = Object.keys(_q);
-
-        //show with space
-        keys.forEach(e => {
-            if (e === "TsReport") {
-                const inlineKeys: string[] = Object.keys(_q[e]);
-                inlineKeys.forEach(x => {
-                    _q[e][x] = this.formatter.formatText(_q[e][x], this.getResourceBundle())
-                });
-            } else if (e !== "LoginScreenParameters" && e !== "Lists" &&
-                e !== "Formulas") {
-                _q[e] = this.formatter.formatText(_q[e], this.getResourceBundle())
+        try {
+            if (!report) {
+                report = this._jsonString;
+            } else {
+                this._jsonString = report;
             }
-        });
 
-        this.setModel(new JSONModel(_q), "model");
+            const txtForm = this.byId("txtForm") as Text,
+                _q: Record<string, any> = JSON.parse(report),
+                keys: string[] = Object.keys(_q);
 
-        txtForm.setText(this._createCopyText());
+            //show with space
+            keys.forEach(e => {
+                if (e === "TsReport") {
+                    const inlineKeys: string[] = Object.keys(_q[e]);
+                    inlineKeys.forEach(x => {
+                        _q[e][x] = this.formatter.formatText(_q[e][x], this.getResourceBundle())
+                    });
+                } else if (e !== "LoginScreenParameters" && e !== "Lists" &&
+                    e !== "Formulas") {
+                    _q[e] = this.formatter.formatText(_q[e], this.getResourceBundle())
+                }
+            });
 
-        setTimeout(() => {
-            (this.byId("scrollCont") as ScrollContainer).scrollToElement(this.byId("toolbar") as OverflowToolbar);
-        }, 5);
+            const model = this.getModel<JSONModel>("viewModel");
+            //clear
+            model.setProperty("/report", true);
+            model.setProperty("/edit", false);
 
+            this.setModel(new JSONModel(_q), "model");
+
+            txtForm.setText(this._createCopyText());
+
+            setTimeout(() => {
+                (this.byId("scrollCont") as ScrollContainer).scrollToElement(this.byId("toolbar") as OverflowToolbar);
+            }, 5);
+
+        } catch (error) {
+            console.log(error);
+            MessageBox.error(this.getResourceBundle().getText("errorText") as string);
+        }
     }
 
     private onPressDownload(event: Event) {
@@ -225,6 +232,7 @@ export default abstract class BaseController extends Controller {
         this._tsDialog = undefined; // @ts-ignore
         this._abapDialog = undefined; // @ts-ignore
         this._fsDialog = undefined;  // @ts-ignore
+        this._hanaDialog = undefined; // @ts-ignore
 
         this._type = "";
     }
@@ -296,7 +304,7 @@ export default abstract class BaseController extends Controller {
                 image = this.byId("image") as Image;
             let index = 2;
             const interval = setInterval(() => {
-                if (index === 5)
+                if (index === 6)
                     clearInterval(interval);
                 else {
                     text.setText(this.getResourceBundle().getText(`BusyText${index}`) as string);
@@ -405,6 +413,11 @@ export default abstract class BaseController extends Controller {
                 new Filter("ProcessType", FilterOperator.EQ, data.ProcessType)
             );
         }
+        // @ts-ignore
+        const projectId = this.byId("smartFilterBar")?.getControlByKey("Projectid")?.getValue();
+
+        if (projectId)
+            filters.push(new Filter("Projectid", FilterOperator.EQ, projectId));
 
         if (packageName)
             filters.push(new Filter("Devpackage", FilterOperator.EQ, packageName));

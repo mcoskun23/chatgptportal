@@ -44,7 +44,7 @@
             <items>
                 <ColumnListItem vAlign="Middle">
                     <cells>
-                        <Input value="{fsModel>Fieldname}" />
+                        <Input value="{fsModel>Fieldname}" class="sapMInputBaseInner myCustomCSSClass" />
                         <Select
                             selectedKey="{fsModel>RetrievalType}"
                             change="onChangeRType"

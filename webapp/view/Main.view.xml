@@ -18,6 +18,11 @@
         <f:header>
             <f:DynamicPageHeader>
                 <f:content>
+                    <!-- <Button
+                        text="Excel Export"
+                        press="_excelExport"
+                    /> -->
+
                     <!-- <fb:FilterBar
                         id="filterbar"
                         persistencyKey="myPersKey"
@@ -91,7 +96,7 @@
                 <l:BlockLayoutRow>
                     <l:BlockLayoutCell title="Overview">
                         <VBox>
-                            <Title text="{i18n>dashboardTitle}" />
+                            <Title text="{i18n>Apps}" />
                             <HBox>
                                 <GenericTile
                                     class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
@@ -124,6 +129,46 @@
                                         />
                                     </TileContent>
                                 </GenericTile>
+                            </HBox>
+                        </VBox>
+                    </l:BlockLayoutCell>
+                </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+                    <l:BlockLayoutCell>
+                        <VBox>
+                            <Title text="{i18n>dashboardTitle}" />
+                            <HBox>
+                                <!-- <GenericTile
+                                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                                    header="{i18n>GenerateFsToAbapHeader}"
+                                    press="onPressFsToAbap"
+                                >
+                                    <TileContent footer="{i18n>CurrentQuarter}">
+                                        <NumericContent
+                                            scale="FS"
+                                            value="{dashboardModel>/TotalTsAbap}"
+                                            valueColor="Good"
+                                            indicator="Up"
+                                            withMargin="false"
+                                        />
+                                    </TileContent>
+                                </GenericTile>
+                                <GenericTile
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
+                                    frameType="OneByOne"
+                                    header="{i18n>GenerateFSTS}"
+                                    press="onPressAbapToFs"
+                                >
+                                    <TileContent footer="{i18n>CurrentQuarter}">
+                                        <NumericContent
+                                            scale="P"
+                                            value="{dashboardModel>/TotalFsTs}"
+                                            valueColor="Good"
+                                            indicator="Up"
+                                            withMargin="false"
+                                        />
+                                    </TileContent>
+                                </GenericTile> -->
                                 <!-- </l:BlockLayoutCell> -->
                                 <!-- <l:BlockLayoutCell class="customCellImageBackground" /> -->
                                 <!-- <l:BlockLayoutCell> -->
@@ -162,9 +207,7 @@
                                     press="press"
                                     mode="ArticleMode"
                                 >
-                                    <TileContent
-                                        footer="{i18n>CodeCreated}"
-                                    >
+                                    <TileContent footer="{i18n>CodeCreated}">
                                         <NumericContent
                                             scale="ABAP"
                                             value="9"
@@ -182,7 +225,7 @@
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                    footer="{i18n>DocumentsCreated}"
+                                        footer="{i18n>DocumentsCreated}"
                                     >
                                         <NumericContent
                                             scale="TS"
@@ -191,6 +234,69 @@
                                             indicator="Up"
                                             withMargin="false"
                                         />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
+                                    size="L"
+                                    header="{i18n>ABAPFs}"
+                                    press="press"
+                                    mode="ArticleMode"
+                                >
+                                    <TileContent
+                                        footer="{i18n>DocumentsCreated}"
+                                    >
+                                        <NumericContent
+                                            scale="FS"
+                                            value="{dashboardModel>/AbapToFs}"
+                                            valueColor="Good"
+                                            indicator="Up"
+                                            withMargin="false"
+                                        />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
+                                    size="L"
+                                    header="{i18n>EffortFSABAP}"
+                                    press="press"
+                                    mode="ArticleMode"
+                                >
+                                    <TileContent unit="ABAP">
+                                        <mc:BulletMicroChart
+                                            size="S"
+                                            scale="%"
+                                            forecastValue="100"
+                                            class="sapUiSmallMargin"
+                                            press="press"
+                                        >
+                                            <mc:actual>
+                                                <mc:BulletMicroChartData
+                                                    value="76"
+                                                    color="Critical"
+                                                />
+                                            </mc:actual>
+                                            <mc:thresholds>
+                                                <mc:BulletMicroChartData
+                                                    value="0"
+                                                    color="Error"
+                                                />
+                                                <mc:BulletMicroChartData
+                                                    value="25"
+                                                    color="Critical"
+                                                />
+                                                <mc:BulletMicroChartData
+                                                    value="50"
+                                                    color="Critical"
+                                                />
+                                                <mc:BulletMicroChartData
+                                                    value="75"
+                                                    color="Error"
+                                                />
+                                            </mc:thresholds>
+                                        </mc:BulletMicroChart>
                                     </TileContent>
                                 </GenericTile>
                             </HBox>
@@ -269,69 +375,6 @@
                                         </mc:ComparisonMicroChart>
                                     </TileContent>
                                 </GenericTile>
-
-                                <GenericTile
-                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    size="L"
-                                    header="{i18n>EffortFSABAP}"
-                                    press="press"
-                                    mode="ArticleMode"
-                                >
-                                    <TileContent unit="ABAP">
-                                        <mc:BulletMicroChart
-                                            size="S"
-                                            scale="%"
-                                            forecastValue="100"
-                                            class="sapUiSmallMargin"
-                                            press="press"
-                                        >
-                                            <mc:actual>
-                                                <mc:BulletMicroChartData
-                                                    value="76"
-                                                    color="Critical"
-                                                />
-                                            </mc:actual>
-                                            <mc:thresholds>
-                                                <mc:BulletMicroChartData
-                                                    value="0"
-                                                    color="Error"
-                                                />
-                                                <mc:BulletMicroChartData
-                                                    value="25"
-                                                    color="Critical"
-                                                />
-                                                <mc:BulletMicroChartData
-                                                    value="50"
-                                                    color="Critical"
-                                                />
-                                                <mc:BulletMicroChartData
-                                                    value="75"
-                                                    color="Error"
-                                                />
-                                            </mc:thresholds>
-                                        </mc:BulletMicroChart>
-                                    </TileContent>
-                                </GenericTile>
-                                
-                                <GenericTile
-                                    class="sapUiSmallMarginBegin sapUiTinyMarginTop tileLayout"
-                                    size="L"
-                                    header="{i18n>ABAPFs}"
-                                    press="press"
-                                    mode="ArticleMode"
-                                >
-                                    <TileContent
-                                        footer="{i18n>DocumentsCreated}"
-                                    >
-                                        <NumericContent
-                                            scale="FS"
-                                            value="{dashboardModel>/AbapToFs}"
-                                            valueColor="Good"
-                                            indicator="Up"
-                                            withMargin="false"
-                                        />
-                                    </TileContent>
-                                </GenericTile>
                             </HBox>
                         </VBox>
                     </l:BlockLayoutCell>
@@ -346,34 +389,33 @@
                                     header="{i18n>FsToAbapEffortDayChart}"
                                 >
                                     <TileContent
-                                    footer="47 Days Effort Savings"
+                                        footer="47 Days Effort Savings"
                                     >
                                         <mc:LineMicroChart
                                             threshold="12"
                                             size="Responsive"
                                             showPoints="true"
-                                            color="{above: 'Good', below: 'Error'}">
-
+                                            color="{above: 'Good', below: 'Error'}"
+                                        >
                                             <mc:lines>
-                                                <mc:LineMicroChartLine
-                                                >
+                                                <mc:LineMicroChartLine>
                                                     <mc:LineMicroChartPoint
                                                         x="0"
                                                         y="35"
                                                     />
-                                                      <mc:LineMicroChartPoint
+                                                    <mc:LineMicroChartPoint
                                                         x="20"
                                                         y="53"
                                                     />
-                                                      <mc:LineMicroChartPoint
+                                                    <mc:LineMicroChartPoint
                                                         x="40"
                                                         y="10"
                                                     />
-                                                      <mc:LineMicroChartPoint
+                                                    <mc:LineMicroChartPoint
                                                         x="60"
                                                         y="30"
                                                     />
-                                                      <mc:LineMicroChartPoint
+                                                    <mc:LineMicroChartPoint
                                                         x="80"
                                                         y="52"
                                                     />
@@ -390,7 +432,7 @@
                                     mode="ArticleMode"
                                 >
                                     <TileContent
-                                    footer="27 Days Effort Savings"
+                                        footer="27 Days Effort Savings"
                                     >
                                         <NumericContent
                                             scale="D"
@@ -409,9 +451,7 @@
                                     press="press"
                                     mode="ArticleMode"
                                 >
-                                    <TileContent
-                                        footer="{i18n>CurrentQuarter}"
-                                    >
+                                    <TileContent footer="{i18n>CurrentQuarter}">
                                         <NumericContent
                                             scale="Employees"
                                             value="{dashboardModel>/DailyUserCount}"
@@ -427,10 +467,7 @@
                                     subheader="Monthly"
                                     frameType="TwoByOne"
                                 >
-                                    <TileContent
-                                      
-                                        footer="ABAP to TS"
-                                    >
+                                    <TileContent footer="ABAP to TS">
                                         <content>
                                             <mc:HarveyBallMicroChart
                                                 total="180"
@@ -448,10 +485,7 @@
                                             </mc:HarveyBallMicroChart>
                                         </content>
                                     </TileContent>
-                                    <TileContent
-                   
-                                        footer="FS to ABAP"
-                                    >
+                                    <TileContent footer="FS to ABAP">
                                         <content>
                                             <mc:HarveyBallMicroChart
                                                 total="127"

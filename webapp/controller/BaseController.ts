@@ -329,10 +329,6 @@ export default abstract class BaseController extends Controller {
         });
     }
 
-    public handleEscape() {
-
-    }
-
     private onPressFeedback(type?: DocumentTypeEnum) {
         this._type = (type) ? type : this._type;
 
@@ -454,7 +450,7 @@ export default abstract class BaseController extends Controller {
                 Doctype: this._type,
                 Docno: this._docNo,
                 Developmentid: (fsModel) ? fsModel.getProperty("/Developmentid") : "",
-                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : "",
+                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : abapModel.getProperty("/Projectid"),
                 ProcessType: (fsModel) ? fsModel.getProperty("/ProcessType") : "",
                 Devpackage: (abapModel) ? abapModel.getProperty("/Devpackage") : "",
                 Devprogram: (abapModel) ? abapModel.getProperty("/Devprogram") : "",
@@ -473,13 +469,61 @@ export default abstract class BaseController extends Controller {
                 Docno: this._docNo,
                 Content: (this.byId("content") as TextArea).getValue(),
                 Developmentid: (fsModel) ? fsModel.getProperty("/Developmentid") : "",
-                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : "",
+                Projectid: (fsModel) ? fsModel.getProperty("/Projectid") : abapModel.getProperty("/Projectid"),
                 ProcessType: (fsModel) ? fsModel.getProperty("/ProcessType") : "",
                 Devpackage: (abapModel) ? abapModel.getProperty("/Devpackage") : "",
                 Devprogram: (abapModel) ? abapModel.getProperty("/Devprogram") : "",
             }
 
         this._cfFeedBack(feedBack);
+    }
+
+    public _excelExport(tenant: string) {
+
+        // @ts-ignore
+        var workbook = XLSX.read(NttExcelSchema, { type: 'base64' })
+
+        // @ts-ignore
+        XLSX.writeFile(workbook, "SheetJSTable.xlsx");
+
+        // this._spreadJS();
+
+    }
+
+    public async _spreadJS() {
+        // @ts-ignore
+        var spread = new GC.Spread.Sheets.Workbook(document.getElementById("ss"));
+        // @ts-ignore
+        var spread2 = new GC.Spread.Sheets.Workbook(document.getElementById("s2"));
+
+        // @ts-ignore
+        var excelIo = new GC.Spread.Excel.IO();
+        // @ts-ignore
+        const base64 = await fetch(NttExcelSchema);
+
+
+        const blob = await base64.blob().then((blob) => {
+            // console.log(blob);  
+            excelIo.open(blob, (json: any) => {
+                spread.fromJSON(json);
+                // @ts-ignore
+                var _json = JSON.stringify(spread.toJSON());
+
+                excelIo.save(json, function (blob: any) {
+                    // @ts-ignore
+                    saveAs(blob, "FileName");
+                }, function (e: any) {
+                    if (e.errorCode == 1) {
+                        alert(e.errorMessage);
+                    }
+                });
+
+            },
+                (message: any) => {
+                    console.log(message);
+                });
+        });
+
     }
 
     public _cfFeedBack(feedBack: FeedBack) {

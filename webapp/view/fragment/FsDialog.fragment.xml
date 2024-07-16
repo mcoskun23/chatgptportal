@@ -28,7 +28,7 @@
             />
             <Button
                 text="{i18n>GenerateFS}"
-                press="onPressCreate('07')"
+                press="onPressCreate('04')"
                 type="Emphasized"
             />
             <!-- <Button

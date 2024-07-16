@@ -15,7 +15,7 @@ builder:
       configuration:
         ignoreCertError: true
         target:
-          url: https://sap.ndbstr.com:1081/
+          url: http://91.106.216.89:1081/
           client: "100"
         app:
           name: ZGPT_PRTL

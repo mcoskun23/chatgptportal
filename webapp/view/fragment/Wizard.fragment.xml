@@ -7,7 +7,8 @@
     <Wizard
         id="wizard"
         class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
-        complete="wizardCompletedHandler"
+        complete="onSave"
+        finishButtonText="{i18n>Save}"
     >
         <core:Fragment
             fragmentName="com.ntt.chatgptportal.view.fragment.Step1"

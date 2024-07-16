@@ -48,7 +48,7 @@
                 id="smartTable"
                 header="{i18n>AbapToFs}"
                 entitySet="ProgramsSet"
-                requestAtLeastFields="IsTsCreated,IsFsCreated"
+                requestAtLeastFields="IsTsCreated,IsFsCreated,IsAbapCreated"
                 showTablePersonalisation="true"
                 useTablePersonalisation="true"
                 smartFilterId="smartFilterBar"
@@ -59,7 +59,7 @@
                 persistencyKey="SmartVariantPKey"
                 beforeExport="onExcel"
                 beforeRebindTable="onBeforeRebindTable"
-                enableAutoBinding="false"
+                enableAutoBinding="true"
                 cd:dateFormatSettings='\{"pattern":"dd.MM.yyyy","UTC": true\}'
                 showRowCount="true"
             >
@@ -86,6 +86,8 @@
                 <Table
                     id="innerTable"
                     mode="MultiSelect"
+                    growing="true"
+                    growingThreshold="100"
                 >
                     <columns>
                         <Column>

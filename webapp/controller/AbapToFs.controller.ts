@@ -96,6 +96,11 @@ export default class AbapToFs extends BaseController {
             _q = items[0].getBindingContext()?.getObject();
         }
 
+        // @ts-ignore
+        const projectId = this.byId("smartFilterBar").getControlByKey("Projectid").getValue();
+
+        _q.Projectid = projectId;
+
         this.setModel(new JSONModel(_q), "abapModel");
 
         if (type === DocumentTypeEnum.AbapToFs)

@@ -316,7 +316,7 @@ export default class Create extends BaseController {
         (this.byId("wizard") as Wizard).setCurrentStep(this.byId("step1") as WizardStep);
         (this.byId("step1") as WizardStep).setValidated(false);
         (this.byId("fsToAbapPage") as DynamicPage).setShowFooter(false);
-        (this.byId("btnSave") as Button).setVisible(false);
+        // (this.byId("btnSave") as Button).setVisible(false);
     }
 
     private createDocumentDialog() {
@@ -424,7 +424,7 @@ export default class Create extends BaseController {
                 const model = this.getModel<JSONModel>("fsModel");
 
                 model.setProperty("/List", response.results);
-                (this.byId("btnSave") as Button).setVisible(true);
+                // (this.byId("btnSave") as Button).setVisible(true);
                 BusyIndicator.hide();
             }
         });

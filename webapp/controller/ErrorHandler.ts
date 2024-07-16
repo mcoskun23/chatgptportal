@@ -60,6 +60,7 @@ export default class ErrorHandler extends UI5Object {
   }
 
   private _showServiceError(sErrorTitle: string, sDetails: string) {
+    
     BusyIndicator.hide();
     this._bMessageOpen = true;
     MessageBox.error(

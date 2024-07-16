@@ -7,7 +7,6 @@
         title="{i18n>Loading}"
         horizontalScrolling="false"
         verticalScrolling="false"
-        escapeHandler=".handleEscape"
     >
         <content>
             <VBox
@@ -28,5 +27,11 @@
                 />
             </VBox>
         </content>
+        <endButton>
+            <Button
+                text="{i18n>Close}"
+                press="closeBusyDialog"
+            />
+        </endButton>
     </Dialog>
 </core:FragmentDefinition>
